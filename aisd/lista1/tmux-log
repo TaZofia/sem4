@@ -1,0 +1,227 @@
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad1                               
+----------Kolejka----------             
+Dodano do kolejki: 0                    
+Dodano do kolejki: 1                    
+Dodano do kolejki: 2                    
+Dodano do kolejki: 3                    
+Dodano do kolejki: 4                    
+Dodano do kolejki: 5                    
+Dodano do kolejki: 6                    
+Dodano do kolejki: 7                    
+Dodano do kolejki: 8                    
+Dodano do kolejki: 9                    
+Dodano do kolejki: 10                   
+Dodano do kolejki: 11                   
+Dodano do kolejki: 12                   
+Dodano do kolejki: 13                   
+Dodano do kolejki: 14                   
+Dodano do kolejki: 15                   
+Dodano do kolejki: 16                   
+Dodano do kolejki: 17                   
+Dodano do kolejki: 18                   
+Dodano do kolejki: 19                   
+Dodano do kolejki: 20                   
+Dodano do kolejki: 21                   
+Dodano do kolejki: 22                   
+Dodano do kolejki: 23                   
+Dodano do kolejki: 24                   
+Dodano do kolejki: 25                   
+Dodano do kolejki: 26                   
+Dodano do kolejki: 27                   
+Dodano do kolejki: 28                   
+Dodano do kolejki: 29                   
+Dodano do kolejki: 30                   
+Dodano do kolejki: 31                   
+Dodano do kolejki: 32                   
+Dodano do kolejki: 33                   
+Dodano do kolejki: 34                   
+Dodano do kolejki: 35                   
+Dodano do kolejki: 36                   
+Dodano do kolejki: 37                   
+Dodano do kolejki: 38                   
+Dodano do kolejki: 39                   
+Dodano do kolejki: 40                   
+Dodano do kolejki: 41                   
+Dodano do kolejki: 42                   
+Dodano do kolejki: 43                   
+Dodano do kolejki: 44                   
+Dodano do kolejki: 45                   
+Dodano do kolejki: 46                   
+Dodano do kolejki: 47                   
+Dodano do kolejki: 48                   
+Dodano do kolejki: 49                   
+Pobrano z kolejki: 0                    
+Pobrano z kolejki: 1                    
+Pobrano z kolejki: 2                    
+Pobrano z kolejki: 3                    
+Pobrano z kolejki: 4                    
+Pobrano z kolejki: 5                    
+Pobrano z kolejki: 6                    
+Pobrano z kolejki: 7                    
+Pobrano z kolejki: 8                    
+Pobrano z kolejki: 9                    
+Pobrano z kolejki: 10                   
+Pobrano z kolejki: 11                   
+Pobrano z kolejki: 12                   
+Pobrano z kolejki: 13                   
+Pobrano z kolejki: 14                   
+Pobrano z kolejki: 15                   
+Pobrano z kolejki: 16                   
+Pobrano z kolejki: 17                   
+Pobrano z kolejki: 18                   
+Pobrano z kolejki: 19                   
+Pobrano z kolejki: 20                   
+Pobrano z kolejki: 21                   
+Pobrano z kolejki: 22                   
+Pobrano z kolejki: 23                   
+Pobrano z kolejki: 24                   
+Pobrano z kolejki: 25                   
+Pobrano z kolejki: 26                   
+Pobrano z kolejki: 27                   
+Pobrano z kolejki: 28                   
+Pobrano z kolejki: 29                   
+Pobrano z kolejki: 30                   
+Pobrano z kolejki: 31                   
+Pobrano z kolejki: 32                   
+Pobrano z kolejki: 33                   
+Pobrano z kolejki: 34                   
+Pobrano z kolejki: 35                   
+Pobrano z kolejki: 36                   
+Pobrano z kolejki: 37                   
+Pobrano z kolejki: 38                   
+Pobrano z kolejki: 39                   
+Pobrano z kolejki: 40                   
+Pobrano z kolejki: 41                   
+Pobrano z kolejki: 42                   
+Pobrano z kolejki: 43                   
+Pobrano z kolejki: 44                   
+Pobrano z kolejki: 45                   
+Pobrano z kolejki: 46                   
+Pobrano z kolejki: 47                   
+Pobrano z kolejki: 48                   
+Pobrano z kolejki: 49                   
+----------Stos----------                
+Dodano do stosu: 0  
+Dodano do stosu: 1  
+Dodano do stosu: 2  
+Dodano do stosu: 3  
+Dodano do stosu: 4  
+Dodano do stosu: 5  
+Dodano do stosu: 6  
+Dodano do stosu: 7  
+Dodano do stosu: 8  
+Dodano do stosu: 9  
+Dodano do stosu: 10 
+Dodano do stosu: 11 
+Dodano do stosu: 12 
+Dodano do stosu: 13 
+Dodano do stosu: 14 
+Dodano do stosu: 15 
+Dodano do stosu: 16 
+Dodano do stosu: 17 
+Dodano do stosu: 18 
+Dodano do stosu: 19 
+Dodano do stosu: 20 
+Dodano do stosu: 21 
+Dodano do stosu: 22 
+Dodano do stosu: 23 
+Dodano do stosu: 24 
+Dodano do stosu: 25 
+Dodano do stosu: 26 
+Dodano do stosu: 27 
+Dodano do stosu: 28 
+Dodano do stosu: 29 
+Dodano do stosu: 30 
+Dodano do stosu: 31 
+Dodano do stosu: 32 
+Dodano do stosu: 33 
+Dodano do stosu: 34 
+Dodano do stosu: 35 
+Dodano do stosu: 36 
+Dodano do stosu: 37 
+Dodano do stosu: 38 
+Dodano do stosu: 39 
+Dodano do stosu: 40 
+Dodano do stosu: 41 
+Dodano do stosu: 42 
+Dodano do stosu: 43 
+Dodano do stosu: 44 
+Dodano do stosu: 45 
+Dodano do stosu: 46 
+Dodano do stosu: 47 
+Dodano do stosu: 48 
+Dodano do stosu: 49 
+Pobrano ze stosu: 49                    
+Pobrano ze stosu: 48                    
+Pobrano ze stosu: 47                    
+Pobrano ze stosu: 46                    
+Pobrano ze stosu: 45                    
+Pobrano ze stosu: 44                    
+Pobrano ze stosu: 43                    
+Pobrano ze stosu: 42                    
+Pobrano ze stosu: 41                    
+Pobrano ze stosu: 40                    
+Pobrano ze stosu: 39                    
+Pobrano ze stosu: 38                    
+Pobrano ze stosu: 37                    
+Pobrano ze stosu: 36                    
+Pobrano ze stosu: 35                    
+Pobrano ze stosu: 34                    
+Pobrano ze stosu: 33                    
+Pobrano ze stosu: 32                    
+Pobrano ze stosu: 31                    
+Pobrano ze stosu: 30                    
+Pobrano ze stosu: 29                    
+Pobrano ze stosu: 28                    
+Pobrano ze stosu: 27                    
+Pobrano ze stosu: 26                    
+Pobrano ze stosu: 25                    
+Pobrano ze stosu: 24                    
+Pobrano ze stosu: 23                    
+Pobrano ze stosu: 22                    
+Pobrano ze stosu: 21                    
+Pobrano ze stosu: 20                    
+Pobrano ze stosu: 19                    
+Pobrano ze stosu: 18                    
+Pobrano ze stosu: 17                    
+Pobrano ze stosu: 16                    
+Pobrano ze stosu: 15
+Pobrano ze stosu: 14                    
+Pobrano ze stosu: 13                    
+Pobrano ze stosu: 12                    
+Pobrano ze stosu: 11                    
+Pobrano ze stosu: 10                    
+Pobrano ze stosu: 9 
+Pobrano ze stosu: 8 
+Pobrano ze stosu: 7 
+Pobrano ze stosu: 6 
+Pobrano ze stosu: 5 
+Pobrano ze stosu: 4 
+Pobrano ze stosu: 3 
+Pobrano ze stosu: 2 
+Pobrano ze stosu: 1 
+Pobrano ze stosu: 0 
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad2                               
+Lista 1 po wstawieniu 10 elementów      
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,                                         
+Lista 2 po wstawieniu 10 elementów      
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,                                         
+Lista po połączeniu l1 i l2             
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+Wyszukiwanie liczb, które są na liście  
+Średni koszt tysiąca wyszukiwań losowych liczb, które są na liście: 4924.29     
+Wyszukiwanie losowej liczby z I         
+Średni koszt tysiąca wyszukiwań losowych liczb, które nie muszą być na liście: 9463.85              
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad3                               
+Lista 1 po wstawieniu 10 elementów      
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,                                         
+Lista 2 po wstawieniu 10 elementów      
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,                                         
+Lista po połączeniu l1 i l2             
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+Wyszukiwanie liczb, które są na liście  
+Średni koszt tysiąca wyszukiwań losowych liczb, które są na liście: 4806.47     
+Wyszukiwanie losowej liczby z I         
+Średni koszt tysiąca wyszukiwań losowych liczb, które nie muszą być na liście: 9486.08              
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ tmux capture-pane -p -S'-' -E'-' -J >./tmux-log                                                                      
+
