@@ -1,6 +1,7 @@
 #include <iostream>
-
-
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
 
 struct Node {
     int value;
@@ -65,7 +66,7 @@ void merge(CircularList& list1, CircularList& list2) {
 
 int searchAndCountComparisons(CircularList& list, int searchedValue) {
 
-    if(list.size = 0) return -1;
+    if(list.size == 0) return -1;
 
     Node* temp = list.head;
     int comparisons = 0;
@@ -73,21 +74,18 @@ int searchAndCountComparisons(CircularList& list, int searchedValue) {
 
     do{
         comparisons++;
-        if (temp->value != searchedValue){
-            temp = temp->next;
-        }
-        else {
+        if (temp->value == searchedValue){
             return comparisons;
         }
+        temp = temp->next;
     }while(temp != list.head);
-
-    return -1;  // Gdy element nie został znaleziony
+    return comparisons;
 }
-
 
 
 int main() {
 
+    std::srand(std::time(nullptr)); 
     CircularList l1, l2;
 
     for (int i = 10; i < 20; i++) {
@@ -121,6 +119,58 @@ int main() {
         templ1 = templ1->next;
     }
     std::cout << std::endl;
+
+
+    int T[10000];
+    CircularList randomList;
+
+    for(int i = 0; i < 10000; i++) {
+        int randomValue = std::rand() % 100000;
+        T[i] = randomValue;
+        insert(randomList, randomValue);
+    }
+
+
+    std::cout << "Wyszukiwanie liczb, które są na liście" << std::endl;
+    int sum = 0;
+    for (int i = 0 ; i < 1000; i++) {
+        int randVal = std::rand() % 10000;
+        int comparisonsWhileSearch = searchAndCountComparisons(randomList, T[randVal]); 
+        sum += comparisonsWhileSearch;
+    }
+
+    double avg = (double)sum / 1000;
+
+    std::ofstream file("zad2r1.txt", std::ios::app);
+    if (file.is_open()) {
+        file << avg << std::endl;  
+        file.close();  
+    } else {
+        std::cerr << "Nie mozna otworzyc pliku" << std::endl;
+    }
+
+    std::cout << "Średni koszt tysiąca wyszukiwań losowych liczb, które są na liście: " << avg << std::endl;
+
+
+    std::cout << "Wyszukiwanie losowej liczby z I" << std::endl;
+    int sum2 = 0;
+    for (int i = 0 ; i < 1000; i++) {
+        int randomValue = std::rand() % 100000;
+        int comparisons = searchAndCountComparisons(randomList, randomValue);
+        sum2 += comparisons;
+    }
+
+    double avg2 = (double)sum2 / 1000;
+
+    std::ofstream file2("zad2r2.txt", std::ios::app);
+    if (file2.is_open()) {
+        file2 << avg2 << std::endl; 
+        file2.close();  
+    } else {
+        std::cerr << "Nie mozna otworzyc pliku" << std::endl;
+    }
+
+    std::cout << "Średni koszt tysiąca wyszukiwań losowych liczb, które nie muszą być na liście: " << avg2 << std::endl;
 
     return 0;
 }
