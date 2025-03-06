@@ -1,0 +1,26 @@
+Tarchalska Zofia
+
+Sprawozdanie, laboratorium 1
+
+Niniejsze sprawozdanie ma na celu analizę działania programów Ping, Traceroute oraz WireShark, które są używane w kontekście badania tras pakietów w sieci, czasu propagacji oraz fragmentacji danych. W poniższym sprawozdaniu przedstawiono opisy poszczególnych programów, przeprowadzono testy oraz dokonano analizy ich wyników.
+
+Ping
+
+Program Ping jest narzędziem służącym do testowania połączeń sieciowych. Działa poprzez wysyłanie pakietów ICMP Echo Request (komunikat protokołu ICMP) do wybranego hosta, a następnie oczekiwanie na odpłatne Echo Reply. Umożliwia to pomiar czasu odpowiedzi oraz badanie strat pakietów.
+Zwykłe polecenie np.
+ping youtube.com zwraca
+Reply from 142.250.203.206: bytes=32 time=43ms TTL=114
+gdzie TTL (time to live) to wartość, która określa maksymalną liczbę przeskoków, jakie pakiet może przejść zanim zostanie odrzucony. 
+Sprawdzono, że użytkownik ma jednak również możliwość zmiany wielkości pakietu np. za pomocą 
+ping -l 500 example.com
+
+
+
+Traceroute
+
+Traceroute pozwala na ustalenie trasy pakietu do określonego hosta poprzez wysyłanie pakietów z rosnącą wartością TTL (Time To Live) i analizowanie odpowiedzi, które są zwracane na każdym etapie. 
+
+WireShark
+
+WireShark to zaawansowane narzędzie do przechwytywania i analizy ruchu sieciowego. Daje możliwość dokładnej analizy przesyłanych pakietów, w tym ich nagłówków oraz zawartości.
+
