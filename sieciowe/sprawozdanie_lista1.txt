@@ -6,17 +6,39 @@ Niniejsze sprawozdanie ma na celu analizę działania programów Ping, Tracerout
 
 Ping
 
-Program Ping jest narzędziem służącym do testowania połączeń sieciowych. Działa poprzez wysyłanie pakietów ICMP Echo Request (komunikat protokołu ICMP) do wybranego hosta, a następnie oczekiwanie na odpłatne Echo Reply. Umożliwia to pomiar czasu odpowiedzi oraz badanie strat pakietów.
-Zwykłe polecenie np.
+Ping to jedno z podstawowych narzędzi sieciowych, które służy do diagnozowania połączeń w sieci. Działa poprzez wysyłanie pakietów ICMP Echo Request do docelowego hosta i oczekiwanie na odpowiedź w postaci pakietu ICMP Echo Reply. Umożliwia to pomiar czasu odpowiedzi serwera oraz analizę ewentualnych strat pakietów w trakcie komunikacji.
+W celu sprawdzenia działania narzędzia Ping, wykonano komendę:
 ping youtube.com zwraca
 Reply from 142.250.203.206: bytes=32 time=43ms TTL=114
 gdzie TTL (Time To Live) to wartość, która określa maksymalną liczbę przeskoków, jakie pakiet może przejść zanim zostanie odrzucony. Założono, że domyślne TTL dla tego przykładu to 128, więc liczba skoków wynosi 128 - 114 = 14.
-Sprawdzono, że użytkownik ma jednak również możliwość zmiany wielkości pakietu np. za pomocą 
-ping -l 500 example.com
+Time to czas odpowiedzi, który w tym wypadku wynosi 43 ms, co wskazuje na stosunkowo szybkie połączenie.
+Sprawdzono, że użytkownik ma również możliwość zmiany wielkości pakietu np. za pomocą 
+ping -l 500 youtube.com
+Pozwala to na testowanie zdolności sieci do obsługi różnych rozmiarów pakietów oraz badanie potencjalnej fragmentacji pakietów w trakcie transmisji.
+Sprawdzono, że pakiety o rozmiarze 500 lub 1000 bajtów przechodzą jeszcze bez problemu jednak przy 1500 występuje już request time out.
+C:\Users\zosia>ping -l 1000 youtube.com
+
+Pinging youtube.com [216.58.215.110] with 1000 bytes of data:
+Reply from 216.58.215.110: bytes=1000 time=27ms TTL=116
+Reply from 216.58.215.110: bytes=1000 time=38ms TTL=116
+Reply from 216.58.215.110: bytes=1000 time=25ms TTL=116
+Reply from 216.58.215.110: bytes=1000 time=20ms TTL=116
+
+Ping statistics for 216.58.215.110:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 20ms, Maximum = 38ms, Average = 27ms
+
+C:\Users\zosia>ping -l 1500 youtube.com
+
+Pinging youtube.com [216.58.215.110] with 1500 bytes of data:
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
 
 
-
-Tracert
+Traceroute (w systemach Windows: tracert)
 
 Tracert pozwala na ustalenie trasy pakietu do określonego hosta poprzez wysyłanie pakietów z rosnącą wartością TTL i analizowanie odpowiedzi, które są zwracane na każdym etapie. Najpierw TTL ustawiane jest na 1, a gdy wartość spadnie do 0, pakiet jest odrzucany przez router. Następnie zaczyna się od TTL równego 2 i tak dalej coraz większe TTL. Poleceniem:
 tracert youtube.com otrzymano poniższy output:
@@ -35,5 +57,21 @@ Każda linia to jeden router, przez który przechodzi pakiet. Gwiazdka oznacza, 
 
 WireShark
 
-WireShark to zaawansowane narzędzie do przechwytywania i analizy ruchu sieciowego. Daje możliwość dokładnej analizy przesyłanych pakietów, w tym ich nagłówków oraz zawartości.
+WireShark to zaawansowane narzędzie do przechwytywania i analizy ruchu sieciowego. Daje możliwość dokładnej analizy przesyłanych pakietów, w tym ich nagłówków oraz zawartości. Jego obłsługa jest już bardziej złożona niż np. pinga czy tracerta. Przede wszystkim możliwe jest pobranie wersji niekonsolowej. Wtedy po uruchomieniu programu prezentowane jest okno aplikacji, w którym to możliwe jest wybranie odpowiednich filtrów. Należą do nich: wyszukiwanie jedynie połączeń lokalnych, wi-fi lub połączeń sieciowych bluetooth. Sprawdzono za pomocą filtrowania ruch ICMP, czyli ten powodowany przez ping. Sprawdzono również jedynie pakiety wysyłane przez http. Za pomocą ip.src można sprawdzić pakiety wysyłane przez konkretnego nadawcę. Aby móc sprawdzić pakiety zarówno wysyłane jak i odbierane przez konkrenty podmiot należy posłużyć się ip.addr.
+
+W wyniku testownia powyższych programów stwierdzono, że każde z testowanych narzędzi ma swoje najlepsze zastosowanie:
+
+Ping pozwala na szybką diagnozę połączenia.
+
+Traceroute umożliwia analizę trasy pakietu i identyfikację problemów z routingiem.
+
+Wireshark zapewnia szczegółową analizę ruchu sieciowego i może być używany do zaawansowanych badań.
+Każde z tych narzędzi jest niezbędne dla administratorów sieci i analityków bezpieczeństwa.
+
+
+
+
+
+
+
 
