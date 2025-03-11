@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zainteresowania</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +10,7 @@
         <nav>
             <ul>
                 <li><a href="main.html">Strona Główna</a></li>
-                <li><a href="zainteresowania.html">Zainteresowania</a></li>
+                <li><a href="zainteresowania.html" class="active">Zainteresowania</a></li>
                 <li><a href="projekty.html">Projekty</a></li>
                 <li><a href="kontakt.html">Kontakt</a></li>
             </ul>
@@ -19,7 +18,7 @@
     </header>
 
     <main>
-        <h1>Zainteresowania</h1>
+        <section>
         <h3>Bieganie</h3>
         <p>Bieganie towarzyszy mi od zawsze. Już w szkole podstawowej nie raz brałam udział w zawodach międzyszkolnych i rejonowych, mimo iż nie
             trenowałam w żadnym klubie. Faktyczny zapał do tego sportu pojawił się kiedy rozpoczęłam studia. Rozpisałam sobie plan treningowy, 
@@ -34,9 +33,11 @@
 
         <figure>
             <figcaption>Międzynarodowy Bieg Ptolemeusza</figcaption>
+            <img src="./z1.jpg" alt="Ptolemeusz">
         </figure>
-        
+        </section>
 
+        <section>
         <h3>Ścianka wspinaczkowa</h3>
         <p>Jest to całkowicie nowe hobby, które traktuję zawsze bardziej jako spotaknie ze znajomymi niż pod kątem osiągania sukcesów.</p>
 
@@ -44,15 +45,24 @@
             <figcaption>Zdjęcie z wrocławskiej ścianki Fpinka</figcaption>
             <img src="./wspinaczka.jpg">
         </figure>
+        </section>
 
 
+        <section>
         <h3>Turystyka górska</h3>
         <p>Najbradziej natomiast uwielbiam po prostu chodzić po górach. Wraz z rodziną kilka lat temu skompletowałam KGP, czyli Koronę Gór Polski.
-            Jest to 28 szczytów, w każdym paśmie górskim. Zajęło nam to jedynie 3 mięsiące, które do dziś wspominam.
+            Jest to 28 szczytów, w każdym paśmie górskim. Zajęło nam to jedynie 3 mięsiące, które do dziś wspominam. Tutaj kilka zdjęć z różnych wypraw w moje ulubione miejsca, 
+            czyli Tatry i Bieszczady.
         </p>
-        <figure>
-            <figcaption>Tatry</figcaption>
-        </figure>
+        
+        <section class="gallery">
+            <img src="z2.jpg">
+            <img src="z3.jpg">
+            <img src="z4.jpg">
+            <img src="z6.jpg">
+        </section>
+
+    </section>
 
     </main>
 </body>
