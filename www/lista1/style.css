@@ -28,7 +28,26 @@ nav ul li a {
     font-size: 18px;
 }
 
-main {
+img {
+    width: 100%;
+    height: auto; 
+    max-width: 800px; 
+}
+figure {
     text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+figcaption {
+    font-size: auto;
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+
+main {
+    text-align: left;
     padding: 50px;
 }
