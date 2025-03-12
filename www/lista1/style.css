@@ -1,8 +1,10 @@
+
 body {
     font-family: 'Tahoma', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #b1d1fa;
+    padding-top: 50px;
 }
 
 header {
@@ -10,11 +12,21 @@ header {
     color: white;
     padding: 10px 0;
     text-align: center;
+    position: fixed;        /*pasek u góry*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 50px;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+nav ul::-webkit-scrollbar {
+    display: none; 
 }
 
 nav ul li {
@@ -26,6 +38,8 @@ nav ul li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 nav ul li a.active {
@@ -85,12 +99,12 @@ pre {
     font-family: 'Courier New', Courier, monospace;
     overflow: auto;
     max-height: 400px; 
+    max-width: 100%;
 }
 
 code {
     font-size: 1em;
 }
-
 
 .contact {
     text-align: center;
@@ -129,5 +143,32 @@ code {
 }
 .me .me-info {
     text-align: left;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+
+    .me {
+        text-align: center;
+    }
 }
 

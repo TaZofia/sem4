@@ -45,8 +45,9 @@
                 który miał indywidulanie dostosowane możliwości w zależności od tego, jaki typ użytkownika się do niego logował. Możliwe było wypożyczanie i zwracanie książek oraz dodawanie 
                 egzemplarzy lub innch użytkowników jeśli nasza rola na to pozwalała.
             </p>
+            <p>Poniżej fragment kodu z klasy BookDAO wraz z metodą, która pobierała dane bezpośrednio z bazy.</p>
 
-            <pre><code>
+            <pre><code class="language-bash">
                 @Override
                 public List<BorrowedBookDetails> getBorrowedBooksByUser(int userId) {
                     List<BorrowedBookDetails> borrowedBooks = new ArrayList<>();
