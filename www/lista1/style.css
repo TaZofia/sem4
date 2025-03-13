@@ -24,7 +24,7 @@ nav ul {
     padding: 0;
     overflow-x: auto;
     white-space: nowrap;
-}
+}       
 nav ul::-webkit-scrollbar {
     display: none; 
 }
@@ -112,6 +112,7 @@ code {
     background-color: #0b0149af;
     max-width: 800px;
     margin: 0 auto;
+    margin-top: 16px;
     border-radius: 8px;
 }
 .contact-info {
@@ -168,6 +169,16 @@ code {
     }
 
     .me {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .me img {
+        justify-self: center;
+    }
+    .me .me-info {
         text-align: center;
     }
 }
