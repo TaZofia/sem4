@@ -236,7 +236,7 @@ Dla przykładu w programie wireshark można wybrać filtrowanie pingów w ramach
 Adres IP telefonu komórkowego: 192.168.8.107
 Adres IP komputera: 192.168.8.105
 
-Po wpisaniu ip.src = 192.168.8.107 i pingowniu tego adresu z komputera otrzymujemy w programie wireshark tylko drogę powrotną 
+Po wpisaniu ip.src = 192.168.8.107 i pingowniu tego adresu z komputera otrzymujemy w programie wireshark tylko drogę powrotną z tego adresu. Natomiast po wpisaniu ip.addr = 192.168.8.107 widzimy zarówno pakiety wysłane przez komputer jak i te odbierane.
   
 
 
