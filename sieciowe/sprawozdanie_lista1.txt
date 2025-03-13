@@ -10,12 +10,12 @@ Ping to jedno z podstawowych narzędzi sieciowych, które służy do diagnozowan
 W celu sprawdzenia działania narzędzia Ping, wykonano komendę:
 ping youtube.com zwraca
 Reply from 142.250.203.206: bytes=32 time=43ms TTL=114
-gdzie TTL (Time To Live) to wartość, która określa maksymalną liczbę przeskoków, jakie pakiet może przejść zanim zostanie odrzucony. Założono, że domyślne TTL dla tego przykładu to 128, więc liczba skoków wynosi 128 - 114 = 14.
-Time to czas odpowiedzi, który w tym wypadku wynosi 43 ms, co wskazuje na stosunkowo szybkie połączenie.
+gdzie TTL (Time To Live) to wartość, która określa maksymalną liczbę przeskoków, jakie pakiet może przejść zanim zostanie odrzucony. Jest to droga jaką pokonuje pakiet od serwera do nadwacy. Założono, że domyślne TTL dla tego przykładu to 128 (ponieważ najczęściej TTL jest potęgą dwójki), więc liczba skoków wynosi 128 - 114 = 14.
+time to czas odpowiedzi, który w tym wypadku wynosi 43 ms, co wskazuje na stosunkowo szybkie połączenie.
 Sprawdzono, że użytkownik ma również możliwość zmiany wielkości pakietu np. za pomocą 
 ping -l 500 youtube.com
 Pozwala to na testowanie zdolności sieci do obsługi różnych rozmiarów pakietów oraz badanie potencjalnej fragmentacji pakietów w trakcie transmisji.
-Sprawdzono, że pakiety o rozmiarze 500 lub 1000 bajtów przechodzą jeszcze bez problemu jednak przy 1500 występuje już request time out.
+Sprawdzono, że dla strony youtube.com pakiety o rozmiarze 500 lub 1000 bajtów przechodzą jeszcze bez problemu jednak przy 1500 występuje już request time out.
 C:\Users\zosia>ping -l 1000 youtube.com
 
 Pinging youtube.com [216.58.215.110] with 1000 bytes of data:
@@ -36,6 +36,169 @@ Request timed out.
 Request timed out.
 Request timed out.
 Request timed out.
+
+
+Próby dla bliższego serwera:
+
+C:\Users\zosia>ping pasazgrunwaldzki.pl -l 100
+
+Pinging pasazgrunwaldzki.pl [88.198.56.205] with 100 bytes of data:
+Reply from 88.198.56.205: bytes=100 time=73ms TTL=47
+Reply from 88.198.56.205: bytes=100 time=64ms TTL=47
+Reply from 88.198.56.205: bytes=100 time=119ms TTL=47
+Reply from 88.198.56.205: bytes=100 time=97ms TTL=47
+
+Ping statistics for 88.198.56.205:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 64ms, Maximum = 119ms, Average = 88ms
+
+C:\Users\zosia>ping pasazgrunwaldzki.pl -l 200
+
+Pinging pasazgrunwaldzki.pl [88.198.56.205] with 200 bytes of data:
+Reply from 88.198.56.205: bytes=200 time=87ms TTL=47
+Reply from 88.198.56.205: bytes=200 time=74ms TTL=47
+Reply from 88.198.56.205: bytes=200 time=82ms TTL=47
+Reply from 88.198.56.205: bytes=200 time=86ms TTL=47
+
+Ping statistics for 88.198.56.205:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 74ms, Maximum = 87ms, Average = 82ms
+
+C:\Users\zosia>ping pasazgrunwaldzki.pl -l 500
+
+Pinging pasazgrunwaldzki.pl [88.198.56.205] with 500 bytes of data:
+Reply from 88.198.56.205: bytes=500 time=115ms TTL=47
+Reply from 88.198.56.205: bytes=500 time=133ms TTL=47
+Reply from 88.198.56.205: bytes=500 time=161ms TTL=47
+Reply from 88.198.56.205: bytes=500 time=141ms TTL=47
+
+Ping statistics for 88.198.56.205:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 115ms, Maximum = 161ms, Average = 137ms
+
+
+C:\Users\zosia>ping pasazgrunwaldzki.pl -l 1500
+
+Pinging pasazgrunwaldzki.pl [88.198.56.205] with 1500 bytes of data:
+Reply from 88.198.56.205: bytes=1500 time=100ms TTL=47
+Reply from 88.198.56.205: bytes=1500 time=85ms TTL=47
+Reply from 88.198.56.205: bytes=1500 time=109ms TTL=47
+Reply from 88.198.56.205: bytes=1500 time=310ms TTL=47
+
+Ping statistics for 88.198.56.205:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 85ms, Maximum = 310ms, Average = 151ms
+
+
+Po kilku próbach możemy zauważyć, że zwiększanie liczby bajtów w wysyłanym pakiecie zwiększa się średni czas odpowiedzi. Dla bliskiego serwera np. Pasażu Grunwaldzkiego pakiet o rozmiarze 1500 bajtów jeszcze przechodzi, jednak zajmuje mu to znacznie więcej czasu niż w przypadku wysyłania pakietu o mniejszym rozmiarze.
+
+Co ciekawe dla strony w Australii (czyli również dalekiego serwera) przy pakiecie 1500 bajtów również otrzymujemy odpowiedź.
+C:\Users\zosia>ping news.com.au -l 1500
+
+Pinging news.com.au [23.206.208.104] with 1500 bytes of data:
+Reply from 23.206.208.104: bytes=1500 time=94ms TTL=49
+Reply from 23.206.208.104: bytes=1500 time=62ms TTL=49
+Reply from 23.206.208.104: bytes=1500 time=112ms TTL=49
+Reply from 23.206.208.104: bytes=1500 time=124ms TTL=49
+
+Ping statistics for 23.206.208.104:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 62ms, Maximum = 124ms, Average = 98ms
+
+Podsumowując rozmiar pakietu jest proporcjonalny do czasu odpowiedzi z serwera. Im większe pakiety tym więcej czasu zajmuje odpowiedź. Powodem, dla którego youtube nie pozwala na przesłanie pakietów o rozmiarze 1500 bajtów może być bezpieczeństwo.
+
+
+Po pingowaniu samego siebie wynik jest taki jakiego byśmy się spodziewali to znaczy nie potrzebujemy żadnych skoków.
+C:\Users\zosia>ping 127.0.0.1
+
+Pinging 127.0.0.1 with 32 bytes of data:
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+
+Ping statistics for 127.0.0.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+
+Kolejną z flag używanych w poleceniach pinga jest -n, która określa nam liczbę pakietów, które chcemy wysłać. Dla przykładu polecenie:
+C:\Users\zosia>ping youtube.com -n 1
+
+Pinging youtube.com [216.58.215.110] with 32 bytes of data:
+Reply from 216.58.215.110: bytes=32 time=65ms TTL=115
+
+Ping statistics for 216.58.215.110:
+    Packets: Sent = 1, Received = 1, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 65ms, Maximum = 65ms, Average = 65ms
+pozwala nam na wysłanie tylko jednego pakietu.
+
+
+Fragmentacja
+Fragmentacja pakietów to proces dzielenia dużego pakietu na mniejsze fragmenty, aby mogły one przejść przez sieć. Jest to konieczne, gdy maksymalna jednostka transmisji (MTU – Maximum Transmission Unit) w jakimś punkcie sieci jest mniejsza niż rozmiar wysyłanego pakietu. Standardowy MTU dla Ethernetu wynosi 1500 bajtów, ale w niektórych sieciach może być mniejszy (np. 1400 bajtów). Możliwe jest jednak wymuszenie braku fragmentacji za pomocą flagi -f.
+C:\Users\zosia>ping facebook.com -l 1400 -f
+
+Pinging facebook.com [157.240.0.35] with 1400 bytes of data:
+Reply from 157.240.0.35: bytes=1400 time=68ms TTL=50
+Reply from 157.240.0.35: bytes=1400 time=56ms TTL=50
+Request timed out.
+Reply from 157.240.0.35: bytes=1400 time=104ms TTL=50
+
+Ping statistics for 157.240.0.35:
+    Packets: Sent = 4, Received = 3, Lost = 1 (25% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 56ms, Maximum = 104ms, Average = 76ms
+
+C:\Users\zosia>ping facebook.com -l 1410 -f
+
+Pinging facebook.com [157.240.253.35] with 1410 bytes of data:
+Request timed out.
+Reply from 157.240.253.35: bytes=1410 time=142ms TTL=51
+Reply from 157.240.253.35: bytes=1410 time=90ms TTL=51
+Request timed out.
+
+Ping statistics for 157.240.253.35:
+    Packets: Sent = 4, Received = 2, Lost = 2 (50% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 90ms, Maximum = 142ms, Average = 116ms
+
+C:\Users\zosia>ping facebook.com -l 1500 -f
+
+Pinging facebook.com [157.240.0.35] with 1500 bytes of data:
+Packet needs to be fragmented but DF set.
+Packet needs to be fragmented but DF set.
+Packet needs to be fragmented but DF set.
+Packet needs to be fragmented but DF set.
+
+Ping statistics for 157.240.0.35:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+Możemy zauważyć dla strony facebook bez fragemtacji możemy przesłać pakiet o rozmiarze 1400 bajtów, dla 1410 nie wszystkie pakiety przechodzą, natomiast 1500 to już za dużo.
+
+
+Maksymalny rozmiar pakietu bez fragmentacji, którym możmemy pingować samego siebie to 65500.
+C:\Users\zosia>ping 127.0.0.1 -l 100000 -f
+Bad value for option -l, valid range is from 0 to 65500.
+
+C:\Users\zosia>ping 127.0.0.1 -l 65500 -f
+
+Pinging 127.0.0.1 with 65500 bytes of data:
+Reply from 127.0.0.1: bytes=65500 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=65500 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=65500 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=65500 time<1ms TTL=128
+
+Ping statistics for 127.0.0.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
 
 
 Traceroute (w systemach Windows: tracert)
@@ -68,6 +231,13 @@ Traceroute umożliwia analizę trasy pakietu i identyfikację problemów z routi
 Wireshark zapewnia szczegółową analizę ruchu sieciowego i może być używany do zaawansowanych badań.
 Każde z tych narzędzi jest niezbędne dla administratorów sieci i analityków bezpieczeństwa.
 
+
+Dla przykładu w programie wireshark można wybrać filtrowanie pingów w ramach jednej sieci wi-fi.
+Adres IP telefonu komórkowego: 192.168.8.107
+Adres IP komputera: 192.168.8.105
+
+Po wpisaniu ip.src = 192.168.8.107 i pingowniu tego adresu z komputera otrzymujemy w programie wireshark tylko drogę powrotną 
+  
 
 
 
