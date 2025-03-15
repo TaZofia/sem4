@@ -25,12 +25,12 @@
 
         <section>
             <h3>Chinese Checkers</h3>
-            <article>Znane również pod nazwą trylma lub chińskie warcaby. Był to projekt relizowany w zespołach dwuosobowych i polegał na zaimplementowaniu w całości logiki gry, stworzeniu GUI oraz 
+            <p>Znane również pod nazwą trylma lub chińskie warcaby. Był to projekt relizowany w zespołach dwuosobowych i polegał na zaimplementowaniu w całości logiki gry, stworzeniu GUI oraz 
                 dodania kompatybilności z systemem bazodanowym. 
                 Gra została stworzona dla 2,3,4 i 6 graczy, a rozgrywka toczy się na planszy w kształcie sześcioramiennej gwiazdy. Istnieje bardzo wiele wariantów tej gry, w których gracze mogą
                 dla przykładu łączyć się w drużyny lub niekoniecznie zawsze startować w przeciwległych ramion gwiazdy, ale ogólnym celem gry jest wprowadzenie wszystkich swoich pionków do
                 domku przeciwnika.
-            </article>
+            </p>
             <p>Projekt ten napisałam w języku java, a GUI tworzyłam za pomocą Javafx. Bazodanowa część projektu powstała przy użyciu MariaDB.</p>
 
 
@@ -48,10 +48,10 @@
             </p>
             <p>Poniżej fragment kodu z klasy BookDAO wraz z metodą, która pobierała dane bezpośrednio z bazy.</p>
 
-            <pre><code class="language-bash">
+            <pre><code class="language-java">
                 @Override
-                public List<BorrowedBookDetails> getBorrowedBooksByUser(int userId) {
-                    List<BorrowedBookDetails> borrowedBooks = new ArrayList<>();
+                public List&lt;BorrowedBookDetails&gt; getBorrowedBooksByUser(int userId) {
+                    List&lt;BorrowedBookDetails&gt; borrowedBooks = new ArrayList&lt;&gt;();
                     var query = """
                         SELECT bb.id AS borrowId, b.title, bb.copyId, bb.borrowDate, bb.returnDate
                         FROM BorrowBook bb
