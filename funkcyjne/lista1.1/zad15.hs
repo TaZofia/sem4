@@ -11,5 +11,5 @@ pairs:: Int -> [(Int, Int)]
 pairs k = [(m, n) | m <- [1..k], let n = sumDiv m, m < n, sumDiv n == m ]
 
 main = do
-    let friendPairs = pairs 1000
+    let friendPairs = pairs 100000
     print friendPairs
