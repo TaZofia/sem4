@@ -5,8 +5,6 @@
 int f (int n) {
     return n;
 }
-
-
 int loopApproach(int n) {
     int sum = 0;
 
@@ -15,7 +13,6 @@ int loopApproach(int n) {
     }
     return sum;
 }
-
 int main() {
     
     int n;
