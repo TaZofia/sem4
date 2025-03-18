@@ -76,6 +76,9 @@ figcaption {
 main {
     text-align: left;
     padding: 50px;
+    margin-left: 15%;
+    margin-right: 15%;
+    
 }
 .gallery {
     display: grid;
@@ -87,8 +90,8 @@ main {
 }
 
 .gallery img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 270px;
     border-radius: 5px;
     transition: transform 0.3s ease;
 }
@@ -141,20 +144,20 @@ code {
     border-radius: 8px;
 }
 
-.me {
+.text-left-img-right {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 20px;
 }
 
-.me img {
+.text-left-img-right img {
     width: 100%;
     max-width: 350px;
     height: auto;
     border-radius: 10px;
     justify-self: end;  /*max na prawo*/
 }
-.me .me-info {
+.text-left-img-right .info {
     text-align: left;
 }
 
