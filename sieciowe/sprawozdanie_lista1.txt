@@ -96,6 +96,23 @@ Approximate round trip times in milli-seconds:
 
 Po kilku próbach możemy zauważyć, że zwiększanie liczby bajtów w wysyłanym pakiecie zwiększa się średni czas odpowiedzi. Dla bliskiego serwera np. Pasażu Grunwaldzkiego pakiet o rozmiarze 1500 bajtów jeszcze przechodzi, jednak zajmuje mu to znacznie więcej czasu niż w przypadku wysyłania pakietu o mniejszym rozmiarze.
 
+Udało się nawet przesłać 50000 bajtów
+C:\Users\zosia>ping pasazgrunwaldzki.pl -l 50000
+
+Pinging pasazgrunwaldzki.pl [88.198.56.205] with 50000 bytes of data:
+Reply from 88.198.56.205: bytes=50000 time=163ms TTL=47
+Reply from 88.198.56.205: bytes=50000 time=144ms TTL=47
+Reply from 88.198.56.205: bytes=50000 time=180ms TTL=47
+Reply from 88.198.56.205: bytes=50000 time=153ms TTL=47
+
+Ping statistics for 88.198.56.205:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 144ms, Maximum = 180ms, Average = 160ms
+Jednak czas odpowiedzi był najdłuższy spośród wszystkich poprezdnich prób.
+
+
+
 Co ciekawe dla strony w Australii (czyli również dalekiego serwera) przy pakiecie 1500 bajtów również otrzymujemy odpowiedź.
 C:\Users\zosia>ping news.com.au -l 1500
 
@@ -222,7 +239,7 @@ WireShark
 
 WireShark to zaawansowane narzędzie do przechwytywania i analizy ruchu sieciowego. Daje możliwość dokładnej analizy przesyłanych pakietów, w tym ich nagłówków oraz zawartości. Jego obłsługa jest już bardziej złożona niż np. pinga czy tracerta. Przede wszystkim możliwe jest pobranie wersji niekonsolowej. Wtedy po uruchomieniu programu prezentowane jest okno aplikacji, w którym to możliwe jest wybranie odpowiednich filtrów. Należą do nich: wyszukiwanie jedynie połączeń lokalnych, wi-fi lub połączeń sieciowych bluetooth. Sprawdzono za pomocą filtrowania ruch ICMP, czyli ten powodowany przez ping. Sprawdzono również jedynie pakiety wysyłane przez http. Za pomocą ip.src można sprawdzić pakiety wysyłane przez konkretnego nadawcę. Aby móc sprawdzić pakiety zarówno wysyłane jak i odbierane przez konkrenty podmiot należy posłużyć się ip.addr.
 
-W wyniku testownia powyższych programów stwierdzono, że każde z testowanych narzędzi ma swoje najlepsze zastosowanie:
+W wyniku testownia powyższych programów stwierdzono, że każde z testowanych narzędzi ma swoje najlepsze zastosowanie:m
 
 Ping pozwala na szybką diagnozę połączenia.
 
@@ -238,10 +255,5 @@ Adres IP komputera: 192.168.8.105
 
 Po wpisaniu ip.src = 192.168.8.107 i pingowniu tego adresu z komputera otrzymujemy w programie wireshark tylko drogę powrotną z tego adresu. Natomiast po wpisaniu ip.addr = 192.168.8.107 widzimy zarówno pakiety wysłane przez komputer jak i te odbierane.
   
-
-
-
-
-
 
 
