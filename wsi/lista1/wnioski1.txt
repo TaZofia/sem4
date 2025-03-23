@@ -1,11 +1,22 @@
 W ramach eksperymentu przeprowadzono trening prostej sieci neuronowej (SimpleNN) na zbiorze danych MNIST, którego celem było rozpoznanie cyfr na podstawie obrazów o rozdzielczości 28x28 pikseli.
 Sieć neuronowa została wytrenowana przez 5 epok, a jej dokładność została oceniona na zbiorze testowym. W sprawozdaniu przedstawiam wyniki eksperymentu oraz interpretację uzyskanych rezultatów, w tym ocenę współczynnika prawidłowej rozpoznawalności, czułości i precyzji.
-Podczas treningu modelu uzyskano następujące straty:
-Epoka 1/5: 0.7507,
-Epoka 2/5: 0.3661, 
-Epoka 3/5: 0.3219, 
-Epoka 4/5: 0.2957, 
-Epoka 5/5: 0.2742, 
-a dokładność na zbiorze testowym po zakończeniu treningu wyniosła 92.69% 
-Oznacza to, że model poprawnie sklasyfikował 92.69% przypadków testowych. Jest to dobry wynik, biorąc pod uwagę, że model jest stosunkowo prosty i opiera się na klasyfikacji jedynie za pomocą dwóch warstw (wejściowej i ukrytej) Model wykazuje się dużą zdolnością do generalizowania, ponieważ jego dokładność na zbiorze testowym jest wysoka, co sugeruje, że nauczył się dobrze rozpoznawać cyfry. Strata na każdym etapie treningu stopniowo malała, co oznacza, że model poprawiał swoje prognozy oraz uczył się coraz lepiej dopasowywać do danych treningowych, a wagi były skutecznie aktualizowane.
-Aby obliczyć czułość i precyzję, musimy zrozumieć, czym są te miary. Czułość (Recall) to odsetek poprawnie wykrytych pozytywnych przypadków wśród wszystkich pozytywnych przypadków. W kontekście klasyfikacji MNIST, czułość jest miarą tego, jak dobrze model rozpoznaje cyfry jako część właściwej klasy. Precyzja (Precision) to odsetek poprawnych pozytywnych klasyfikacji wśród wszystkich przypadków, które model zaklasyfikował jako pozytywne. W kontekście MNIST oznacza to, ile spośród przewidywanych przez model cyfr było rzeczywiście poprawnych. Obliczenie czułości i precyzji wymaga szczegółowych obliczeń, które bazują na macierzy pomyłek (ang. confusion matrix) W przypadku MNIST, gdzie mamy 10 klas (cyfry od 0 do 9), możemy obliczyć te miary dla każdej cyfry, a następnie uśrednić je. Niestety, wynikowe miary zależą od liczby pomyłek w każdej z klas, więc konieczne jest przeprowadzenie tych obliczeń na podstawie wyników testowych. Dla klasyfikacji wieloklasowej, w tym przypadku dla 10 klas (cyfr), miary czułości i precyzji można obliczyć indywidualnie dla każdej klasy i następnie obliczyć średnią ważoną. W zależności od tego, jak model rozpoznał każdą z cyfr (tj. ile razy przypisał poprawną cyfrę), czułość i precyzja będą się różnić. Czułość dla każdej klasy to stosunek liczby poprawnie sklasyfikowanych próbek danej klasy do ogólnej liczby próbek tej klasy w zbiorze testowym, a precyzja dla każdej klasy to stosunek liczby poprawnie sklasyfikowanych próbek tej klasy do ogólnej liczby próbek, które model zaklasyfikował do tej klasy. Model osiągnął dokładność 92.69%, co jest bardzo dobrym wynikiem dla prostej sieci neuronowej na zbiorze MNIST. Strata podczas treningu stopniowo malała, co świadczy o skuteczności procesu uczenia. Czułość i precyzja są istotnymi miarami w kontekście klasyfikacji wieloklasowej, ale do ich dokładnego obliczenia należy wykonać dodatkowe kroki, takie jak obliczenie macierzy pomyłek i na jej podstawie obliczenie czułości i precyzji. Rekomendacje: Aby uzyskać bardziej szczegółowe informacje o działaniu modelu, warto obliczyć macierz pomyłek i na jej podstawie obliczyć czułość i precyzję, a także rozważyć zastosowanie bardziej złożonych architektur sieci neuronowych, które mogą poprawić dokładność modelu, na przykład poprzez dodanie warstw konwolucyjnych (CNN), które są szczególnie efektywne w zadaniach rozpoznawania obrazów
+
+Tak wygląda output w terminalu z przeprowadzonego treningu:
+PS K:\studia\sem4\wsi> & K:/Python/python.exe k:/studia/sem4/wsi/lista1/zad1.py
+Epoka 1/5, Strata: 0.7575088624379782
+Epoka 2/5, Strata: 0.36692697666029434
+Epoka 3/5, Strata: 0.32274143252450266
+Epoka 4/5, Strata: 0.29706951730382214
+Epoka 5/5, Strata: 0.27562837984198446
+Dokładność na zbiorze testowym: 92.72%
+Czułość (Recall): 0.9260845511152815
+Precyzja (Precision): 0.9270139128464436
+
+Oznacza to, że model poprawnie sklasyfikował 92.72% przypadków testowych. Jest to dobry wynik, biorąc pod uwagę, że model jest stosunkowo prosty i opiera się na klasyfikacji jedynie za pomocą dwóch warstw (wejściowej i ukrytej) Model wykazuje się dużą zdolnością do generalizowania, ponieważ jego dokładność na zbiorze testowym jest wysoka, co sugeruje, że nauczył się dobrze rozpoznawać cyfry. Strata na każdym etapie treningu stopniowo malała, co oznacza, że model poprawiał swoje prognozy oraz uczył się coraz lepiej dopasowywać do danych treningowych, a wagi były skutecznie aktualizowane.
+
+Czułość określa jak dobrze nasz klasyfikator określa klasę dla przypadków z tej klasy. W kontekście MNIST, czułość jest miarą tego, jak dobrze model rozpoznaje cyfry jako część właściwej klasy. Tutaj otrzymano wynik: 92,6 %
+
+
+Precyzja określa jak dobrze klasyfikator przypisuje przypadki do danej klasy. W kontekście MNIST oznacza to, ile spośród przewidywanych przez model cyfr było rzeczywiście poprawnych. Wynik po treningu wynosi: 92,7% 
+
+Jak możemy zauważyć zarówno czułość jak i precyzja są bardzo zbliżone do ogólnej dokładności, co oznacza, że model nie jest silnie stronniczy w kierunku jednej klasy.

@@ -3,6 +3,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
+from sklearn.metrics import confusion_matrix
+import numpy as np
 
 transform = transforms.Compose([
     transforms.ToTensor(),  
@@ -69,6 +71,9 @@ model.eval()  # tryb testowy
 correct = 0
 total = 0
 
+y_true = []
+y_pred = []
+
 with torch.no_grad():  # Wyłączenie obliczania gradientów
     for images, labels in test_loader:
         images = images.view(-1, 28*28)
@@ -82,6 +87,20 @@ with torch.no_grad():  # Wyłączenie obliczania gradientów
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
+        y_true.extend(labels.cpu().numpy())
+        y_pred.extend(predicted.cpu().numpy())
+
 # Obliczanie dokładności
 accuracy = 100 * correct / total
 print(f"Dokładność na zbiorze testowym: {accuracy}%")
+
+cm = confusion_matrix(y_true, y_pred)
+
+recall_per_class = np.diag(cm) / np.sum(cm, axis=1)  # True Positive / (True Positive + False Negative)
+precision_per_class = np.diag(cm) / np.sum(cm, axis=0)  # True Positive / (True Positive + False Positive)
+
+recall = np.nanmean(recall_per_class) 
+precision = np.nanmean(precision_per_class)
+
+print(f"Czułość (Recall): {recall}")
+print(f"Precyzja (Precision): {precision}")
