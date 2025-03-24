@@ -18,6 +18,11 @@ def adapt_image(number_image_path):
     img = cv2.bitwise_not(img) 
     img = cv2.resize(img, (28,28))
     img = img.astype(np.float32) / 255.0 
+    '''
+    plt.imshow(img, cmap='gray')
+    plt.title("Obraz po przetworzeniu")
+    plt.show()
+    '''
     img = torch.tensor(img).view(-1, 28*28)  
     return img
 

@@ -5,11 +5,9 @@ Celem eksperymentu było sprawdzenie, jak wytrenowana sieć neuronowa reaguje na
 Wyniki: 
 Po przeprowadzeniu testów na własnym zbiorze danych uzyskano następujące wyniki:
 
-Dokładność rozpoznawania: 13,33%
-
-Prawdziwe etykiety cyfr: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 0, 0, 0]
-
-Przewidywane etykiety: [7, 0, 2, 1, 2, 5, 2, 3, 2, 2, 9, 4, 7, 5, 2, 2, 7, 8, 8, 4, 8, 1, 2, 3, 5, 2, 2, 2, 5, 2]
+Dokładność na zbiorze testowym: 16.666666666666668%
+----------Prawdziwe cyfry dla obrazów: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 0, 0, 0]
+Przewidywane cyfry dla Twoich obrazów: [2, 9, 8, 1, 4, 8, 3, 4, 6, 8, 8, 1, 5, 5, 8, 8, 8, 2, 8, 5, 6, 8, 8, 5, 8, 8, 2, 8, 2, 8]
 
 
 Uzyskana dokładność na poziomie 13,33% wskazuje na bardzo słabe rozpoznawanie ręcznych cyfr przez sieć. Do możliwych przyczyn niskiej skuteczności zalicza się: 
