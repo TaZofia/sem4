@@ -1,5 +1,2 @@
-inits' :: [a] -> [[a]]
 inits' [] = [[]]
-inits' xs = inits' (init xs) ++ [xs]
-
--- nie skończone
+inits' (x:xs) = []:map (x:) (inits' xs)

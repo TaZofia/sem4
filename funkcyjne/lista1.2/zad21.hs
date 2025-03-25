@@ -1,10 +1,6 @@
-partition :: (a -> Bool) -> [a] -> ([a], [a]) -> ([a], [a])
-
-addfst :: a -> ([a], [a]) -> ([a], [a])
-addfst x pair = (x fst (pair) , snd (pair))
-
-addsnd :: a -> ([a], [a]) -> ([a], [a])
-addsnd x pair = fst (pair), x : snd (pair)
-
-
---nie skończone
+partition :: (a -> Bool) -> [a] -> ([a], [a])
+partition _ [] = ([], [])
+partition p (x:xs) =
+    if p x then (x:l, r)
+    else (l, x:r)
+    where (l,r) = partition p xs

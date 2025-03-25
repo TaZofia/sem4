@@ -1,9 +1,6 @@
-select :: [a] -> [(a, [a])]
-select [] = []
-select (y : ys) = (y, ys) : [(z, y : zs) | (z, zs) <- select ys]
+splits' [] = [([], [])]
+splits' (x:xs) = ([], (x:xs)):map (\(y, z) -> (x:y, z)) (splits' xs)
 
 permutations' :: [a] -> [[a]]
 permutations' [] = [[]]
-permutations' xs = [x : ys | (x , rest) <- select xs, ys <- permutations' rest]
-
---nie działa
+permutations' (x:xs) = [y ++ x:z| (y,z) <- concat (map (splits') (permutations' xs))]
