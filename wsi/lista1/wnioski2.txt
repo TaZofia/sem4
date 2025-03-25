@@ -10,7 +10,7 @@ Dokładność na zbiorze testowym: 16.666666666666668%
 Przewidywane cyfry dla Twoich obrazów: [2, 9, 8, 1, 4, 8, 3, 4, 6, 8, 8, 1, 5, 5, 8, 8, 8, 2, 8, 5, 6, 8, 8, 5, 8, 8, 2, 8, 2, 8]
 
 
-Uzyskana dokładność na poziomie 13,33% wskazuje na bardzo słabe rozpoznawanie ręcznych cyfr przez sieć. Do możliwych przyczyn niskiej skuteczności zalicza się: 
+Uzyskana dokładność na poziomie 16,66% wskazuje na bardzo słabe rozpoznawanie ręcznych cyfr przez sieć. Do możliwych przyczyn niskiej skuteczności zalicza się: 
 
 Niezgodność danych treningowych i testowych – model był trenowany na danych MNIST, które zawierają cyfry pisane w jednolitym stylu, natomiast testowe próbki pochodziły od jednej osoby, co mogło wpłynąć na różnice w kształtach znaków.
 
