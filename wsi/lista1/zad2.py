@@ -3,7 +3,6 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
-from sklearn.metrics import confusion_matrix
 import numpy as np
 import cv2
 import os
@@ -52,7 +51,7 @@ for folder in folder_names:
             plt.title(f"Plik: {filename}")
             plt.show()'
             '''
-        
+           
 
 # Lista obrazów na tensor
 test_numbers = torch.cat(test_numbers, dim=0)

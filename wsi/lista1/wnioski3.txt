@@ -1,0 +1,17 @@
+Sprawozdanie z klasyfikacji cyfr MNIST przy użyciu Random Forest
+
+Celem eksperymentu było stworzenie klasyfikatora Random Forest do rozpoznawania cyfr MNIST i ocena jego skuteczności.
+Dane pobrano z fetch_openml, a następnie podzielono na zbiór treningowy (80%) i testowy (20%).
+
+Wykorzystano model RandomForestClassifier z 100 drzewami decyzyjnymi. Po treningu modelu przeprowadzono predykcję i ocenę skuteczności.
+
+Wyniki:
+
+Dokładność: 96,82%
+
+Precyzja: 96,79%
+
+Czułość: 96,81%
+
+Model osiągnął wysoką skuteczność w klasyfikacji cyfr. Można go ulepszyć, zwiększając liczbę drzew, dostrajając hiperparametry lub stosując sieci neuronowe. Random Forest dobrze sprawdza się w rozpoznawaniu wzorców.
+
