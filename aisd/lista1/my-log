@@ -1,0 +1,230 @@
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ g++ -Wall -pedantic zad1.cpp -o zad1 
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ g++ -Wall -pedantic zad2.cpp -o zad2 
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ g++ -Wall -pedantic zad3.cpp -o zad3 
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad1                               
+----------Queue----------               
+Added to queue: 0   
+Added to queue: 1   
+Added to queue: 2   
+Added to queue: 3   
+Added to queue: 4   
+Added to queue: 5   
+Added to queue: 6   
+Added to queue: 7   
+Added to queue: 8   
+Added to queue: 9   
+Added to queue: 10  
+Added to queue: 11  
+Added to queue: 12  
+Added to queue: 13  
+Added to queue: 14  
+Added to queue: 15  
+Added to queue: 16  
+Added to queue: 17  
+Added to queue: 18  
+Added to queue: 19  
+Added to queue: 20  
+Added to queue: 21  
+Added to queue: 22  
+Added to queue: 23  
+Added to queue: 24  
+Added to queue: 25  
+Added to queue: 26  
+Added to queue: 27  
+Added to queue: 28  
+Added to queue: 29  
+Added to queue: 30  
+Added to queue: 31  
+Added to queue: 32  
+Added to queue: 33  
+Added to queue: 34  
+Added to queue: 35  
+Added to queue: 36  
+Added to queue: 37  
+Added to queue: 38  
+Added to queue: 39  
+Added to queue: 40  
+Added to queue: 41  
+Added to queue: 42  
+Added to queue: 43  
+Added to queue: 44  
+Added to queue: 45  
+Added to queue: 46  
+Added to queue: 47  
+Added to queue: 48  
+Added to queue: 49  
+From queue: 0       
+From queue: 1       
+From queue: 2       
+From queue: 3       
+From queue: 4       
+From queue: 5       
+From queue: 6       
+From queue: 7       
+From queue: 8       
+From queue: 9       
+From queue: 10      
+From queue: 11      
+From queue: 12      
+From queue: 13      
+From queue: 14      
+From queue: 15      
+From queue: 16      
+From queue: 17      
+From queue: 18      
+From queue: 19      
+From queue: 20      
+From queue: 21      
+From queue: 22      
+From queue: 23      
+From queue: 24      
+From queue: 25      
+From queue: 26      
+From queue: 27      
+From queue: 28      
+From queue: 29      
+From queue: 30      
+From queue: 31      
+From queue: 32      
+From queue: 33      
+From queue: 34      
+From queue: 35      
+From queue: 36      
+From queue: 37      
+From queue: 38      
+From queue: 39      
+From queue: 40      
+From queue: 41      
+From queue: 42      
+From queue: 43      
+From queue: 44      
+From queue: 45      
+From queue: 46      
+From queue: 47      
+From queue: 48      
+From queue: 49      
+----------Stack----------               
+Added to stack: 0   
+Added to stack: 1   
+Added to stack: 2   
+Added to stack: 3   
+Added to stack: 4   
+Added to stack: 5   
+Added to stack: 6   
+Added to stack: 7   
+Added to stack: 8   
+Added to stack: 9   
+Added to stack: 10  
+Added to stack: 11  
+Added to stack: 12  
+Added to stack: 13  
+Added to stack: 14  
+Added to stack: 15  
+Added to stack: 16  
+Added to stack: 17  
+Added to stack: 18  
+Added to stack: 19  
+Added to stack: 20  
+Added to stack: 21  
+Added to stack: 22  
+Added to stack: 23  
+Added to stack: 24  
+Added to stack: 25  
+Added to stack: 26  
+Added to stack: 27  
+Added to stack: 28  
+Added to stack: 29  
+Added to stack: 30  
+Added to stack: 31  
+Added to stack: 32  
+Added to stack: 33  
+Added to stack: 34  
+Added to stack: 35  
+Added to stack: 36  
+Added to stack: 37  
+Added to stack: 38  
+Added to stack: 39  
+Added to stack: 40  
+Added to stack: 41  
+Added to stack: 42  
+Added to stack: 43  
+Added to stack: 44  
+Added to stack: 45  
+Added to stack: 46  
+Added to stack: 47  
+Added to stack: 48  
+Added to stack: 49  
+From stack: 49      
+From stack: 48      
+From stack: 47      
+From stack: 46      
+From stack: 45      
+From stack: 44      
+From stack: 43      
+From stack: 42      
+From stack: 41      
+From stack: 40      
+From stack: 39      
+From stack: 38      
+From stack: 37      
+From stack: 36      
+From stack: 35      
+From stack: 34      
+From stack: 33      
+From stack: 32      
+From stack: 31      
+From stack: 30      
+From stack: 29      
+From stack: 28      
+From stack: 27      
+From stack: 26      
+From stack: 25      
+From stack: 24      
+From stack: 23      
+From stack: 22      
+From stack: 21      
+From stack: 20      
+From stack: 19      
+From stack: 18      
+From stack: 17      
+From stack: 16      
+From stack: 15      
+From stack: 14      
+From stack: 13      
+From stack: 12      
+From stack: 11      
+From stack: 10      
+From stack: 9       
+From stack: 8       
+From stack: 7       
+From stack: 6       
+From stack: 5       
+From stack: 4       
+From stack: 3       
+From stack: 2       
+From stack: 1       
+From stack: 0       
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad2                               
+Lista 1 po wstawieniu 10 elementów      
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,                                         
+Lista 2 po wstawieniu 10 elementów      
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,                                         
+Lista po połączeniu l1 i l2             
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+Wyszukiwanie liczb, które są na liście  
+Średni koszt tysiąca wyszukiwań losowych liczb, które są na liście: 5027.39     
+Wyszukiwanie losowej liczby z I         
+Średni koszt tysiąca wyszukiwań losowych liczb, które nie muszą być na liście: 9566.33              
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ ./zad3                               
+Lista 1 po wstawieniu 10 elementów      
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,                                         
+Lista 2 po wstawieniu 10 elementów      
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,                                         
+Lista po połączeniu l1 i l2             
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+Wyszukiwanie liczb, które są na liście  
+Średni koszt tysiąca wyszukiwań losowych liczb, które są na liście: 4715.42     
+Wyszukiwanie losowej liczby z I         
+Średni koszt tysiąca wyszukiwań losowych liczb, które nie muszą być na liście: 9553.41              
+zofia@zofia-VirtualBox:~/sem4/aisd/lista1$ tmux capture-pane -p -S'-' -E'-' -J >./my-log                                                                        
+

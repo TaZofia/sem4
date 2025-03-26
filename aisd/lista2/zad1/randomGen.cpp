@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>   // Mersenne Twister
+#include <chrono>
 
 int getIntFromArgs(int argc, char* argv[]) {
     if (argc != 2) {
@@ -18,8 +19,8 @@ int main(int argc, char* argv[]) {
         int n = getIntFromArgs(argc, argv);
         
 
-        std::random_device rd;
-        std::mt19937 mt(rd());
+        auto seed = std::chrono::steady_clock::now().time_since_epoch().count();
+        std::mt19937 mt(seed);  
         std::uniform_int_distribution<int> dist(1, 2*n-1);      // Range from 1 to 2n-1
 
         std::cout << n << ", ";
