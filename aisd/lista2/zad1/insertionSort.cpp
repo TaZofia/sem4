@@ -46,8 +46,10 @@ int insertionSort(int n, std::vector<int>& numbers) {
             }
         }
         numbers[i + 1] = key; 
-        std::cout << "Array after swap: ";
-        printArray(numbers);
+        if(n < 40) {
+            std::cout << "Array after swap: ";
+            printArray(numbers);
+        }   
     }
     if (n < 40) {
         std::cout << "-----Entrance array again: ";
