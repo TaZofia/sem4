@@ -35,6 +35,7 @@ void insertionSort(std::vector<int>& A, int p, int r) {
                 break;
             }
         }
+        
         A[i + 1] = key;
         if(A.size() < 40) {
             std::cout << "Array after swap: ";
@@ -120,7 +121,7 @@ int main() {
     hybridQuickSort(numbers, 0, numbers.size() - 1);
 
     if (numbers.size() < 40) {
-        std::cout << "Entrance array again: ";
+        std::cout << "--------Entrance array again: ";
         printArray(entranceArray);
         std::cout << "Array after Hybrid QuickSort: ";
         printArray(numbers);
