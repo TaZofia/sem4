@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Projekty</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="main.html">Strona Główna</a></li>
+                <li><a href="zainteresowania.html">Zainteresowania</a></li>
+                <li><a href="studia.html">Studia</a></li>
+                <li><a href="projekty.html" class="active">Projekty</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <p>W czasie toku studiów miałam okazję tworzyć oraz współtworzyć kilka projektów. Poniżej znajdują się te najbardziej godne uwagi.</p>
+
+
+        <section class="text-left-img-right">
+            <div class="info">
+                <h3>Chinese Checkers</h3>
+                <p>Znane również pod nazwą trylma lub chińskie warcaby. Był to projekt relizowany w zespołach dwuosobowych i polegał na zaimplementowaniu w całości logiki gry, stworzeniu GUI oraz 
+                    dodania kompatybilności z systemem bazodanowym. 
+                    Gra została stworzona dla 2,3,4 i 6 graczy, a rozgrywka toczy się na planszy w kształcie sześcioramiennej gwiazdy. Istnieje bardzo wiele wariantów tej gry, w których gracze mogą
+                    dla przykładu łączyć się w drużyny lub niekoniecznie zawsze startować w przeciwległych ramion gwiazdy, ale ogólnym celem gry jest wprowadzenie wszystkich swoich pionków do
+                    domku przeciwnika.
+                </p>
+                <p>Projekt ten napisałam w języku java, a GUI tworzyłam za pomocą Javafx. Bazodanowa część projektu powstała przy użyciu MariaDB.</p>
+            </div>
+
+            <figure>
+                <figcaption>Widok na planszę</figcaption>
+                <img src="./trylma.png" alt="trylma">
+            </figure>
+        </section>
+
+        <section>
+            <h3>Biblioteka</h3>
+            <p>Pod koniec 3 semestru studiów na zajęciach z baz danych należało napisać dowolną aplikację desktopową lub mobilną, która połączona jest z bazą danych. Wybrałam system biblioteczny,
+                który miał indywidulanie dostosowane możliwości w zależności od tego, jaki typ użytkownika się do niego logował. Możliwe było wypożyczanie i zwracanie książek oraz dodawanie 
+                egzemplarzy lub innch użytkowników jeśli nasza rola na to pozwalała.
+            </p>
+            <p>Poniżej fragment kodu z klasy BookDAO wraz z metodą, która pobierała dane bezpośrednio z bazy.</p>
+
+            <pre><code class="language-java">
+                @Override
+                public List&lt;BorrowedBookDetails&gt; getBorrowedBooksByUser(int userId) {
+                    List&lt;BorrowedBookDetails&gt; borrowedBooks = new ArrayList&lt;&gt;();
+                    var query = """
+                        SELECT bb.id AS borrowId, b.title, bb.copyId, bb.borrowDate, bb.returnDate
+                        FROM BorrowBook bb
+                        JOIN Copy c ON bb.copyId = c.id
+                        JOIN Book b ON c.bookId = b.id
+                        WHERE bb.userId = ? AND bb.returnDate IS NULL
+                        ORDER BY bb.borrowDate DESC
+                    """;
+
+                    try (Connection connection = DatabaseConnector.getConnection();
+                        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                        preparedStatement.setInt(1, userId);
+                        ResultSet resultSet = preparedStatement.executeQuery();
+
+                        while (resultSet.next()) {
+                            BorrowedBookDetails details = new BorrowedBookDetails(
+                                    resultSet.getInt("borrowId"),
+                                    resultSet.getString("title"),
+                                    resultSet.getInt("copyId"),
+                                    resultSet.getDate("borrowDate").toLocalDate(),
+                                    resultSet.getDate("returnDate") != null
+                                            ? resultSet.getDate("returnDate").toLocalDate()
+                                            : null
+                            );
+                            borrowedBooks.add(details);
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    return borrowedBooks;
+                }
+            </code></pre>
+        </section>
+
+        <section>
+            <h3>Nowa odsłona Polwro</h3>
+            <p>Jako członek koła naukowego EKA.NET współpracuję przy tworzeniu projektu nowej strony internetowej dla studentów Politechniki Wrocławskiej.
+                W tworzenie tego projektu zaangażowane jest kilkunastu studentów z różnych kierunków studiów. Projekt powstaje w oparciu o C# i React, a wszystkie zmiany wspołdzielone 
+                są na platformie GitHub. Właśnie członkowstwo w kole nauczyło mnie sprawnie korzystać z tego narzędzia.
+            </p>
+        </section>
+    </main>
+</body>
+</html>
