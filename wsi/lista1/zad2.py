@@ -9,27 +9,29 @@ import os
 import matplotlib.pyplot as plt
 
 current_folder = os.getcwd()
-numbers_folder_path = os.path.join(current_folder, "lista1\\numbers")
+numbers_folder_path = os.path.join(current_folder, "numbers28")
 
 
 def adapt_image(number_image_path):
     img = cv2.imread(number_image_path, cv2.IMREAD_GRAYSCALE)
     img = cv2.bitwise_not(img) 
-    img = cv2.resize(img, (28,28))
+    #img = cv2.resize(img, (28,28))
     img = img.astype(np.float32) / 255.0 
+
     '''
     plt.imshow(img, cmap='gray')
     plt.title("Obraz po przetworzeniu")
     plt.show()
     '''
-    img = torch.tensor(img).view(-1, 28*28)  
+    
+    img = torch.tensor(img).view(-1, 28*28) 
     return img
 
 
 test_numbers = []
 
 # Etykiety dla obrazów
-numbers_labels = [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 0, 0, 0]
+numbers_labels = [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9]
 
 folder_names = os.listdir(numbers_folder_path)
 
@@ -65,6 +67,7 @@ train_data = datasets.MNIST(root='./data', train=True, download=True, transform=
 
 # Dane ładowane w partiach po 64
 train_loader = DataLoader(train_data, batch_size=64, shuffle=True)
+
 
 class SimpleNN(nn.Module):
     def __init__(self):

@@ -5,12 +5,19 @@ Celem eksperymentu było sprawdzenie, jak wytrenowana sieć neuronowa reaguje na
 Wyniki: 
 Po przeprowadzeniu testów na własnym zbiorze danych uzyskano następujące wyniki:
 
-Dokładność na zbiorze testowym: 16.666666666666668%
-----------Prawdziwe cyfry dla obrazów: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 0, 0, 0]
-Przewidywane cyfry dla Twoich obrazów: [2, 9, 8, 1, 4, 8, 3, 4, 6, 8, 8, 1, 5, 5, 8, 8, 8, 2, 8, 5, 6, 8, 8, 5, 8, 8, 2, 8, 2, 8]
+Dokładność na zbiorze testowym: 50.0%
+----------Prawdziwe cyfry dla obrazów: [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9]
+Przewidywane cyfry dla Twoich obrazów: [0, 0, 9, 8, 7, 9, 2, 2, 2, 3, 3, 3, 4, 4, 4, 3, 3, 5, 8, 4, 6, 3, 3, 8, 3, 8, 8, 8, 3, 2]
 
 
-Uzyskana dokładność na poziomie 16,66% wskazuje na bardzo słabe rozpoznawanie ręcznych cyfr przez sieć. Do możliwych przyczyn niskiej skuteczności zalicza się: 
+Dokładność na zbiorze testowym: 43.333333333333336%
+----------Prawdziwe cyfry dla obrazów: [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9]
+Przewidywane cyfry dla Twoich obrazów: [0, 6, 2, 8, 9, 9, 2, 2, 2, 3, 3, 3, 4, 4, 4, 3, 3, 5, 8, 2, 6, 6, 3, 8, 3, 8, 5, 3, 3, 3]
+
+
+Wyniki sugerują, że model wykazuje tendencję do częstego mylenia cyfr, w szczególności cyfr 1, 7, 9, które zostały błędnie sklasyfikowane jako inne wartości.
+
+Do możliwych powodów skuteczności na poziomie jedynie około 50% zalicza się: 
 
 Niezgodność danych treningowych i testowych – model był trenowany na danych MNIST, które zawierają cyfry pisane w jednolitym stylu, natomiast testowe próbki pochodziły od jednej osoby, co mogło wpłynąć na różnice w kształtach znaków.
 
@@ -18,4 +25,4 @@ Zbyt prosty model – sieć posiada jedynie jedną warstwę ukrytą, co może by
 
 Eksperyment pokazał, że sieć wytrenowana na zbiorze MNIST ma trudności z rozpoznawaniem cyfr pisanych ręcznie przez jedną osobę.
 
-Pomimo niskiej skuteczności, eksperyment dostarczył cennych informacji na temat ograniczeń prostych modeli neuronowych i znaczenia jakości danych treningowych w problemach klasyfikacji obrazów.
+Skuteczność jest średnia, nie tak dobra jak w przypadku danych testowych z poprezdniego zadania. Pomimo tego, eksperyment dostarczył cennych informacji na temat ograniczeń prostych modeli neuronowych i znaczenia jakości danych treningowych w problemach klasyfikacji obrazów.
