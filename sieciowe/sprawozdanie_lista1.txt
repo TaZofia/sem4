@@ -257,3 +257,18 @@ Po wpisaniu ip.src = 192.168.8.107 i pingowniu tego adresu z komputera otrzymuje
   
 
 
+Genereowanie żadania Echa ICMP 
+Przekazanie pakietu do warstwy sieciowej. ICMP zostaje osadzony w datagramie (ramce ethernetowej)
+Routery w sieci analizują adres IP i przesyłają pakiet do odpowiedniego urządzenia. 
+Każdy bit w ramce ethernetowej jest konwertowany na falę elektromagnetyczną i wysyłany za pomocą anteny nadawczej
+Host docelowy odbiera pakiet
+Wysłanie odpowiedzi ICMP Echo Reply
+Odebranie odpowiedzi przez nadawcę
+
+
+
+
+
+
+
+
