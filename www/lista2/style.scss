@@ -185,9 +185,9 @@ code {
         grid-template-columns: 1fr auto;
         gap: 20px;
         text-align: left;
-    }
-    .text-left-img-right img {
-        justify-self: end;
+        img {
+            justify-self: end;
+        }
     }
 }
 
