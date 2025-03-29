@@ -5,21 +5,29 @@ $light-blue: #b1d1fa;
 $very-dark-blue:  #0b0149af;
 
 
-@mixin flex-center {
+%flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+@function dynamic-radius($width) {
+    @if ($width > 500px) {
+        @return 15px;
+    } @else {
+        @return 8px;
+    }
 }
 
 body {
     font-family: 'Tahoma', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: lightblue;
+    background-color: $light-blue;
     padding-top: 50px;
 }
 
 header {
+    @extend %flex-center;
     background: $dark-blue;
     color: white;
     padding: 10px 0;
@@ -29,15 +37,12 @@ header {
     left: 0;
     width: 100%;
     height: 12.5vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 nav {
 
     ul {
-        @include flex-center;
+        @extend %flex-center;
         flex-wrap: wrap;
         list-style: none;
         padding: 0;
@@ -63,11 +68,16 @@ nav {
     } 
 }
 
-img {
+@mixin img-style ($max-width) {
     width: 100%;
-    height: auto; 
-    max-width: 800px; 
-    border-radius: 10px; 
+    height: auto;
+    max-width: $max-width;
+    border-radius: dynamic-radius($max-width);
+}
+
+ 
+img {
+    @include img-style(800px);
 }
 figure {
     text-align: center;
@@ -94,9 +104,8 @@ main {
     max-width: 800px;
     margin: 0 auto;
     img {
-        width: auto;
+        @include img-style(400px);
         height: 270px;
-        border-radius: 5px;
         transition: transform 0.3s ease;
         &:hover {
             transform: scale(1.05);
@@ -104,11 +113,15 @@ main {
     }
 }
 
+@mixin box-style($bg-color, $padding: 15px) {
+    background-color: $bg-color;
+    padding: $padding;
+    border: 1px solid #ddd;
+}
+
 pre {
-    background-color: $very-dark-blue;
+    @include box-style($very-dark-blue );
     color: #f5f5f5;
-    padding: 15px;
-    border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
     overflow: auto;
     max-height: 400px; 
@@ -120,18 +133,17 @@ code {
 }
 
 #contact-box{
-    @include flex-center;
+    @extend %flex-center;
     height: calc(90vh - 50px); 
 }
 
 .contact {
+    @include box-style($dark-blue, 40px);
     text-align: center;
-    padding: 40px;
-    background-color: $dark-blue;
     margin: auto;
     margin-top: 10px;
     max-width: 800px;
-    border-radius: 8px;
+    border-radius: dynamic-radius(800px);
 }
 .contact-info {
     display: grid;
@@ -140,20 +152,14 @@ code {
 }
 
 .info-item {
-    background-color: #ffffff;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    @include box-style(white )
 }
 
 .text-left-img-right {
-    @include flex-center;
+    @extend %flex-center;
     flex-direction: column;
     img {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-        border-radius: 10px;
+        @include img-style(350px);
     }
     &.info {
         text-align: left;
