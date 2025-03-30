@@ -13,12 +13,16 @@ void printArray(const std::vector<int>& arr) {
     std::cout << std::endl;
 }
 
-void compare() {
+bool compare(int a, int b) {
     comparisons++;
+    return a <= b;
 }
 
-void swap() {
+void swap(std::vector<int>& A, int i, int j) {
     swaps++;
+    int temp = A[j];
+    A[j] = A[i];
+    A[i] = temp;
 }
 
 int partition(std::vector<int>& A, int p, int r) {
@@ -26,25 +30,19 @@ int partition(std::vector<int>& A, int p, int r) {
     int i = p - 1;
 
     for(int j = p; j < r; j++) {
-        compare();
-        if(A[j] <= x) {
+        if(compare(A[j], x)) {
             i++;
-            int temp = A[j];
-            A[j] = A[i];
-            A[i] = temp;
-            swap();
+            swap(A, i, j);
             if(i != j) {
-                std::cout << "Array after swap: ";
+                std::cout << "In progress: ";
                 printArray(A);
             }
         }
     }
-    int temp2 = A[i+1];
-    A[i+1] = A[r];
-    A[r] = temp2;
-    swap();
+    swap(A, i + 1, r);
+
     if(i+1 != r) {
-        std::cout << "Array after swap: ";
+        std::cout << "In progress: ";
         printArray(A);
     }
     return (i+1);
@@ -96,7 +94,7 @@ int main() {
 
     if(numbers.size() < 40) {
 
-        std::cout << " Entrance array again: ";
+        std::cout << "Entrance array again: ";
         printArray(entranceArray);
 
         std::cout << "Array after QuickSort: ";

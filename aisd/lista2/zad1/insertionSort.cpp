@@ -13,18 +13,30 @@ void printArray(const std::vector<int>& arr) {
     std::cout << std::endl;
 }
 
-void compare() {
+
+bool compare(int a, int b) {
     comparisons++;
+    return a > b;
 }
 
-void swap() {
+void swap(std::vector<int>& A, int i) {
     swaps++;
+    A[i + 1] = A[i];
+}
+
+bool isSorted(const std::vector<int>& arr) {
+    for (size_t i = 1; i < arr.size(); i++) {
+        if (arr[i - 1] > arr[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 
-int insertionSort(int n, std::vector<int>& numbers) {
-
+void insertionSort(std::vector<int>& numbers) {
     std::vector<int> entranceArray = numbers;
+    int n = numbers.size();
 
     if (n < 40) {
         std::cout << "Entrance array: ";
@@ -33,23 +45,23 @@ int insertionSort(int n, std::vector<int>& numbers) {
 
     for (int j = 1; j < n; j ++) {
         int key = numbers[j];
-
         int i = j - 1;
         while (i >= 0) {
-            compare();
-            if (numbers[i] > key) {
-                numbers[i + 1] = numbers[i];
-                swap();
+
+            if(compare(numbers[i], key)) {
+                swap(numbers, i);
                 i--;
+
+                if(n < 40) {
+                    std::cout << "In progress: ";
+                    printArray(numbers);
+                }   
+                
             } else {
                 break;
             }
         }
         numbers[i + 1] = key; 
-        if(n < 40) {
-            std::cout << "Array after swap: ";
-            printArray(numbers);
-        }   
     }
     if (n < 40) {
         std::cout << "-----Entrance array again: ";
@@ -57,14 +69,6 @@ int insertionSort(int n, std::vector<int>& numbers) {
         std::cout << "Array after insertionSort: ";
         printArray(numbers);
     }
-}
-bool isSorted(const std::vector<int>& arr) {
-    for (size_t i = 1; i < arr.size(); i++) {
-        if (arr[i - 1] > arr[i]) {
-            return false;
-        }
-    }
-    return true;
 }
 
 
@@ -84,7 +88,7 @@ int main() {
     numbers.erase(numbers.begin());
 
 
-    insertionSort(n, numbers);
+    insertionSort(numbers);
     
     std::cout << "# of comparisons: " << comparisons << std::endl;
     std::cout << "# of swaps: " << swaps << std::endl;

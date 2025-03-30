@@ -13,80 +13,27 @@ void printArray(const std::vector<int>& arr) {
     std::cout << std::endl;
 }
 
-void compare() {
+bool compareIS(int a, int b) {
     comparisons++;
+    return a > b;
 }
 
-void swap() {
+void swapIS(std::vector<int>& A, int i) {
     swaps++;
+    A[i + 1] = A[i];
+}
+bool compareQS(int a, int b) {
+    comparisons++;
+    return a <= b;
 }
 
-void insertionSort(std::vector<int>& A, int p, int r) {
-    for (int j = p + 1; j <= r; j++) {
-        int key = A[j];
-        int i = j - 1;
-        while (i >= p) {
-            compare();
-            if (A[i] > key) {
-                A[i + 1] = A[i];
-                swap();
-                i--;
-            } else {
-                break;
-            }
-        }
-        
-        A[i + 1] = key;
-        if(A.size() < 40) {
-            std::cout << "Array after swap: ";
-            printArray(A);
-        }  
-    }
+void swapQS(std::vector<int>& A, int i, int j) {
+    swaps++;
+    int temp = A[j];
+    A[j] = A[i];
+    A[i] = temp;
 }
 
-int partition(std::vector<int>& A, int p, int r) {
-    int x = A[r];  // Pivot
-    int i = p - 1;
-
-    for (int j = p; j < r; j++) {
-        compare();
-        if (A[j] <= x) {
-            i++;
-            int temp = A[j];
-            A[j] = A[i];
-            A[i] = temp;
-            swap();
-            if(i != j) {
-                std::cout << "Array after swap: ";
-                printArray(A);
-            }
-        }
-    }
-    int temp2 = A[i+1];
-    A[i+1] = A[r];
-    A[r] = temp2;
-    swap();
-    if(i+1 != r) {
-        std::cout << "Array after swap: ";
-        printArray(A);
-    }
-    return (i+1);
-    return (i + 1);
-}
-
-void hybridQuickSort(std::vector<int>& A, int p, int r) {
-    if (p < r) {
-        // Jeśli podtablica jest mała -> InsertionSort
-        if (r - p + 1 <= MAXFORIS) {
-            insertionSort(A, p, r);
-            return;
-        }
-        
-        int q = partition(A, p, r);
-        hybridQuickSort(A, p, q - 1);
-        hybridQuickSort(A, q + 1, r);
-    }
-}
 
 bool isSorted(const std::vector<int>& arr) {
     for (size_t i = 1; i < arr.size(); i++) {
@@ -95,6 +42,70 @@ bool isSorted(const std::vector<int>& arr) {
         }
     }
     return true;
+}
+
+void insertionSort(std::vector<int>& A) { 
+    for (int j = 1; j < A.size(); j ++) {
+        int key = A[j];
+        int i = j - 1;
+        while (i >= 0) {
+
+            if(compareIS(A[i], key)) {
+                swapIS(A, i);
+                i--;
+
+                if(A.size() < 40) {
+                    std::cout << "In progressIS: ";
+                    printArray(A);
+                }   
+
+            } else {
+                break;
+            }
+        }
+        A[i + 1] = key; 
+    }
+}
+
+int partition(std::vector<int>& A, int p, int r) {
+    int x = A[r];       // Pivot
+    int i = p - 1;
+
+    for(int j = p; j < r; j++) {
+        if(compareQS(A[j], x)) {
+            i++;
+            swapQS(A, i, j);
+            if(i != j) {
+                if(A.size() < 40) {
+                    std::cout << "In progress: ";
+                    printArray(A);
+                }   
+            }
+        }
+    }
+    swapQS(A, i + 1, r);
+
+    if(i+1 != r) {
+        if(A.size() < 40) {
+            std::cout << "In progress: ";
+            printArray(A);
+        }   
+    }
+    return (i+1);
+}
+
+void hybridQuickSort(std::vector<int>& A, int p, int r) {
+    if (p < r) {
+        // small array -> insertion sort
+        if (r - p + 1 <= MAXFORIS) {
+            insertionSort(A);
+            return;
+        }
+        
+        int q = partition(A, p, r);
+        hybridQuickSort(A, p, q - 1);
+        hybridQuickSort(A, q + 1, r);
+    }
 }
 
 int main() {
