@@ -18,6 +18,13 @@ $very-dark-blue:  #0b0149af;
     }
 }
 
+@mixin img-style ($max-width) {
+    width: 100%;
+    height: auto;
+    max-width: $max-width;
+    border-radius: dynamic-radius($max-width);
+}
+
 body {
     font-family: 'Tahoma', sans-serif;
     margin: 0;
@@ -67,14 +74,6 @@ nav {
         }
     } 
 }
-
-@mixin img-style ($max-width) {
-    width: 100%;
-    height: auto;
-    max-width: $max-width;
-    border-radius: dynamic-radius($max-width);
-}
-
  
 img {
     @include img-style(800px);
