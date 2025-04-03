@@ -5,12 +5,15 @@
 int comparisons = 0;
 int swaps = 0;
 const int MAXFORIS = 10;  // Maksymalny rozmiar podtablicy dla InsertionSort
+bool bigArray = false;
 
 void printArray(const std::vector<int>& arr) {
-    for (size_t i = 0; i < arr.size(); i++) {
-        std::cout << (arr[i] < 10 ? "0" : "") << arr[i] << " ";
+    if(!bigArray) {
+        for (size_t i = 0; i < arr.size(); i++) {
+            std::cout << (arr[i] < 10 ? "0" : "") << arr[i] << " ";
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
 bool compareIS(int a, int b) {
@@ -53,12 +56,7 @@ void insertionSort(std::vector<int>& A) {
             if(compareIS(A[i], key)) {
                 swapIS(A, i);
                 i--;
-
-                if(A.size() < 40) {
-                    std::cout << "In progressIS: ";
-                    printArray(A);
-                }   
-
+                printArray(A);
             } else {
                 break;
             }
@@ -76,20 +74,14 @@ int partition(std::vector<int>& A, int p, int r) {
             i++;
             swapQS(A, i, j);
             if(i != j) {
-                if(A.size() < 40) {
-                    std::cout << "In progress: ";
-                    printArray(A);
-                }   
+                printArray(A);  
             }
         }
     }
     swapQS(A, i + 1, r);
 
     if(i+1 != r) {
-        if(A.size() < 40) {
-            std::cout << "In progress: ";
-            printArray(A);
-        }   
+        printArray(A);
     }
     return (i+1);
 }
@@ -122,16 +114,20 @@ int main() {
     int n = numbers[0];  // Liczba elementów
     numbers.erase(numbers.begin());
 
+    if(numbers.size() >= 40) {
+        bigArray = true;
+    }
+
     std::vector<int> entranceArray = numbers;
 
-    if (numbers.size() < 40) {
+    if (entranceArray.size() < 40) {
         std::cout << "Entrance array: ";
         printArray(numbers);
     }
 
     hybridQuickSort(numbers, 0, numbers.size() - 1);
 
-    if (numbers.size() < 40) {
+    if (entranceArray.size() < 40) {
         std::cout << "--------Entrance array again: ";
         printArray(entranceArray);
         std::cout << "Array after Hybrid QuickSort: ";

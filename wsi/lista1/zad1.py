@@ -41,7 +41,7 @@ criterion = nn.CrossEntropyLoss()
 # Aktualizowanie wag i bias żeby zmniejszyć funkcję kosztu
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-epochs = 5 
+epochs = 10
 
 for epoch in range(epochs):
     model.train()  # Tryb treningowy

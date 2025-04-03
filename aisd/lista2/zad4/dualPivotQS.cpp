@@ -2,10 +2,8 @@
 #include <vector>
 #include <sstream>
 
-
 int comparisons = 0;
 int swaps = 0;
-
 bool bigArray = false;
 
 void printArray(const std::vector<int>& arr) {
@@ -29,33 +27,48 @@ void swap(std::vector<int>& A, int i, int j) {
     A[i] = temp;
 }
 
-int partition(std::vector<int>& A, int p, int r) {
-    int x = A[r];       // Pivot
-    int i = p - 1;
-
-    for(int j = p; j < r; j++) {
-        if(compare(A[j], x)) {
+void dualPivotPartition(std::vector<int>& A, int low, int high, int& lp, int& rp) {
+    if (compare(A[high], A[low]))
+        swap(A, low, high);
+    
+    int p = A[low];
+    int q = A[high];
+    int i = low + 1;
+    int k = low + 1;
+    int j = high - 1;
+    
+    while (k <= j) {
+        if (compare(A[k], p)) {
+            swap(A, i, k);
             i++;
-            swap(A, i, j);
-            if(i != j) {
-                printArray(A);
+        } else if (!compare(A[k], q)) {
+            while (k < j && !compare(A[j], q))
+                j--;
+            swap(A, k, j);
+            j--;
+            if (compare(A[k], p)) {
+                swap(A, i, k);
+                i++;
             }
         }
+        k++;
     }
-    swap(A, i + 1, r);
-
-    if(i+1 != r) {
-        printArray(A);
-    }
-    return (i+1);
+    i--, j++;
+    swap(A, low, i);
+    swap(A, high, j);
+    lp = i;
+    rp = j;
+    
+    if (!bigArray) printArray(A);
 }
 
-void quickSort(std::vector<int>& A, int p, int r) {
-
-    if(p < r) {
-        int q = partition(A, p, r);
-        quickSort(A, p, q-1);
-        quickSort(A, q+1, r);
+void dualPivotQuickSort(std::vector<int>& A, int low, int high) {
+    if (low < high) {
+        int lp, rp;
+        dualPivotPartition(A, low, high, lp, rp);
+        dualPivotQuickSort(A, low, lp - 1);
+        dualPivotQuickSort(A, lp + 1, rp - 1);
+        dualPivotQuickSort(A, rp + 1, high);
     }
 }
 
@@ -68,9 +81,7 @@ bool isSorted(const std::vector<int>& arr) {
     return true;
 }
 
-
 int main() {
-
     std::string input;
     std::getline(std::cin, input);
     std::stringstream ss(input);
@@ -81,7 +92,7 @@ int main() {
         numbers.push_back(std::stoi(token));
     }
 
-    int n = numbers[0];             // Number of elements
+    int n = numbers[0]; // Number of elements
     numbers.erase(numbers.begin());
 
     if(numbers.size() >= 40) {
@@ -95,22 +106,21 @@ int main() {
         printArray(numbers);
     }
 
-    quickSort(numbers, 0, numbers.size()-1);
+    dualPivotQuickSort(numbers, 0, numbers.size()-1);
 
     if(entranceArray.size() < 40) {
         std::cout << "Entrance array again: ";
         printArray(entranceArray);
 
-        std::cout << "Array after QuickSort: ";
+        std::cout << "Array after Dual-Pivot QuickSort: ";
         printArray(numbers);
     }
     
-
     std::cout << "# of comparisons: " << comparisons << std::endl;
     std::cout << "# of swaps: " << swaps << std::endl;
     
     if (isSorted(numbers)) {
-        std::cout << "QS works" << std::endl;
+        std::cout << "Dual-Pivot QS works" << std::endl;
     } else {
         std::cout << "Error: Array not sorted" << std::endl;
     }
