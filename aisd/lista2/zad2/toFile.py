@@ -24,18 +24,18 @@ def main():
         "random": os.path.join(zad1_path, "randomGen.exe"),
     }
     algorithms = {
-        "Insertion Sort": (os.path.join(zad1_path, "insertionSort.exe"), "is"),
-        "Quick Sort": (os.path.join(zad1_path, "quickSort.exe"), "qs"),
-        #Hybrid Sort": (os.path.join(zad1_path, "hybrid.exe"), "hs"),
+        #"Insertion Sort": (os.path.join(zad1_path, "insertionSort.exe"), "is"),
+        #"Quick Sort": (os.path.join(zad1_path, "quickSort.exe"), "qs"),
+        "Hybrid Sort": (os.path.join(zad1_path, "hybrid.exe"), "hs"),
     }
     
-    ns = list(range(1, 15, 1)) 
-    ks = [5]
+    ns = list(range(10, 51, 10)) 
+    ks = [1, 10, 100]
     
 
     for algo_name, (prog, algo_short) in algorithms.items():
         for k in ks:
-            filename = os.path.join(results_path, f"Results_test_the_best_switch_{algo_short}_k{k}.csv")
+            filename = os.path.join(results_path, f"Results_{algo_short}_k{k}.csv")
             with open(filename, "w") as file:
                 file.write("n,k,comparisons,swaps\n")
                 for n in ns:

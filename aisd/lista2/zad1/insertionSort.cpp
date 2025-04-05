@@ -46,20 +46,14 @@ void insertionSort(std::vector<int>& numbers) {
     for (int j = 1; j < n; j ++) {
         int key = numbers[j];
         int i = j - 1;
-        while (i >= 0) {
+        while (i >= 0 && compare(numbers[i], key)) {
+            swap(numbers, i);
+            i--;
 
-            if(compare(numbers[i], key)) {
-                swap(numbers, i);
-                i--;
-
-                if(n < 40) {
-                    std::cout << "In progress: ";
-                    printArray(numbers);
-                }   
-                
-            } else {
-                break;
-            }
+            if(n < 40) {
+                std::cout << "In progress: ";
+                printArray(numbers);
+            } 
         }
         numbers[i + 1] = key; 
     }

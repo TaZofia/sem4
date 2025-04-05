@@ -47,21 +47,16 @@ bool isSorted(const std::vector<int>& arr) {
     return true;
 }
 
-void insertionSort(std::vector<int>& A) { 
-    for (int j = 1; j < A.size(); j ++) {
+void insertionSort(std::vector<int>& A, int p, int r) {
+    for (int j = p + 1; j <= r; j++) {
         int key = A[j];
         int i = j - 1;
-        while (i >= 0) {
-
-            if(compareIS(A[i], key)) {
-                swapIS(A, i);
-                i--;
-                printArray(A);
-            } else {
-                break;
-            }
+        while (i >= p && compareIS(A[i], key)) {
+            swapIS(A, i);
+            i--;
+            printArray(A);
         }
-        A[i + 1] = key; 
+        A[i + 1] = key;
     }
 }
 
@@ -90,7 +85,7 @@ void hybridQuickSort(std::vector<int>& A, int p, int r) {
     if (p < r) {
         // small array -> insertion sort
         if (r - p + 1 <= MAXFORIS) {
-            insertionSort(A);
+            insertionSort(A, p, r);
             return;
         }
         

@@ -27,15 +27,13 @@ for k in ks:
     plt.figure(figsize=(10, 6))
     for algorithm in averages['algorithm'].unique():
         subset = averages[averages['algorithm'] == algorithm]
-        #plt.plot(subset['n'], subset['swaps'], marker='o', label=f'Average Swaps - {algorithm}', linewidth=2)
-        #plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
         plt.plot(subset['n'], subset['swaps'] / subset['n'], linestyle='--', label=f'Swaps/n - {algorithm}', linewidth=2)
         plt.plot(subset['n'], subset['comparisons'] / subset['n'], linestyle='--', label=f'Cmp/n - {algorithm}', linewidth=2)
         
 
     plt.title(f'k{k}')
     plt.xlabel('n')
-    plt.ylabel('Average values')
+    plt.ylabel('Avg/n')
     plt.grid(True)
     plt.tight_layout()
     plt.legend()
@@ -43,17 +41,20 @@ for k in ks:
 
     plt.savefig(os.path.join(plots_dir, f"big_n_avg_per_n_k{k}.png"))
 
-'''
-plt.figure(figsize=(10, 6))
-for algorithm in averages['algorithm'].unique():
-    subset = averages[averages['algorithm'] == algorithm]
-    #plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
-    plt.plot(subset['n'], subset['comparisons'] / subset['n'], linestyle='--', label=f'Comp/n - {algorithm}', linewidth=2)
 
-plt.title('Comparisons k10')
-plt.xlabel('n')
-plt.ylabel('Average Comparisons')
-plt.grid(True)
-plt.tight_layout()
-plt.legend()
-plt.show()'''
+    plt.figure(figsize=(10, 6))
+    for algorithm in averages['algorithm'].unique():
+        subset = averages[averages['algorithm'] == algorithm]
+        plt.plot(subset['n'], subset['swaps'], marker='o', label=f'Average Swaps - {algorithm}', linewidth=2)
+        plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
+        
+
+    plt.title(f'k{k}')
+    plt.xlabel('n')
+    plt.ylabel('Avg')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.legend()
+    #plt.show()
+
+    plt.savefig(os.path.join(plots_dir, f"big_n_avg_k{k}.png"))
