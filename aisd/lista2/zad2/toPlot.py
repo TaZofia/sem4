@@ -1,77 +1,59 @@
-import subprocess
-import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-def run_test(sort_program, generator, n, k):
-    comparisons, swaps = [], []
-    for _ in range(k):
-        cmd = f"{generator} {n} | {sort_program}"
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, encoding="utf-8")
-        lines = result.stdout.strip().split("\n")
+current_dir = os.getcwd()
+results_dir = os.path.join(current_dir, "results")
+plots_dir = os.path.join(current_dir, "plots")
 
-        for line in result.stdout.splitlines():
-            if line.startswith("# of comparisons:"): 
-                cmp = int(line.removeprefix("# of comparisons:").strip())
-            if line.startswith("# of swaps:"):
-                swp = int(line.removeprefix("# of swaps:").strip())  
+ks = [1, 10, 100]
 
-        comparisons.append(cmp)
-        swaps.append(swp)
-    return np.mean(comparisons), np.mean(swaps)
+for k in ks:
+    #df_is = pd.read_csv(os.path.join(results_dir, f"Results_is_k{k}.csv"))
+    df_qs = pd.read_csv(os.path.join(results_dir, f"Results_big_n_qs_k{k}.csv"))
+    df_hs = pd.read_csv(os.path.join(results_dir, f"Results_big_n_hs_k{k}.csv"))
 
-def plot_results(results, ns, ylabel, title, filename):
-    plt.figure()
-    for algo, values in results.items():
-        plt.plot(ns, values, label=algo, marker='o')
-    plt.xlabel("Rozmiar n")
-    plt.ylabel(ylabel)
-    plt.title(title)
+    #df_is = pd.read_csv(os.path.join(results_dir, "Results_test_the_best_switch_is_k5.csv"))
+    #df_qs = pd.read_csv(os.path.join(results_dir, "Results_test_the_best_switch_qs_k5.csv"))
+
+    #df_is['algorithm'] = 'Insertion Sort'
+    df_qs['algorithm'] = 'Quick Sort'
+    df_hs['algorithm'] = 'Hybrid Sort'
+
+    df_all = pd.concat([df_qs, df_hs])
+
+    averages = df_all.groupby(['n', 'algorithm']).agg({'comparisons': 'mean', 'swaps': 'mean'}).reset_index()
+
+    plt.figure(figsize=(10, 6))
+    for algorithm in averages['algorithm'].unique():
+        subset = averages[averages['algorithm'] == algorithm]
+        #plt.plot(subset['n'], subset['swaps'], marker='o', label=f'Average Swaps - {algorithm}', linewidth=2)
+        #plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
+        plt.plot(subset['n'], subset['swaps'] / subset['n'], linestyle='--', label=f'Swaps/n - {algorithm}', linewidth=2)
+        plt.plot(subset['n'], subset['comparisons'] / subset['n'], linestyle='--', label=f'Cmp/n - {algorithm}', linewidth=2)
+        
+
+    plt.title(f'k{k}')
+    plt.xlabel('n')
+    plt.ylabel('Average values')
+    plt.grid(True)
+    plt.tight_layout()
     plt.legend()
-    plt.grid()
-    plt.savefig(filename)
+    #plt.show()
 
-def main():
+    plt.savefig(os.path.join(plots_dir, f"big_n_avg_per_n_k{k}.png"))
 
-    zad1_path = r"K:\studia\sem4\aisd\lista2\zad1"
+'''
+plt.figure(figsize=(10, 6))
+for algorithm in averages['algorithm'].unique():
+    subset = averages[averages['algorithm'] == algorithm]
+    #plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
+    plt.plot(subset['n'], subset['comparisons'] / subset['n'], linestyle='--', label=f'Comp/n - {algorithm}', linewidth=2)
 
-    generators = {
-        "random": os.path.join(zad1_path, "randomGen.exe"),
-        "sorted": os.path.join(zad1_path, "ascendingGen.exe"),
-        "reversed": os.path.join(zad1_path, "descendingGen.exe")
-    }
-    algorithms = {
-        "Insertion Sort": os.path.join(zad1_path, "insertionSort.exe"),
-        "Quick Sort": os.path.join(zad1_path, "quickSort.exe"),
-        "Hybrid Sort": os.path.join(zad1_path, "hybrid.exe"),
-    }
-    ns_small = list(range(10, 51, 10))            
-    ns_large = list(range(1000, 50001, 1000))
-    ks = [1, 10, 100]
-    
-    for k in ks:
-        results_cmp, results_swp = {a: [] for a in algorithms}, {a: [] for a in algorithms}
-        
-        for n in ns_small:
-            for algo, prog in algorithms.items():
-                cmp, swp = run_test(prog, generators["random"], n, k)
-                results_cmp[algo].append(cmp)
-                results_swp[algo].append(swp)
-        
-        plot_results(results_cmp, ns_small, "Średnia liczba porównań", f"Porównania dla k={k}", f"comparisons_k{k}.png")
-        plot_results(results_swp, ns_small, "Średnia liczba przestawień", f"Przestawienia dla k={k}", f"swaps_k{k}.png")
-        
-        for algo in ["Quick Sort", "Hybrid Sort"]:
-            results_cmp[algo], results_swp[algo] = [], []
-            for n in ns_large:
-                cmp, swp = run_test(algorithms[algo], generators["random"], n, k)
-                results_cmp[algo].append(cmp / n)
-                results_swp[algo].append(swp / n)
-            
-        plot_results(results_cmp, ns_large, "c/n", f"Iloraz porównań dla k={k}", f"cmp_ratio_k{k}.png")
-        plot_results(results_swp, ns_large, "s/n", f"Iloraz przestawień dla k={k}", f"swp_ratio_k{k}.png")
-
-if __name__ == "__main__":
-    main()
-
-
+plt.title('Comparisons k10')
+plt.xlabel('n')
+plt.ylabel('Average Comparisons')
+plt.grid(True)
+plt.tight_layout()
+plt.legend()
+plt.show()'''
