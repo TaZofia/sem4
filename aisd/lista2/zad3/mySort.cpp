@@ -32,7 +32,6 @@ bool isSorted(const std::vector<int>& arr) {
     return true;
 }
 
-// <- to jest przypisanie, nie zamiana miejsc!
 void mySwap(std::vector<int>& A, int index, int value) {
     swaps++;
     A[index] = value;
@@ -42,8 +41,8 @@ void merge(std::vector<int>& A, int p, int q, int r) {
     int n1 = q - p + 1;
     int n2 = r - q;
 
-    std::vector<int> L(n1 + 1);
-    std::vector<int> R(n2 + 1);
+    std::vector<int> L(n1);
+    std::vector<int> R(n2);
 
     for (int i = 0; i < n1; i++) {
         L[i] = A[p + i];
@@ -52,29 +51,67 @@ void merge(std::vector<int>& A, int p, int q, int r) {
         R[j] = A[q + 1 + j];
     }
 
-    L[n1] = INT_MAX;
-    R[n2] = INT_MAX;
-
     int i = 0, j = 0;
+    int k = p;
 
-    for (int k = p; k <= r; k++) {
+    while (i < n1 && j < n2) {
         if (compare(L[i], R[j])) {
-            mySwap(A, k, L[i]);
+          	mySwap(A, k, L[i]);
             i++;
-        } else {
-            mySwap(A, k, R[j]);
+        }
+        else {
+          	mySwap(A, k, R[j]);
             j++;
         }
+        k++;
     }
+     while (i < n1) {
+        mySwap(A, k, L[i]);
+        i++;
+        k++;
+    }
+    while (j < n2) {
+  		mySwap(A, k, R[j]);
+  		j++;
+  		k++;
+    }
+    std::cout << "Array after merge from " << p << " to " << r << ": ";
+    printArray(A);
 }
 
-void mySort(std::vector<int>& A, int p, int r) {
-    if (p < r) {
-        int q = (p + r) / 2;
-        //mergeSort(A, p, q);
-        //mergeSort(A, q + 1, r);
-        merge(A, p, q, r);
+void mySort(std::vector<int>& A) {
+    int n = A.size();
+    if (n <= 1) return;
+
+    std::vector<std::pair<int, int>> blocks;
+
+    int i = 0;
+    while (i < n) {
+        int start = i;
+        while (i + 1 < n && compare(A[i], A[i + 1])) i++;		// we are looking for ascending pairs
+        blocks.push_back({start, i});
+        i++;
     }
+	while (blocks.size() > 1) {
+        std::vector<std::pair<int, int>> new_blocks;
+
+        // merge pairs
+        for (size_t j = 0; j + 1 < blocks.size(); j += 2) {
+            int p = blocks[j].first;
+            int q = blocks[j].second;
+            int r = blocks[j + 1].second;
+            merge(A, p, q, r);
+            new_blocks.push_back({p, r});
+        }
+
+        // add last block
+        if (blocks.size() % 2 != 0) {
+            new_blocks.push_back(blocks.back());
+        }
+
+        blocks = new_blocks;
+    }
+
 }
 
 int main() {
@@ -102,13 +139,13 @@ int main() {
         printArray(numbers);
     }
 
-    mergeSort(numbers, 0, numbers.size() - 1);
+    mySort(numbers);
 
     if (!bigArray) {
         std::cout << "Entrance array again: ";
         printArray(entranceArray);
 
-        std::cout << "Array after MergeSort: ";
+        std::cout << "Array after mySort: ";
         printArray(numbers);
     }
 
@@ -116,7 +153,7 @@ int main() {
     std::cout << "# of swaps: " << swaps << std::endl;
 
     if (isSorted(numbers)) {
-        std::cout << "Merge Sort works" << std::endl;
+        std::cout << "mySort works" << std::endl;
     } else {
         std::cout << "Error: Array not sorted" << std::endl;
     }

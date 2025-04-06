@@ -75,6 +75,8 @@ void merge(std::vector<int>& A, int p, int q, int r) {
   		j++;
   		k++;
     }
+    std::cout << "Array after merge from " << p << " to " << r << ": ";
+    printArray(A);
 }
 
 void mergeSort(std::vector<int>& A, int p, int r) {
