@@ -32,7 +32,6 @@ bool isSorted(const std::vector<int>& arr) {
     return true;
 }
 
-// <- to jest przypisanie, nie zamiana miejsc!
 void mySwap(std::vector<int>& A, int index, int value) {
     swaps++;
     A[index] = value;
@@ -56,30 +55,25 @@ void merge(std::vector<int>& A, int p, int q, int r) {
     int k = p;
 
     while (i < n1 && j < n2) {
-      	comparisons++;
-        if (L[i] <= R[j]) {
-            A[k] = L[i];
-            swaps++;
+        if (compare(L[i], R[j])) {
+          	mySwap(A, k, L[i]);
             i++;
         }
         else {
-            A[k] = R[j];
-            swaps++;
+          	mySwap(A, k, R[j]);
             j++;
         }
         k++;
     }
      while (i < n1) {
-        A[k] = L[i];
-        swaps++;
+        mySwap(A, k, L[i]);
         i++;
         k++;
     }
     while (j < n2) {
-      A[k] = R[j];
-      swaps++;
-      j++;
-      k++;
+  		mySwap(A, k, R[j]);
+  		j++;
+  		k++;
     }
 }
 
