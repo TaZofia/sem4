@@ -1,0 +1,1 @@
+Kod programu DualPivotQuickSort znajduje się w folderze zad1, a wykresy w folderze zad2\plotsDualPivotQSAndQS
