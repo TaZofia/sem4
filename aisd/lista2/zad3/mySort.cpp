@@ -5,7 +5,7 @@
 #include <climits>
 
 int comparisons = 0;
-int swaps = 0; // teraz to liczba przypisań (writeów), ale trzymamy nazwę "swaps" jako mySwap()
+int swaps = 0; 
 
 bool bigArray = false;
 
@@ -75,8 +75,10 @@ void merge(std::vector<int>& A, int p, int q, int r) {
   		j++;
   		k++;
     }
-    std::cout << "Array after merge from " << p << " to " << r << ": ";
-    printArray(A);
+    if(!bigArray) {
+        std::cout << "Array after merge from " << p << " to " << r << ": ";
+        printArray(A);
+    }
 }
 
 void mySort(std::vector<int>& A) {
@@ -125,7 +127,7 @@ int main() {
         numbers.push_back(std::stoi(token));
     }
 
-    int n = numbers[0]; // liczba elementów
+    int n = numbers[0]; 
     numbers.erase(numbers.begin());
 
     if (numbers.size() >= 40) {
