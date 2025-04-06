@@ -42,8 +42,8 @@ void merge(std::vector<int>& A, int p, int q, int r) {
     int n1 = q - p + 1;
     int n2 = r - q;
 
-    std::vector<int> L(n1 + 1);
-    std::vector<int> R(n2 + 1);
+    std::vector<int> L(n1);
+    std::vector<int> R(n2);
 
     for (int i = 0; i < n1; i++) {
         L[i] = A[p + i];
@@ -52,25 +52,40 @@ void merge(std::vector<int>& A, int p, int q, int r) {
         R[j] = A[q + 1 + j];
     }
 
-    L[n1] = INT_MAX;
-    R[n2] = INT_MAX;
-
     int i = 0, j = 0;
+    int k = p;
 
-    for (int k = p; k <= r; k++) {
-        if (compare(L[i], R[j])) {
-            mySwap(A, k, L[i]);
+    while (i < n1 && j < n2) {
+      	comparisons++;
+        if (L[i] <= R[j]) {
+            A[k] = L[i];
+            swaps++;
             i++;
-        } else {
-            mySwap(A, k, R[j]);
+        }
+        else {
+            A[k] = R[j];
+            swaps++;
             j++;
         }
+        k++;
+    }
+     while (i < n1) {
+        A[k] = L[i];
+        swaps++;
+        i++;
+        k++;
+    }
+    while (j < n2) {
+      A[k] = R[j];
+      swaps++;
+      j++;
+      k++;
     }
 }
 
 void mergeSort(std::vector<int>& A, int p, int r) {
     if (p < r) {
-        int q = (p + r) / 2;
+        int q = floor((p + r) / 2);
         mergeSort(A, p, q);
         mergeSort(A, q + 1, r);
         merge(A, p, q, r);
