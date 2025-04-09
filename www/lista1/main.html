@@ -6,13 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 
 <body>
     <header>
+        <ul class="fadeInMenu">
+                <li><a class="item" href="main.html">Strona Główna</a></li>
+                <li><a class="item" href="zainteresowania.html">Zainteresowania</a></li>
+                <li><a class="item" href="studia.html">Studia</a></li>
+                <li><a class="item" href="projekty.html">Projekty</a></li>
+                <li><a class="item" href="kontakt.html"  class="active">Kontakt</a></li>
+        </ul>
+        <button class="hamburger">
+            <i class="menuIcon material-icons">menu</i>
+            <i class="closeIcon material-icons">close</i>
+        </button>
+
         <nav>
-            <ul>
+            <ul class="nav-menu">
                 <li><a href="main.html" class="active">Strona Główna</a></li>
                 <li><a href="zainteresowania.html">Zainteresowania</a></li>
                 <li><a href="studia.html">Studia</a></li>
@@ -52,5 +65,6 @@
         </section>
 
     </main>
+    <script src="./hamburger.js"></script>
 </body>
 </html>
