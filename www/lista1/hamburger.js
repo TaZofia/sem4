@@ -22,3 +22,8 @@ items.forEach(
     menuItem.addEventListener("click", menuFadeIn);
   }
 )
+window.addEventListener("DOMContentLoaded", function() {
+  fadeInMenu.classList.remove("showMenu");
+  closeIcon.style.display = "none";
+  menuIcon.style.display = "block";
+});

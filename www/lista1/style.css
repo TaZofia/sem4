@@ -36,16 +36,17 @@ header {
     cursor: pointer;
     border-radius: 5px;
 }
-.menuIcon, .closeIcon {
+.menuIcon {
     font-size: 32px;
     cursor: pointer;
-}
-.menuIcon {
     display: block;
 }
 .closeIcon {
+    font-size: 32px;
+    cursor: pointer;
     display: none;
 }
+
 .fadeInMenu {
     position: fixed;
     transition: transform 0.2s;
@@ -59,10 +60,12 @@ header {
     list-style: none;
     padding-top: 4rem;
     transform: translateY(-100%);
+    
 }
 .fadeInMenu li a {
     font-size: 1.5rem;
     color: white;
+    text-decoration: none;
     padding: 12px 24px;
     border-radius: 8px;
 }
@@ -241,6 +244,7 @@ code {
     header {
         height: 10vh;
     }
+    
     nav ul li a {
         font-size: 20px;
         margin-left: 5px;
