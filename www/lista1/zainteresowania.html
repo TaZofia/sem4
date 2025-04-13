@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <noscript>
+        <link rel="stylesheet" href="nojs.css">
+    </noscript>
     <header>
         <ul class="fadeInMenu">
                 <li><a class="item" href="main.html">Strona Główna</a></li>
@@ -64,15 +67,20 @@
             Jest to 28 szczytów, w każdym paśmie górskim. Zajęło nam to jedynie 3 mięsiące, które do dziś wspominam ze szczególnym sentymentem.
             Tutaj kilka zdjęć z różnych wypraw w moje ulubione miejsca, czyli Tatry i Bieszczady.
         </p>
-        
-        <div class="gallery">
-            <img src="z2.jpg" alt="z2">
-            <img src="z3.jpg" alt="z3">
-            <img src="z4.jpg" alt="z4">
-            <img src="z6.jpg" alt="z6">
-        </div>
+        <div class="gallery" id="gallery"></div>
         </section>
+
+        <noscript>
+            <p>Przeglądarka nie obsługuje js</p>
+            <div class="gallery">
+                <figure><img src="z2.jpg" alt="z2"></figure>
+                <figure><img src="z3.jpg" alt="z3"></figure>
+                <figure><img src="z4.jpg" alt="z4"></figure>
+                <figure><img src="z6.jpg" alt="z6"></figure>
+            </div>
+        </noscript>
     </main>
     <script src="./hamburger.js"></script>
+    <script src="./loadGallery.js"></script>
 </body>
 </html>
