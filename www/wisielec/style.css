@@ -2,14 +2,13 @@
 body {
     background-color: black;
     color: lightgray;
-    font-size: 28px;
     font-family: 'Inconsolata';   
     font-weight: bold;
+    text-align: center;
 }
 
 main {
     width: 90vw;
-    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -17,19 +16,22 @@ main {
     justify-content: space-between;
     height: 90vh;
 }
+h1 {
+    margin-top: 3vh;;
+    font-size: 3vh;
+}
 
 #board {
     width: 100%;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
-    font-size: 50px;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+    font-size: 3vh;
     text-align: center;
 }
 
 #hangmanPicture {
     width: 100%;
     border: 4px solid #333;
-
 }
 
 #alphabet {
@@ -43,10 +45,10 @@ main {
 }
 
 .letter {
-    width: 50px;
-    height: 50px;
+    width: 5vw;
+    height: 5vw;
     text-align: center;
-    padding: 5px;
+    padding: 2%;
     margin: 10px;
     border: 3px solid gray;
     cursor: pointer;
@@ -54,7 +56,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
+    font-size: 4.5vw;
 }
 .letter:hover {
     background-color: #222222;
@@ -66,16 +68,18 @@ main {
     margin-top: 5vh;
     margin-left: auto;
     margin-right: auto;
-    border: 2px solid #ccc;
-    background-color: #222;
-    color: #fff;
+    border: 3px solid gray;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     padding: 10px 20px;
     font-size: 40px;
 }
-
+#reloadGame:hover {
+    background-color: #222222;
+    color: white;
+    border: 3px solid;
+}
 
 #category {
     width: 100%;
@@ -109,4 +113,54 @@ main {
     background-color: #4caf50;
     color: #fff;
     border-color: #4caf50;
+}
+
+@media screen and (min-width: 1024px) {
+
+    h1 {
+        font-size: 4vh;
+    }
+    #board {
+        font-size: 5vh;
+    }
+
+    #forBigScreens {
+        display: flex;
+        gap: 2vw;
+        max-width: 900px;
+        margin: 0 auto;
+        align-items:center;
+    }
+    
+    #hangmanPicture {
+        width: 50%;
+        height: auto;
+    }
+
+    #alphabet {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1px;
+        width: 100%;
+        max-width: 50vw;
+    }
+    .letter {
+        flex: 0 1 calc(20% - 10px); /* 5 liter w wierszu, minus gap */
+        aspect-ratio: 1 / 1; /* kwadratowy kształt */
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid gray;
+        border-radius: 15px;
+        cursor: pointer;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 3vw;
+        max-height: 3vw;
+    }
+    #reloadGame{
+        font-size: 3vh;
+    }
 }
