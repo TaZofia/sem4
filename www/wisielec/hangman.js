@@ -55,6 +55,7 @@ function start () {
 window.onload = () => {
     start();
     document.getElementById("reloadGame").addEventListener("click", () => {
+        localStorage.removeItem("hangmanState"); 
         initCanvas();
         initGame();
         write_letters();
