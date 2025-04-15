@@ -4,12 +4,21 @@ const categories = {
     "Bands" : ["Palaye royale","Queen", "Aerosmith", "The doors", "Bon Jovi", "Nirvana", "My chemical romance", "Faith no more", "Guns n roses"]
 }
 
-let options = categories["Bands"];
+let currentCategory = "Bands";
+
+let options = categories[currentCategory];
 let randomChoice;
 let sentence;
 let lengthSentence;
 let coveredSentence = "";
 let wrong_guesses = 0;
+
+function selectCategory(category) {
+    currentCategory = category;
+    options = categories[category];
+    localStorage.removeItem("hangmanState");
+    start();
+}
 
 function write_sentence () {
     document.getElementById("board").innerHTML = coveredSentence;
@@ -47,9 +56,17 @@ function start () {
     initCanvas();
     const resumed = loadGameState();
     if (!resumed) {
+        options = categories[currentCategory];
         initGame();
         write_letters();
     }
+
+    document.querySelectorAll('.catElement').forEach(el => {
+        el.classList.remove('selectedCategory');
+        if (el.textContent.trim() === currentCategory) {
+            el.classList.add('selectedCategory');
+        }
+    });
 }
 
 window.onload = () => {
@@ -118,6 +135,7 @@ function isEnd () {
 
 function saveGameState() {
     const state = {
+        category: currentCategory,
         sentence: sentence,
         coveredSentence: coveredSentence,
         wrong_guesses: wrong_guesses,
@@ -134,6 +152,7 @@ function loadGameState() {
 
     const state = JSON.parse(saved);
 
+    currentCategory = state.category;
     sentence = state.sentence;
     lengthSentence = sentence.length;
     coveredSentence = state.coveredSentence;
@@ -148,6 +167,12 @@ function loadGameState() {
             el.style.background = "blue";
             el.style.pointerEvents = "none";
             el.style.cursor = "default";
+        }
+    });
+    document.querySelectorAll('.catElement').forEach(el => {
+        el.classList.remove('selectedCategory');
+        if (el.textContent.trim() === currentCategory) {
+            el.classList.add('selectedCategory');
         }
     });
 
