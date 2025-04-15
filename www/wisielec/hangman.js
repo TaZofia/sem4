@@ -31,6 +31,7 @@ function start () {
 
     write_letters();
     write_sentence();
+    initCanvas();
 }
 
 window.onload = start;
@@ -46,7 +47,7 @@ String.prototype.setChar = function(index, newChar) {
     }
 }
 
-
+var wrong_guesses = 0;
 
 function checkAndRewrite (nrAscii) {
     
@@ -65,10 +66,19 @@ function checkAndRewrite (nrAscii) {
     element.style.pointerEvents = "none"; 
     element.style.cursor = "default"; 
 
-    if (!correct) {
-        
+    if(!correct) {
+        wrong_guesses++;
+        drawHangmanStep(wrong_guesses);
+        setTimeout(isEnd, 100);
     }
 
     write_sentence();
 }
+
+function isEnd () {
+    if(wrong_guesses == 10) {
+        alert("Game over ;-;");
+    }
+}
+
 
