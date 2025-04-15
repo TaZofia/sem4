@@ -1,6 +1,84 @@
+#include <iostream>
+#include <random>   // Mersenne Twister
+#include <chrono>
+
+#include <sstream>
+
+int comparisons = 0;
+int swaps = 0;
+bool bigArray = false;
+
+void countSwaps() {
+  swaps++;
+}
+void countComparisons() {
+  comparisons++;
+}
+
+void printArray(std::vector<int>& arr) {
+    if(!bigArray) {
+        for (size_t i = 0; i < arr.size(); i++) {
+            std::cout << (arr[i] < 10 ? "0" : "") << arr[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+}
+int randomPartition(std::vector<int>& A, int p, int q) {
+
+    auto seed = std::chrono::steady_clock::now().time_since_epoch().count();
+    std::mt19937 mt(seed);
+    std::uniform_int_distribution<int> random(p, q);      // range from p to q
+
+    int index = random(mt);
+
+    std::swap(A[index], A[q]);
+    countSwaps();
+    printArray(A);
+
+    int x = A[q];       // ranodm pivot
+    int i = p - 1;
+
+    for(int j = p; j < q; j++) {
+        countComparisons();
+        if((A[j] <= x)) {
+            i++;
+            std::swap(A[i], A[j]);
+            countSwaps();
+            if(i != j) {
+                printArray(A);
+            }
+        }
+    }
+    std::swap(A[i + 1], A[q]);
+    countSwaps();
+
+    if(i+1 != q) {
+        printArray(A);
+    }
+    return (i+1);
+}
+
+int randomizedSelect(std::vector<int>& A, int p, int q, int i) {
+
+    if (p == q) return A[p];
+
+    int r = randomPartition(A, p, q);
+    int k = r - p + 1;
+    if (i == k) return A[r];
+    else if (i < k) return randomizedSelect(A, p, r - 1, i);
+    else return randomizedSelect(A, r + 1, q, i - k);
+}
 
 
-
+bool isSorted(const std::vector<int>& arr) {
+    for (size_t i = 1; i < arr.size(); i++) {
+        if (arr[i - 1] > arr[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
 int main () {
@@ -16,7 +94,37 @@ int main () {
     }
 
     int n = numbers[0];             // Number of elements
-    numbers.erase(numbers.begin());
+    int posStat = numbers[1];
+
+    numbers.erase(numbers.begin(), numbers.begin() + 2);
+
+    std::vector<int> entranceArray = numbers;
+
+    if(numbers.size() > 30) {
+        bigArray = true;
+    }
+
+
+
+    if (!bigArray) {
+        std::cout << "---------Entrance array again: ";
+        printArray(entranceArray);
+        std::cout << "Array after Randomized Select: ";
+        printArray(numbers);
+    }
+
+    std::cout << posStat << " positional statistics: " << randomizedSelect(numbers, 0, n-1, posStat) << std::endl;
+
+    std::cout << "# of comparisons: " << comparisons << std::endl;
+    std::cout << "# of swaps: " << swaps << std::endl;
+
+    if (isSorted(numbers)) {
+        std::cout << "Randomized Select works" << std::endl;
+    } else {
+        std::cout << "Error: Array not sorted" << std::endl;
+    }
+
+
 
     return 0;
 }
