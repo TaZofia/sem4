@@ -109,9 +109,8 @@ h1 {
 }
 
 .selectedCategory {
-    font-weight: bold;
     background-color: #222222;
-    border: 4px solid;
+    border: 3px solid;
     color: white;
 }
 
@@ -162,5 +161,10 @@ h1 {
     }
     #reloadGame{
         font-size: 3vh;
+    }
+
+    #category {
+        font-size: 3vh;
+        margin-top: 3vh;;
     }
 }
