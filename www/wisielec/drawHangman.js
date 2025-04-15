@@ -3,6 +3,7 @@ let ctx;
 function initCanvas() {
     const c = document.getElementById("hangmanPicture");
     ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height);
     ctx.strokeStyle = "gray";
     ctx.lineWidth = 3;
 }
