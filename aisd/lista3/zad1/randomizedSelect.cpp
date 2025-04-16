@@ -3,6 +3,7 @@
 #include <chrono>
 #include <algorithm>
 #include <sstream>
+#include "functions.h"
 
 int comparisons = 0;
 int swaps = 0;
@@ -14,16 +15,6 @@ void countSwaps() {
 void countComparisons() {
   comparisons++;
 }
-
-void printArray(std::vector<int>& arr) {
-    if(!bigArray) {
-        for (size_t i = 0; i < arr.size(); i++) {
-            std::cout << (arr[i] < 10 ? "0" : "") << arr[i] << " ";
-        }
-        std::cout << std::endl;
-    }
-
-}
 int randomPartition(std::vector<int>& A, int p, int q) {
 
     auto seed = std::chrono::steady_clock::now().time_since_epoch().count();
@@ -34,7 +25,7 @@ int randomPartition(std::vector<int>& A, int p, int q) {
 
     std::swap(A[index], A[q]);
     countSwaps();
-    printArray(A);
+    if(!bigArray) {printArray(A);}
 
     int x = A[q];       // ranodm pivot
     int i = p - 1;
@@ -46,7 +37,7 @@ int randomPartition(std::vector<int>& A, int p, int q) {
             std::swap(A[i], A[j]);
             countSwaps();
             if(i != j) {
-                printArray(A);
+                if(!bigArray) {printArray(A);}
             }
         }
     }
@@ -54,7 +45,7 @@ int randomPartition(std::vector<int>& A, int p, int q) {
     countSwaps();
 
     if(i+1 != q) {
-        printArray(A);
+        if(!bigArray) {printArray(A);}
     }
     return (i+1);
 }
@@ -69,17 +60,6 @@ int randomizedSelect(std::vector<int>& A, int p, int q, int i) {
     else if (i < k) return randomizedSelect(A, p, r - 1, i);
     else return randomizedSelect(A, r + 1, q, i - k);
 }
-
-
-bool isSorted(const std::vector<int>& arr) {
-    for (size_t i = 1; i < arr.size(); i++) {
-        if (arr[i - 1] > arr[i]) {
-            return false;
-        }
-    }
-    return true;
-}
-
 
 int main () {
 
