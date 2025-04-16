@@ -1,7 +1,7 @@
 #include <iostream>
 #include <random>   // Mersenne Twister
 #include <chrono>
-
+#include <algorithm>
 #include <sstream>
 
 int comparisons = 0;
@@ -104,25 +104,22 @@ int main () {
         bigArray = true;
     }
 
-
+    int psValue = randomizedSelect(numbers, 0, n-1, posStat);
 
     if (!bigArray) {
         std::cout << "---------Entrance array again: ";
         printArray(entranceArray);
         std::cout << "Array after Randomized Select: ";
         printArray(numbers);
+        std::cout << "-----------------Sorted array: ";
+        std::sort(entranceArray.begin(), entranceArray.end());
+        printArray(entranceArray);
     }
 
-    std::cout << posStat << " positional statistics: " << randomizedSelect(numbers, 0, n-1, posStat) << std::endl;
+    std::cout << posStat << " positional statistics: " << psValue << std::endl;
 
     std::cout << "# of comparisons: " << comparisons << std::endl;
     std::cout << "# of swaps: " << swaps << std::endl;
-
-    if (isSorted(numbers)) {
-        std::cout << "Randomized Select works" << std::endl;
-    } else {
-        std::cout << "Error: Array not sorted" << std::endl;
-    }
 
 
 
