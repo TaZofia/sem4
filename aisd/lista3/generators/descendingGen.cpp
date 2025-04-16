@@ -40,10 +40,10 @@ int main(int argc, char* argv[]) {
         std::cout << n << ", ";
         std::cout << posStat << ", ";
 
-        for(int i = 0; i < n - 1; i++) {
-            std::cout << n - 1 - i << ", ";
+        for(int i = n; i > 1; i--) {
+            std::cout << i << ", ";
         }
-        std::cout << 0;
+        std::cout << 1;
         
 
     } catch (const std::exception& e) {
