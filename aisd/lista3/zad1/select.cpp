@@ -61,41 +61,62 @@ int modifiedPartition(std::vector<int>& A, int p, int q, int pivot) {
 }
 
 
-int select(std::vector<int>& A, int p, int q, int k) {
+int select(std::vector<int>& A, int p, int q, int i) {
+    if (p == q) {
+        return A[p];
+    }
 
- 	// (q - p + 1) this is a size of a part where we want to use select
-  	int howManyFives = floor((q - p + 1) / 5);
-    int rest = (q - p + 1) % 5;
+    int n = q - p + 1;
+    int howManyFives = n / 5;
+    int rest = n % 5;
 
     std::vector<int> medians;
-    std::vector<int> indexes;
-    for(int i = p; i < howManyFives; i++) {
-      	int left = i * 5;
-      	int right = left + 4;
+    std::vector<int> medianIndices;
+
+    for (int j = 0; j < howManyFives; j++) {
+        int left = p + j * 5;
+        int right = left + 4;
         insertionSort(A, left, right);
-       	int median = A[i + 2];		// Median inside each five. Element in the middle
+        int median = A[left + 2];
         medians.push_back(median);
-        indexes.push_back(i+2);
-        printArray(A);
     }
+
     if (rest != 0) {
-    	insertionSort(A, (q - p + 1) - rest, (q - p + 1) - 1);		// call is for the last subarray
-    	int lastMedian = A[q - floor(rest / 2)];
-        medians.push_back(lastMedian);
-        indexes.push_back(q - floor(rest / 2));
-    	printArray(A);
+        int left = p + howManyFives * 5;
+        int right = q;
+        insertionSort(A, left, right);
+        int mid = left + (right - left) / 2;
+        medians.push_back(A[mid]);
     }
 
-    int medianOfMedians = select(medians, 0, medians.size() - 1, floor(medians.size() / 2));
-	int indexOfMedianOfMedians = 0;
-    for (int i = 0; i < indexes.size(); i++) {
-		if(A[indexes[i]] == medianOfMedians) {
-        	indexOfMedianOfMedians = indexes[i];
-		}
+    int medianOfMedians;
+    if (medians.size() == 1) {
+        medianOfMedians = medians[0];
+    } else {
+        medianOfMedians = select(medians, 0, medians.size() - 1, medians.size() / 2);
     }
 
-    // teraz będziemy robić partitiona na tablicy A tej po is z pivotem na indeksie mediany median
+    // Find the index of the medianOfMedians in the original array
+    int pivotIndex = p;
+    for (int j = p; j <= q; j++) {
+        if (A[j] == medianOfMedians) {
+            pivotIndex = j;
+            break;
+        }
+    }
+
+    int partitionIndex = modifiedPartition(A, p, q, pivotIndex);
+    int k = partitionIndex - p + 1;
+
+    if (i == k) {
+        return A[partitionIndex];
+    } else if (i < k) {
+        return select(A, p, partitionIndex - 1, i);
+    } else {
+        return select(A, partitionIndex + 1, q, i - k);
+    }
 }
+
 
 int main () {
 
