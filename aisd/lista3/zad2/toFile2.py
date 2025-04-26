@@ -24,8 +24,8 @@ def main():
 
     generators = {
         "random": os.path.join(zad1_path, "randomGen.exe"),
-        "ascending": os.path.join(zad1_path, "ascendingGen.exe"),
-        "descending": os.path.join(zad1_path, "descendingGen.exe"),
+        #"ascending": os.path.join(zad1_path, "ascendingGen.exe"),
+        #"descending": os.path.join(zad1_path, "descendingGen.exe"),
     }
     algorithms = {
         "Select": (os.path.join(zad1_path, "select.exe"), "se"),
