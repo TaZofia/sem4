@@ -54,7 +54,7 @@ int main() {
         std::cout << "Value we're looking for: " << elementToFind << std::endl;
     }
 
-    int result = binarySearch(numbers, 0, n, elementToFind);
+    int result = binarySearch(numbers, 0, n - 1, elementToFind);
 
     if(result == 1) {
         std::cout << "Element found." << std::endl;
