@@ -42,24 +42,19 @@ int main() {
     }
 
     int n = numbers[0];    // Number of elements
+    int elementToFind = numbers[1];
 
-    numbers.erase(numbers.begin(), numbers.begin() + 2); // delete number of elements and positional statistic
+    numbers.erase(numbers.begin(), numbers.begin() + 2); // delete number of elements and element to find
 
     std::sort(numbers.begin(), numbers.end());
-
-    auto seed = std::chrono::steady_clock::now().time_since_epoch().count();
-    std::mt19937 mt(seed);
-    std::uniform_int_distribution<int> dist(1, 2*n-1);      // range from p to q
-
-    int value = dist(mt);
 
     if(n <= 30) {
         std::cout << "Entrance array: ";
         printArray(numbers);
-        std::cout << "Value we're looking for: " << value << std::endl;
+        std::cout << "Value we're looking for: " << elementToFind << std::endl;
     }
 
-    int result = binarySearch(numbers, 0, n, value);
+    int result = binarySearch(numbers, 0, n, elementToFind);
 
     if(result == 1) {
         std::cout << "Element found." << std::endl;
