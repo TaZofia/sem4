@@ -2,54 +2,81 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-current_dir = os.getcwd()
-results_dir = os.path.join(current_dir, "results")
-plots_dir = os.path.join(current_dir, "plots")
+zad2_path = r"K:\\studia\\sem4\\aisd\\lista3\\zad2"
+results_path = r"K:\\studia\\sem4\\aisd\\lista3\\zad2\\results2"
+plots_path = r"K:\\studia\\sem4\\aisd\\lista3\\zad2\\plots"
 
-ks = [1, 10, 100]
+# Ustawienia
+algorithms = {'rs': 'Randomized Select', 'se': 'Select'}
+data_types = ['random', 'ascending', 'descending']
+stat_positions = {
+    'firstStatPos': 'First Stat',
+    'median': 'Median',
+    'randomStatPos': 'Random Stat'
+}
+metrics = ['comparisons', 'swaps']
+metric_styles = {
+    'comparisons': {'linestyle': '-', 'label_suffix': ' (Comparisons)', 'color': 'blue'},
+    'swaps': {'linestyle': '--', 'label_suffix': ' (Swaps)', 'color': 'green'}
+}
 
-for k in ks:
-    df_qs = pd.read_csv(os.path.join(results_dir, f"Results_big_n_qs_k{k}.csv"))
-    df_hs = pd.read_csv(os.path.join(results_dir, f"Results_big_n_hs_k{k}.csv"))
+# Funkcja pomocnicza do wczytania danych i obliczenia średnich
+def load_data(algorithm, data_type, stat_position):
+    filename = os.path.join(results_path, f'Results_{algorithm}_{data_type}_{stat_position}.csv')
+    if os.path.exists(filename):
+        df = pd.read_csv(filename)
+        df_mean = df.groupby('n', as_index=False)[['comparisons', 'swaps']].mean()
+        return df_mean
+    else:
+        print(f"Plik {filename} nie istnieje.")
+        return None
 
-    df_qs['algorithm'] = 'Quick Sort'
-    df_hs['algorithm'] = 'Hybrid Sort'
+# Tworzenie wykresów
+for data_type in data_types:
+    for stat_key, stat_label in stat_positions.items():
+        # Wykres dla comparisons
+        plt.figure(figsize=(12, 8))
+        for alg_key, alg_name in algorithms.items():
+            df = load_data(alg_key, data_type, stat_key)
+            if df is not None:
+                plt.plot(
+                    df['n'], df['comparisons'],
+                    label=f"{alg_name} (Comparisons)",
+                    marker='o', markersize=6,
+                    linewidth=1.5,
+                    color='blue' if alg_key == 'rs' else 'red'
+                )
 
-    df_all = pd.concat([df_qs, df_hs])
+        plt.title(f"Comparisons - {stat_label} - {data_type.capitalize()} Data", fontsize=16)
+        plt.xlabel("n (Input Size)", fontsize=14)
+        plt.ylabel("Average Comparisons", fontsize=14)
+        plt.legend(fontsize=10)
+        plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+        plt.tight_layout()
 
-    averages = df_all.groupby(['n', 'algorithm']).agg({'comparisons': 'mean', 'swaps': 'mean'}).reset_index()
+        comparisons_filename = f"{data_type}_{stat_key}_comparisons.png"
+        plt.savefig(os.path.join(plots_path, comparisons_filename), dpi=300)
 
-    plt.figure(figsize=(10, 6))
-    for algorithm in averages['algorithm'].unique():
-        subset = averages[averages['algorithm'] == algorithm]
-        plt.plot(subset['n'], subset['swaps'] / subset['n'], linestyle='--', label=f'Swaps/n - {algorithm}', linewidth=2)
-        plt.plot(subset['n'], subset['comparisons'] / subset['n'], linestyle='--', label=f'Cmp/n - {algorithm}', linewidth=2)
-        
+        # Wykres dla swaps
+        plt.figure(figsize=(12, 8))
+        for alg_key, alg_name in algorithms.items():
+            df = load_data(alg_key, data_type, stat_key)
+            if df is not None:
+                plt.plot(
+                    df['n'], df['swaps'],
+                    label=f"{alg_name} (Swaps)",
+                    marker='o', markersize=6,
+                    linewidth=1.5,
+                    linestyle='--',
+                    color='blue' if alg_key == 'rs' else 'red'
+                )
 
-    plt.title(f'k{k}')
-    plt.xlabel('n')
-    plt.ylabel('Avg/n')
-    plt.grid(True)
-    plt.tight_layout()
-    plt.legend()
-    #plt.show()
+        plt.title(f"Swaps - {stat_label} - {data_type.capitalize()} Data", fontsize=16)
+        plt.xlabel("n (Input Size)", fontsize=14)
+        plt.ylabel("Average Swaps", fontsize=14)
+        plt.legend(fontsize=10)
+        plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+        plt.tight_layout()
 
-    plt.savefig(os.path.join(plots_dir, f"big_n_avg_per_n_k{k}.png"))
-
-
-    plt.figure(figsize=(10, 6))
-    for algorithm in averages['algorithm'].unique():
-        subset = averages[averages['algorithm'] == algorithm]
-        plt.plot(subset['n'], subset['swaps'], marker='o', label=f'Average Swaps - {algorithm}', linewidth=2)
-        plt.plot(subset['n'], subset['comparisons'], marker='o', label=f'Average Comparisons - {algorithm}', linewidth=2)
-        
-
-    plt.title(f'k{k}')
-    plt.xlabel('n')
-    plt.ylabel('Avg')
-    plt.grid(True)
-    plt.tight_layout()
-    plt.legend()
-    #plt.show()
-
-    plt.savefig(os.path.join(plots_dir, f"big_n_avg_k{k}.png"))
+        swaps_filename = f"{data_type}_{stat_key}_swaps.png"
+        plt.savefig(os.path.join(plots_path, swaps_filename), dpi=300)

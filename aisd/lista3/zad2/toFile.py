@@ -25,9 +25,9 @@ def main():
     results_path = r"K:\\studia\\sem4\\aisd\\lista3\\zad2\\results2"
 
     generators = {
-        "random": os.path.join(zad1_path, "randomGen.exe"),
-        #"ascending": os.path.join(zad1_path, "ascendingGen.exe"),
-        #"descending": os.path.join(zad1_path, "descendingGen.exe"),
+        #"random": os.path.join(zad1_path, "randomGen.exe"),
+        "ascending": os.path.join(zad1_path, "ascendingGen.exe"),
+        "descending": os.path.join(zad1_path, "descendingGen.exe"),
     }
     algorithms = {
         "Select": (os.path.join(zad1_path, "select.exe"), "se"),
