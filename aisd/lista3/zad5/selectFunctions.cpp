@@ -1,4 +1,7 @@
 #include "selectFunctions.h"
+#include "functions.h"
+#include <iostream>
+#include <cmath>
 
 void insertionSort(std::vector<int>& A, int p, int r) {
     for (int j = p + 1; j <= r; j++) {
@@ -16,9 +19,10 @@ void insertionSort(std::vector<int>& A, int p, int r) {
 
 int modifiedPartition(std::vector<int>& A, int p, int q, int pivot) {
 
-    int x = A[pivot];       // partition with given pivot
+    int x = A[pivot];          // partition with given pivot
 
     std::swap(A[pivot], A[q]); // move to the end
+    printArray(A);
     countSwaps();
 
     int i = p - 1;
@@ -28,9 +32,13 @@ int modifiedPartition(std::vector<int>& A, int p, int q, int pivot) {
         if((A[j] <= x)) {
             i++;
             std::swap(A[i], A[j]);
+            printArray(A);
             countSwaps();
             if(i != j) {
-                if(!bigArray) {printArray(A);}
+                if(!bigArray) {
+                    std::cout << "mod part ";
+                    printArray(A);
+                }
             }
         }
     }
@@ -38,7 +46,9 @@ int modifiedPartition(std::vector<int>& A, int p, int q, int pivot) {
     countSwaps();
 
     if(i+1 != q) {
-        if(!bigArray) {printArray(A);}
+        if(!bigArray) {
+            std::cout << "mod part2 ";
+            printArray(A);}
     }
     return (i+1);
 }
@@ -71,12 +81,16 @@ int select(std::vector<int>& A, int p, int q, int i) {
         int mid = left + (right - left) / 2;
         medians.push_back(A[mid]);
     }
+    printArray(A);
+    for(int k = 0; k < medians.size(); k++) {std::cout << "medians: " << medians[k] << ", ";}
+    std::cout << std::endl;
 
-    int medianOfMedians;
+    int medianOfMedians = 0;
     if (medians.size() == 1) {
         medianOfMedians = medians[0];
     } else {
         medianOfMedians = select(medians, 0, medians.size() - 1, medians.size() / 2);
+        std::cout << "median of medians: " << medianOfMedians << std::endl;
     }
 
     // Find the index of the medianOfMedians in the original array

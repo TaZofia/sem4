@@ -1,43 +1,32 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <sstream>
 #include "functions.h"
-
-
-int comparisons = 0;
-int swaps = 0;
-
-bool bigArray = false;
-
-bool compare(int a, int b) {
-    comparisons++;
-    return a <= b;
-}
-
-void swap(std::vector<int>& A, int i, int j) {
-    swaps++;
-    int temp = A[j];
-    A[j] = A[i];
-    A[i] = temp;
-}
+#include "selectFunctions.h"
 
 int partition(std::vector<int>& A, int p, int r) {
+
     int x = A[r];       // Pivot
+
     int i = p - 1;
 
     for(int j = p; j < r; j++) {
-        if(compare(A[j], x)) {
+        countComparisons();
+        if(A[j] <= x) {
             i++;
-            swap(A, i, j);
+            std::swap(A[i], A[j]);
+            countComparisons();
             if(i != j) {
-                printArray(A);
+                if(!bigArray) printArray(A);
             }
         }
     }
-    swap(A, i + 1, r);
+    std::swap(A[i+1], A[r]);
+    countSwaps();
 
     if(i+1 != r) {
-        printArray(A);
+        if(!bigArray) printArray(A);
     }
     return (i+1);
 }
@@ -45,6 +34,21 @@ int partition(std::vector<int>& A, int p, int r) {
 void quickSort(std::vector<int>& A, int p, int r) {
 
     if(p < r) {
+        std::vector<int> arrayToSelect = A;
+        int median = select(arrayToSelect, p, r, std::floor((p + r) / 2));
+
+        int index = 0;
+
+        for(int i = 0; i < A.size(); i++) {
+            countComparisons();
+            if(A[i] == median) {
+                index = i;
+                break;
+            }
+        }
+        std::swap(A[index], A[r]);
+        countSwaps();
+
         int q = partition(A, p, r);
         quickSort(A, p, q-1);
         quickSort(A, q+1, r);
