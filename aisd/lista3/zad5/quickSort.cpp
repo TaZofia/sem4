@@ -34,12 +34,10 @@ int partition(std::vector<int>& A, int p, int r) {
 void quickSort(std::vector<int>& A, int p, int r) {
 
     if(p < r) {
-        std::vector<int> arrayToSelect = A;
-        int median = select(arrayToSelect, p, r, std::floor((p + r) / 2));
+        int median = select(A, p, r, (r - p + 1) / 2); 
+        int index = -1;
 
-        int index = 0;
-
-        for(int i = 0; i < A.size(); i++) {
+        for(int i = p; i <= r; i++) {
             countComparisons();
             if(A[i] == median) {
                 index = i;
@@ -50,8 +48,8 @@ void quickSort(std::vector<int>& A, int p, int r) {
         countSwaps();
 
         int q = partition(A, p, r);
-        quickSort(A, p, q-1);
-        quickSort(A, q+1, r);
+        quickSort(A, p, q - 1);
+        quickSort(A, q + 1, r);
     }
 }
 
@@ -76,14 +74,14 @@ int main() {
 
     std::vector<int> entranceArray = numbers;
 
-    if(entranceArray.size() < 40) {
+    if(!bigArray) {
         std::cout << "Entrance array: ";
         printArray(numbers);
     }
 
     quickSort(numbers, 0, numbers.size()-1);
 
-    if(entranceArray.size() < 40) {
+    if(!bigArray) {
         std::cout << "Entrance array again: ";
         printArray(entranceArray);
 
