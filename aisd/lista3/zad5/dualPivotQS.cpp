@@ -3,69 +3,75 @@
 #include <sstream>
 #include "functions.h"
 #include "selectFunctions.h"
+void dualPivotQuickSort(std::vector<int>& A, int p, int r) {
+    if (p < r) {
+        int size = r - p + 1;
+        int oneThirdIndex = p + size / 3;
+        int twoThirdIndex = p + 2 * size / 3;
 
+        int pval = select(A, p, r, oneThirdIndex - p + 1); // 1-based index
+        int qval = select(A, p, r, twoThirdIndex - p + 1); // 1-based index
 
+        if (pval > qval) std::swap(pval, qval);
 
-void dualPivotPartition(std::vector<int>& A, int low, int high, int& lp, int& rp) {
-    int n = high - low + 1;
-
-    int oneThirdIndex = low + n / 3;
-    int twoThirdIndex = low + 2 * n / 3;
-
-    int p = select(A, low, high, oneThirdIndex - low + 1); // 1-indexed
-    int q = select(A, low, high, twoThirdIndex - low + 1);
-
-    countComparisons();
-    if (p > q) {
-        std::swap(p, q);
-        countSwaps();
-    }
-
-    int i = low;
-    int k = low;
-    int j = high;
-
-    while (k <= j) {
-        countComparisons();
-        if (A[k] < p) {
-            std::swap(A[i], A[k]);
-            countSwaps();
-            i++;
-        } else {
+        int indexP = -1, indexQ = -1;
+        for (int i = p; i <= r; i++) {
             countComparisons();
-            if (A[k] > q) {
-                while (k < j && A[j] > q) {
-                    countComparisons();
-                    j--;
-                }
-                std::swap(A[k], A[j]);
-                countSwaps();
-                j--;
+            if (A[i] == pval && indexP == -1) {
+                indexP = i;
+            } else if (A[i] == qval && indexQ == -1) {
+                indexQ = i;
+            }
+            if (indexP != -1 && indexQ != -1) break;
+        }
 
-                countComparisons();
-                if (A[k] < p) {
-                    std::swap(A[i], A[k]);
+        std::swap(A[p], A[indexP]);
+        countSwaps();
+        if (indexQ == p) indexQ = indexP; // handle swap conflict
+        std::swap(A[r], A[indexQ]);
+        countSwaps();
+
+        int i = p + 1;
+        int lt = p + 1;
+        int gt = r - 1;
+        int pivot1 = A[p];
+        int pivot2 = A[r];
+
+        while (i <= gt) {
+            countComparisons();
+            if (A[i] < pivot1) {
+                std::swap(A[i], A[lt]);
+                countSwaps();
+                lt++;
+            } else if (A[i] > pivot2) {
+                while (A[gt] > pivot2 && i < gt) {
+                    countComparisons();
+                    gt--;
+                }
+                std::swap(A[i], A[gt]);
+                countSwaps();
+                gt--;
+                if (A[i] < pivot1) {
+                    std::swap(A[i], A[lt]);
                     countSwaps();
-                    i++;
+                    lt++;
                 }
             }
+            i++;
         }
-        k++;
-    }
-    lp = i - 1;
-    rp = j + 1;
 
-    if (!bigArray) printArray(A);
-}
+        lt--;
+        gt++;
+        std::swap(A[p], A[lt]);
+        countSwaps();
+        std::swap(A[r], A[gt]);
+        countSwaps();
 
+        if (!bigArray) printArray(A);
 
-void dualPivotQuickSort(std::vector<int>& A, int low, int high) {
-    if (low < high) {
-        int lp, rp;
-        dualPivotPartition(A, low, high, lp, rp);
-        dualPivotQuickSort(A, low, lp - 1);
-        dualPivotQuickSort(A, lp + 1, rp - 1);
-        dualPivotQuickSort(A, rp + 1, high);
+        dualPivotQuickSort(A, p, lt - 1);
+        dualPivotQuickSort(A, lt + 1, gt - 1);
+        dualPivotQuickSort(A, gt + 1, r);
     }
 }
 
