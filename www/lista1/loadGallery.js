@@ -1,4 +1,4 @@
-const imageUrls = ["z2.jpg", "z3.jpg", "z4.jpg", "z6.jpg"];
+const imageUrls = ["z.jpg", "z3.jpg", "z4.jpg", "z6.jpg"];
 
 function loadImage(url) {
   return new Promise(function (resolve, reject) {

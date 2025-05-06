@@ -70,42 +70,42 @@
             <p>Poniżej fragment kodu z klasy BookDAO wraz z metodą, która pobierała dane bezpośrednio z bazy.</p>
 
             <pre><code class="language-java">
-                @Override
-                public List&lt;BorrowedBookDetails&gt; getBorrowedBooksByUser(int userId) {
-                    List&lt;BorrowedBookDetails&gt; borrowedBooks = new ArrayList&lt;&gt;();
-                    var query = """
-                        SELECT bb.id AS borrowId, b.title, bb.copyId, bb.borrowDate, bb.returnDate
-                        FROM BorrowBook bb
-                        JOIN Copy c ON bb.copyId = c.id
-                        JOIN Book b ON c.bookId = b.id
-                        WHERE bb.userId = ? AND bb.returnDate IS NULL
-                        ORDER BY bb.borrowDate DESC
-                    """;
+    @Override
+    public List&lt;BorrowedBookDetails&gt; getBorrowedBooksByUser(int userId) {
+        List&lt;BorrowedBookDetails&gt; borrowedBooks = new ArrayList&lt;&gt;();
+        var query = """
+            SELECT bb.id AS borrowId, b.title, bb.copyId, bb.borrowDate, bb.returnDate
+            FROM BorrowBook bb
+            JOIN Copy c ON bb.copyId = c.id
+            JOIN Book b ON c.bookId = b.id
+            WHERE bb.userId = ? AND bb.returnDate IS NULL
+            ORDER BY bb.borrowDate DESC
+        """;
 
-                    try (Connection connection = DatabaseConnector.getConnection();
-                        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnector.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-                        preparedStatement.setInt(1, userId);
-                        ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                        while (resultSet.next()) {
-                            BorrowedBookDetails details = new BorrowedBookDetails(
-                                    resultSet.getInt("borrowId"),
-                                    resultSet.getString("title"),
-                                    resultSet.getInt("copyId"),
-                                    resultSet.getDate("borrowDate").toLocalDate(),
-                                    resultSet.getDate("returnDate") != null
-                                            ? resultSet.getDate("returnDate").toLocalDate()
-                                            : null
-                            );
-                            borrowedBooks.add(details);
-                        }
+            while (resultSet.next()) {
+                BorrowedBookDetails details = new BorrowedBookDetails(
+                        resultSet.getInt("borrowId"),
+                        resultSet.getString("title"),
+                        resultSet.getInt("copyId"),
+                        resultSet.getDate("borrowDate").toLocalDate(),
+                        resultSet.getDate("returnDate") != null
+                                ? resultSet.getDate("returnDate").toLocalDate()
+                                : null
+                );
+                borrowedBooks.add(details);
+            }
 
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    return borrowedBooks;
-                }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return borrowedBooks;
+    }
             </code></pre>
         </section>
 
