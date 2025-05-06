@@ -1,4 +1,5 @@
 from Board import Board
+from Manhattan import Manhattan
 
 def get_user_input():
     while True:
@@ -23,6 +24,7 @@ def main():
     my_board.print_board()
     my_board.valid_moves()
 
+    manhattan = Manhattan(my_board)
 
 if __name__ == "__main__":
     main()
