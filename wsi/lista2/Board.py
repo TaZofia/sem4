@@ -1,10 +1,12 @@
 import random
+
 class Board:
 
-    def __init__(self, size):
+    def __init__(self, size, parent = None):
         self.size = size        # size - number of elements in row/column
         self.board = []
         self._generate_perm()
+        self.parent = parent
 
 
     def _generate_perm(self):
@@ -57,7 +59,7 @@ class Board:
 
 
     def can_be_solved(self):
-        if (self._number_of_inversions() + self._get_blank_row_number()) % 2 == 0:
+        if (self._number_of_inversions() + self._get_blank_row_number()) % 2 == 1:
             return True
         else:
             return False
@@ -73,25 +75,46 @@ class Board:
     def get_board(self):
         return self.board
 
+    '''
+    @property
+    def board(self):
+    return board
+
+    MyBoard.get_board
+    MyBoard.board
+    '''
 
     def valid_moves(self):
 
         index_of_blank = self.board.index(0)
 
-        left = index_of_blank - 1
-        right = index_of_blank + 1
-        up = index_of_blank - self.size
-        down = index_of_blank + self.size
+        left = (index_of_blank - 1, index_of_blank)
+        right = (index_of_blank + 1, index_of_blank)
+        up = (index_of_blank - self.size, index_of_blank)
+        down = (index_of_blank + self.size, index_of_blank)
 
         moves = []
 
-        if up >= 0:
+        if up[0] >= 0:
             moves.append(up)
-        if right % self.size != 0:
+        if right[0] % self.size != 0:
             moves.append(right)
-        if down <= self.size ** 2 - 1:
+        if down[0] <= self.size ** 2 - 1:
             moves.append(down)
-        if left % self.size != self.size - 1:
+        if left[0] % self.size != self.size - 1:
             moves.append(left)
 
-        print(moves)
+        return moves
+
+    def make_move(self, move):
+        if move in self.valid_moves():
+            self.board[move[0]], self.board[move[1]] = self.board[move[1]], self.board[move[0]]
+        else:
+            print("wrong move")
+
+    def is_win(self):
+        for i in range(len(self.board)-1):
+            if self.board[i] != i + 1:
+                return False
+
+        return True

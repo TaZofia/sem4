@@ -1,3 +1,5 @@
+from sklearn.utils.arrayfuncs import cholesky_delete
+
 from Board import Board
 from Manhattan import Manhattan
 
@@ -12,9 +14,9 @@ def get_user_input():
         except ValueError:
             print("Invalid input. Please enter an integer.")
 
-
 def main():
-    size = get_user_input()
+    # size = get_user_input()
+    size = 3
 
     while True:
         my_board = Board(size)
@@ -22,9 +24,17 @@ def main():
             break
 
     my_board.print_board()
-    my_board.valid_moves()
+    child = Board(size, my_board)
+
+    child.board = my_board.board.copy()
+    child.make_move(my_board.valid_moves()[0])
+
+    child.print_board()
+    print("////")
+    my_board.print_board()
 
     manhattan = Manhattan(my_board)
+
 
 if __name__ == "__main__":
     main()
