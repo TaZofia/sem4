@@ -35,15 +35,20 @@ def main():
     child.print_board()
     print("////")
     my_board.print_board()
-
-    manhattan = Manhattan(my_board)
-    '''
+    
     my_board = Board(size)
     my_board.board = [1, 2, 3, 4, 6, 5, 7, 8, 0]
 
     astar = AStar(my_board)
 
     astar.a_star_search()
+    '''
+    my_board = Board(size)
+    my_board.board = [1, 2, 0, 4, 6, 5, 7, 8, 3]
+    my_board.print_board()
+
+    print(my_board.manhattan_distance())
+
 
 if __name__ == "__main__":
     main()

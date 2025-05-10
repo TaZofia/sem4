@@ -43,6 +43,6 @@ class AStar:
                         print("Puzzle solved")
                         found_dest = True
                         return
-                    else:
+                    #else:
 
 # TO DO detailks not in list - should be in board class, f, g, h

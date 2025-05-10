@@ -6,6 +6,9 @@ class Board:
         self.size = size        # size - number of elements in row/column
         self.board = []
         self._generate_perm()
+        self.h = 0
+        self.g = 0
+        self.f = self.g + self.h
         self.parent = parent
 
     @property
@@ -119,3 +122,29 @@ class Board:
 
         # if on index 0 is 1, on index 1 is 2 ... we solved a puzzle
         return True
+
+    def manhattan_distance(self):
+
+        whole_distance = 0
+        for i in range(len(self.board)-1):
+            element = self.board[i]
+
+            row_of_element = i // self.size
+            column_of_element = i % self.size
+
+            proper_index = element + 1
+            if element == 0:
+                proper_index = len(self.board)-1
+
+            proper_row = proper_index // self.size
+            proper_col = proper_index % self.size
+
+            diff_col = abs(column_of_element - proper_col)
+            diff_row = abs(row_of_element - proper_row)
+
+            dist = diff_col + diff_row
+
+            whole_distance += dist
+
+        return whole_distance
+
