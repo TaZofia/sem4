@@ -1,5 +1,6 @@
 from sklearn.utils.arrayfuncs import cholesky_delete
 
+from AStar import AStar
 from Board import Board
 from Manhattan import Manhattan
 
@@ -18,10 +19,12 @@ def main():
     # size = get_user_input()
     size = 3
 
+    '''
     while True:
         my_board = Board(size)
         if my_board.can_be_solved():
             break
+
 
     my_board.print_board()
     child = Board(size, my_board)
@@ -34,7 +37,13 @@ def main():
     my_board.print_board()
 
     manhattan = Manhattan(my_board)
+    '''
+    my_board = Board(size)
+    my_board.board = [1, 2, 3, 4, 6, 5, 7, 8, 0]
 
+    astar = AStar(my_board)
+
+    astar.a_star_search()
 
 if __name__ == "__main__":
     main()

@@ -8,6 +8,18 @@ class Board:
         self._generate_perm()
         self.parent = parent
 
+    @property
+    def get_board(self):
+        return self.board
+
+    '''
+    @property
+    def board(self):
+    return board
+
+    MyBoard.get_board
+    MyBoard.board
+    '''
 
     def _generate_perm(self):
         for i in range((self.size ** 2) - 1):
@@ -71,18 +83,6 @@ class Board:
             print(str(self.board[i]).zfill(padding), end=" ")
             if (i + 1) % self.size == 0:
                 print()
-    @property
-    def get_board(self):
-        return self.board
-
-    '''
-    @property
-    def board(self):
-    return board
-
-    MyBoard.get_board
-    MyBoard.board
-    '''
 
     def valid_moves(self):
 
@@ -117,4 +117,5 @@ class Board:
             if self.board[i] != i + 1:
                 return False
 
+        # if on index 0 is 1, on index 1 is 2 ... we solved a puzzle
         return True
