@@ -5,6 +5,32 @@ class AStar:
     def __init__(self, start):
         self.start = start
 
+    def path(self, node):
+        all_moves = []
+        current = node
+
+        while current.parent is not None:
+            all_moves.append(current.move_that_was_made)
+            current = current.parent
+
+        all_moves.reverse()
+
+        return all_moves
+
+    def copy_node(self, node_to_copy):
+
+        size = node_to_copy.size
+        new_node = Board(size)
+
+        new_node.board = node_to_copy.board
+        new_node.f = node_to_copy.f
+        new_node.g = node_to_copy.g
+        new_node.h = node_to_copy.h
+        new_node.move_that_was_made = node_to_copy.move_that_was_made
+        new_node.parent = node_to_copy.parent
+
+        return new_node
+
     def a_star_search(self):
 
         # check if we reached a destination
@@ -50,11 +76,11 @@ class AStar:
                 new_current_node.move_that_was_made = possible_move
                 new_current_node.make_move(possible_move)
 
-                existing_node_closed = self.search_in_array(new_current_node, closed_list)
+                existing_node_closed = self.search_in_array_closed(new_current_node, closed_list)
 
                 if existing_node_closed is None:
 
-                    existing_node_open = self.search_in_array(new_current_node, open_list)
+                    existing_node_open = self.search_in_array_open(new_current_node, open_list)
 
                     if existing_node_open is None:
 
@@ -67,7 +93,7 @@ class AStar:
                         new_current_node.f = f_new
                         new_current_node.parent = current_node
 
-                        heapq.heappush(open_list, (f_new, new_current_node))
+                        heapq.heappush(open_list,(f_new, new_current_node.Id, new_current_node))
                     else:
                         if new_current_node.g < existing_node_open.g:
                             existing_node_open = self.copy_node(new_current_node)
@@ -79,33 +105,15 @@ class AStar:
         if not found_dest:
             print("Failed to find a solution")
 
-    def path(self, node):
-        all_moves = []
-        current = node
+    def search_in_array_closed(self, node, array):
 
-        while current.parent is not None:
-            all_moves.append(current.move_that_was_made)
-            current = current.parent
+        for element in array:
+            if element.Id == node.Id:
+                return element
 
-        all_moves.reverse()
+        return None
 
-        return all_moves
-
-    def copy_node(self, node_to_copy):
-
-        size = node_to_copy.size
-        new_node = Board(size)
-
-        new_node.board = node_to_copy.board
-        new_node.f = node_to_copy.f
-        new_node.g = node_to_copy.g
-        new_node.h = node_to_copy.h
-        new_node.move_that_was_made = node_to_copy.move_that_was_made
-        new_node.parent = node_to_copy.parent
-
-        return new_node
-
-    def search_in_array(self, node, array):
+    def search_in_array_open(self, node, array):
 
         for element in array:
             if element[2].Id == node.Id:
