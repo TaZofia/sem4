@@ -21,6 +21,7 @@ def main():
 
     my_board = Board(size)
     my_board.board = [1, 2, 3, 4, 5, 6, 7, 0, 8]
+    my_board.hash_board()
 
     astar = AStar(my_board)
     astar.a_star_search()

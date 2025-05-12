@@ -1,4 +1,8 @@
 import random
+import hashlib
+
+from pandas.core.util.hashing import hash_array
+
 
 class Board:
 
@@ -11,6 +15,7 @@ class Board:
         self.f = self.g + self.h
         self.move_that_was_made = None
         self.parent = parent
+        self.Id = None
 
     @property
     def get_board(self):
@@ -24,7 +29,6 @@ class Board:
     MyBoard.get_board
     MyBoard.board
     '''
-
     def _generate_perm(self):
         for i in range((self.size ** 2) - 1):
             self.board.append(i + 1)
@@ -32,6 +36,11 @@ class Board:
         random.shuffle(self.board)
         self.board.append(0)
 
+    def hash_board(self):
+        array_str = str(tuple(self.board))
+        hash_array = hashlib.md5(array_str.encode())
+
+        self.Id = hash_array.hexdigest()
 
     def _number_of_inversions(self):
         def merge_sort(arr):
@@ -113,6 +122,7 @@ class Board:
     def make_move(self, move):
         if move in self.valid_moves():
             self.board[move[0]], self.board[move[1]] = self.board[move[1]], self.board[move[0]]
+            self.hash_board()
         else:
             print("wrong move")
 

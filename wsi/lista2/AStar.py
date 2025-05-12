@@ -1,8 +1,5 @@
 from Board import Board
 import heapq
-import itertools
-
-counter = itertools.count()
 
 class AStar:
     def __init__(self, start):
@@ -25,7 +22,7 @@ class AStar:
 
         # cells to be visited
         open_list = []
-        heapq.heappush(open_list, (0, next(counter), self.start))    # cost of going to start is 0
+        heapq.heappush(open_list, (0, self.start.Id, self.start))    # cost of going to start is 0
 
         found_dest = False
 
@@ -35,6 +32,12 @@ class AStar:
             p = heapq.heappop(open_list)
 
             current_node = p[2]
+
+            if current_node.is_win():
+                print("Puzzle solved")
+                print(self.path(current_node))
+                found_dest = True
+                return
 
             # mark node as visited
             closed_list.append(current_node)
@@ -47,27 +50,31 @@ class AStar:
                 new_current_node.move_that_was_made = possible_move
                 new_current_node.make_move(possible_move)
 
-                if not new_current_node in closed_list:
-                    if current_node.is_win():
+                existing_node_closed = self.search_in_array(new_current_node, closed_list)
 
-                        new_current_node.parent = current_node   # old move becomes a parent of a new node
-                        print("Puzzle solved")
-                        print(self.path(new_current_node))
-                        found_dest = True
-                        return
-                    else:
+                if existing_node_closed is None:
+
+                    existing_node_open = self.search_in_array(new_current_node, open_list)
+
+                    if existing_node_open is None:
+
                         g_new = current_node.g + 1
                         h_new = new_current_node.manhattan_distance()
                         f_new = g_new + h_new
 
-                        if new_current_node.f == 0 or new_current_node.f > f_new:
-                            heapq.heappush(open_list, (f_new, next(counter), new_current_node))
+                        new_current_node.g = g_new
+                        new_current_node.h = h_new
+                        new_current_node.f = f_new
+                        new_current_node.parent = current_node
 
-                            new_current_node.g = g_new
-                            new_current_node.h = h_new
-                            new_current_node.f = f_new
-                            new_current_node.parent = current_node
+                        heapq.heappush(open_list, (f_new, new_current_node))
+                    else:
+                        if new_current_node.g < existing_node_open.g:
+                            existing_node_open = self.copy_node(new_current_node)
 
+        if len(open_list) == 0:
+            print("Incorrect")
+            return
 
         if not found_dest:
             print("Failed to find a solution")
@@ -98,4 +105,11 @@ class AStar:
 
         return new_node
 
+    def search_in_array(self, node, array):
+
+        for element in array:
+            if element[2].Id == node.Id:
+                return element[2]
+
+        return None
 
