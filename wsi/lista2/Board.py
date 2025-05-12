@@ -9,6 +9,7 @@ class Board:
         self.h = 0
         self.g = 0
         self.f = self.g + self.h
+        self.move_that_was_made = None
         self.parent = parent
 
     @property
@@ -126,13 +127,13 @@ class Board:
     def manhattan_distance(self):
 
         whole_distance = 0
-        for i in range(len(self.board)-1):
+        for i in range(len(self.board)):
             element = self.board[i]
 
             row_of_element = i // self.size
             column_of_element = i % self.size
 
-            proper_index = element + 1
+            proper_index = element - 1
             if element == 0:
                 proper_index = len(self.board)-1
 
