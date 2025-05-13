@@ -1,8 +1,7 @@
-from sklearn.utils.arrayfuncs import cholesky_delete
-
 from AStar import AStar
 from Board import Board
-from Manhattan import Manhattan
+import time
+import random
 
 def get_user_input():
     while True:
@@ -17,6 +16,7 @@ def get_user_input():
 
 def main():
 
+    '''
     size = 3
 
     while True:
@@ -27,8 +27,54 @@ def main():
     my_board.print_board()
 
     astar = AStar(my_board)
-    astar.a_star_search()
+    time_start = time.time()
+    result = astar.a_star_search()
+    time_end = time.time()
 
+    if result == None:
+        print("No solution found.")
+    else:
+        print("Puzzle solved!")
+        print(result)
+        print("Time elapsed: " + str(time_end - time_start))
+    '''
+    size = 4
+
+    my_board = Board(size)
+
+    my_board.board = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
+    my_board.hash_board()
+
+    previous_move = None
+    inverse_move = None
+
+    for i in range(20):
+        moves = my_board.valid_moves()
+        while True:
+            index = random.randint(0, len(moves) - 1)
+            move = moves[index]
+            if move != inverse_move:
+                break
+
+        my_board.make_move(move)
+        previous_move = move
+        inverse_move = (previous_move[1], previous_move[0])
+
+
+    my_board.print_board()
+
+    astar = AStar(my_board)
+    time_start = time.time()
+    result = astar.a_star_search()
+    time_end = time.time()
+
+    if result == None:
+        print("No solution found.")
+    else:
+        print("Puzzle solved!")
+        print(result)
+        print("Number of moves: " , len(result))
+        print("Time elapsed: " + str(time_end - time_start))
 
 
 if __name__ == "__main__":

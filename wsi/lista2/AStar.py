@@ -60,11 +60,8 @@ class AStar:
             current_node = p[2]
 
             if current_node.is_win():
-                print("Puzzle solved")
-                print(self.path(current_node))
-                current_node.print_board()
                 found_dest = True
-                return
+                return self.path(current_node)
 
             # mark node as visited
             closed_list.append(current_node)
@@ -100,11 +97,10 @@ class AStar:
                             existing_node_open = self.copy_node(new_current_node)
 
         if len(open_list) == 0:
-            print("Incorrect")
-            return
+            return None
 
         if not found_dest:
-            print("Failed to find a solution")
+            return None
 
     def search_in_array_closed(self, node, array):
 
