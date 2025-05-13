@@ -16,6 +16,7 @@ class Board:
         self.move_that_was_made = None
         self.parent = parent
         self.Id = None
+        self.hash_board()      # hash and set Id
 
     @property
     def get_board(self):

@@ -22,7 +22,7 @@ class AStar:
         size = node_to_copy.size
         new_node = Board(size)
 
-        new_node.board = node_to_copy.board
+        new_node.board = node_to_copy.board.copy()      # copy an array not reference
         new_node.f = node_to_copy.f
         new_node.g = node_to_copy.g
         new_node.h = node_to_copy.h
@@ -62,6 +62,7 @@ class AStar:
             if current_node.is_win():
                 print("Puzzle solved")
                 print(self.path(current_node))
+                current_node.print_board()
                 found_dest = True
                 return
 

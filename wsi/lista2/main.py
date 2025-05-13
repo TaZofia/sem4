@@ -16,15 +16,19 @@ def get_user_input():
             print("Invalid input. Please enter an integer.")
 
 def main():
-    # size = get_user_input()
+
     size = 3
 
-    my_board = Board(size)
-    my_board.board = [1, 2, 3, 4, 5, 6, 7, 0, 8]
-    my_board.hash_board()
+    while True:
+        my_board = Board(size)
+        if my_board.can_be_solved():
+            break
+
+    my_board.print_board()
 
     astar = AStar(my_board)
     astar.a_star_search()
+
 
 
 if __name__ == "__main__":
