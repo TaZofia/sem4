@@ -36,6 +36,7 @@ def main():
     else:
         print("Puzzle solved!")
         print(result)
+        print("Number of moves: " , len(result))
         print("Time elapsed: " + str(time_end - time_start))
     '''
     size = 4
@@ -48,7 +49,7 @@ def main():
     previous_move = None
     inverse_move = None
 
-    for i in range(20):
+    for i in range(30):
         moves = my_board.valid_moves()
         while True:
             index = random.randint(0, len(moves) - 1)
