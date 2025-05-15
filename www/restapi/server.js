@@ -1,3 +1,17 @@
+require("dotenv").config();
+
 const express = require("express");
+const connectDB = require("./connectDB");
+
 const app = express();
-app.listen(3000, () => console.log("server has started at port 3000"));
+
+(async () => {
+    await connectDB();
+
+    app.use(express.json());
+
+    const PORT = process.env.PORT;
+    app.listen(PORT, () => {
+        console.log(`Server starts on port ${PORT}`);
+    });
+})();
