@@ -16,8 +16,7 @@ def get_user_input():
 
 def main():
 
-    '''
-    size = 3
+    size = 4
 
     while True:
         my_board = Board(size)
@@ -76,6 +75,8 @@ def main():
         print(result)
         print("Number of moves: " , len(result))
         print("Time elapsed: " + str(time_end - time_start))
+    
+    '''
 
 
 if __name__ == "__main__":

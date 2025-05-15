@@ -16,7 +16,7 @@ class Board:
         self.move_that_was_made = None
         self.parent = parent
         self.Id = None
-        self.hash_board()      # hash and set Id
+        self.count_Id()
 
     @property
     def get_board(self):
@@ -123,7 +123,7 @@ class Board:
     def make_move(self, move):
         if move in self.valid_moves():
             self.board[move[0]], self.board[move[1]] = self.board[move[1]], self.board[move[0]]
-            self.hash_board()
+            self.count_Id()
         else:
             print("wrong move")
 
@@ -158,5 +158,9 @@ class Board:
 
             whole_distance += dist
 
-        return whole_distance
+        return whole_distance + self._number_of_inversions()
 
+    def count_Id(self):
+
+        board_string = '0'.join(str(x) for x in self.board)
+        self.Id = board_string
