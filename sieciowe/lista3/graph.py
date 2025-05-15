@@ -8,17 +8,15 @@ import random
 from matplotlib import pyplot as plt
 
 m = 1000
-T_max = 0.002       # max value, T - it is the average delay in network
+T_max = 0.002  # max value, T - it is the average delay in network
 p = 0.75
-
 
 
 def get_graph():
     G = nx.Graph()
 
     for i in range(1, 21):
-        G.add_node(f'v{i}')     # nodes
-
+        G.add_node(f'v{i}')  # nodes
 
     G.add_edges_from([
         ('v1', 'v2'), ('v1', 'v3'), ('v1', 'v4'),
@@ -69,7 +67,7 @@ def get_N():
         [6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4]
     ])
 
-    for i in range(20):     # nobody sends a packet itself
+    for i in range(20):  # nobody sends a packet itself
         N[i][i] = 0
 
     return N
@@ -106,8 +104,10 @@ def calculate_a(G, N):
                     continue
     return a
 
+
 def calculate_c(G):
     return {e: randint(2000, 2200) * m for e in G.edges}
+
 
 def check_if_viable(G, a, c):
     for e in G.edges:
@@ -115,27 +115,71 @@ def check_if_viable(G, a, c):
             return False
     return True
 
-def compute_network_delay(G, N, c, a):
-    # Calculate total packet intensity
-    G_sum = np.sum(N)
-    # Compute delay sum using the formula (ensure division is proper)
-    delay_sum = sum(a.get(e, 0) / (c.get(e, 1) / m - a.get(e, 0)) for e in G.edges)
-    T = (1 / G_sum) * delay_sum
+
+def compute_network_delay(G, N, c, a, m):
+    # Oblicza średnie opóźnienie T w sieci.
+    # Argumenty:
+    # G: graf NetworkX z krawędziami E
+    # N: macierz natężeń (używana tylko do sumy G_sum)
+    # c: słownik {e: przepustowość w bitach/s}
+    # a: słownik {e: przepływ w pakietach/s}
+    # m: średni rozmiar pakietu w bitach
+    # ZwracaT: średnie opóźnienie w sekundach
+    # Podnosi ValueError, jeśli którakolwiek krawędź jest przeciążona (c/m <= a).
+
+    # Suma wszystkich pakietów w sieci
+    G_sum = float(N.sum())
+
+    # Walidacja – sprawdź każdą krawędź, czy nie jest przeciążona
+    for e in G.edges:
+        residual_rate = c[e] / m - a[e]
+        if residual_rate <= 0:
+            raise ValueError(
+                f"Przepustowość na krawędzi {e} jest za mała: "
+                f"c(e)/m = {c[e]}/{m} = {c[e] / m:.3f}, "
+                f"a(e) = {a[e]}. Musi być c(e)/m > a(e)."
+            )
+
+    # Sumowanie opóźnień po wszystkich krawędziach
+    delay_sum = 0.0
+    for e in G.edges:
+        delay_sum += a[e] / (c[e] / m - a[e])
+        # c[e] / m to średnia liczba pakietów które można przesłać przez krawędź
+        # a to natęźenie przychodzenia pakietu
+
+    # Średnie opóźnienie sieci
+    T = delay_sum / G_sum
     return T
 
+
 def estimate_reliability(G, N, c, num_samples=500):
-    count = 0
+    count = 0  # Licznik przypadków, w których sieć spełnia warunek opóźnienia
     for _ in range(num_samples):
-        G_temp = G.copy()
+        G_temp = G.copy()  # Tworzymy kopię oryginalnej sieci, aby ją modyfikować
+
+        # Symulujemy awarie krawędzi w sieci
         for e in list(G.edges):
-            if random.random() > p:  # simulate edge failure
+            if random.random() > p:  # Z prawdopodobieństwem 1-p usuwamy krawędź (awaria)
                 G_temp.remove_edge(*e)
+
+        # Sprawdzamy, czy sieć nadal jest spójna (czy wszystkie węzły są połączone)
         if nx.is_connected(G_temp):
-            a = calculate_a(G, N)
-            T = compute_network_delay(G_temp, N, c, a)
-            if T < T_max:
-                count += 1
+            a = calculate_a(G_temp, N)  # Obliczamy ruch na krawędziach w zmodyfikowanej sieci
+
+            try:
+                # Obliczamy całkowite opóźnienie sieci
+                T = compute_network_delay(G_temp, N, c, a, m)
+
+                # Jeżeli opóźnienie jest mniejsze niż maksymalne dopuszczalne, zaliczamy próbkę
+                if T < T_max:
+                    count += 1
+            except ValueError:
+                # Jeżeli nie uda się obliczyć opóźnienia (np. przez dzielenie przez 0), pomijamy próbkę
+                continue
+
+    # Zwracamy odsetek przypadków, w których sieć działa poprawnie – to estymowana niezawodność
     return count / num_samples
+
 
 def run_experiments():
     G = get_graph()
@@ -146,19 +190,45 @@ def run_experiments():
     draw_graph(G)
 
     print("\n--- Eksperymenty dla różnych wartości N: ---\n")
-    for scale in [1, 2, 3, 4, 5]:
+
+    scales = [1, 2, 3, 4, 5]
+    mean_reliabilities = []
+
+    for scale in scales:
         print(f'N x {scale}')
         N_scaled = (N * scale).astype(int)
         a_scaled = calculate_a(G, N_scaled)
         viable = check_if_viable(G, a_scaled, c)
-        if not viable:
-            print("dupadupadupadupa\n")
-        else:
-            print("Original network delay:", compute_network_delay(G, N, c, a))
-            print("New network delay:", compute_network_delay(G, N_scaled, c, a_scaled))
-            reliability = estimate_reliability(G, N_scaled, c)
-            print(f'Reliability: {reliability}\n')
 
+        if not viable:
+            print("Wrong\n")
+            mean_reliabilities.append(0.0)  # Dodajemy 0.0 jako placeholder
+        else:
+            # Obliczamy średnią niezawodność z 100000 prób
+            num_trials = 100_000
+            batch_size = 1000  # Dzielimy na mniejsze partie, żeby nie przeciążyć RAMu
+            batches = num_trials // batch_size
+            reliability_sum = 0.0
+
+            for _ in range(batches):
+                reliability_sum += estimate_reliability(G, N_scaled, c, num_samples=batch_size)
+
+            avg_reliability = reliability_sum / batches
+            mean_reliabilities.append(avg_reliability)
+
+            print("Original network delay:", compute_network_delay(G, N, c, a, m))
+            print("New network delay:", compute_network_delay(G, N_scaled, c, a_scaled, m))
+            print(f'Avg Reliability over {num_trials} samples: {avg_reliability}\n')
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(scales, mean_reliabilities, marker='o', linestyle='-')
+    plt.xlabel("Współczynnik skali (N x scale)")
+    plt.ylabel("Średnia niezawodność")
+    plt.title("Średnia niezawodność sieci vs. skala natężenia ruchu")
+    plt.grid(True)
+    plt.xticks(scales)
+    plt.ylim(0, 1)
+    plt.show()
 
     print("\n--- Eksperymenty dla różnych wartości c: ---\n")
     for scale in [1, 5, 10, 30]:
@@ -166,10 +236,10 @@ def run_experiments():
         c_scaled = {e: int(c[e] * scale) for e in G.edges}
         viable = check_if_viable(G, a, c_scaled)
         if not viable:
-            print("dupadupadupadupa\n")
+            print("Wrong\n")
         else:
-            print("Original network delay:", compute_network_delay(G, N, c, a))
-            print("New network delay:", compute_network_delay(G, N, c_scaled, a))
+            print("Original network delay:", compute_network_delay(G, N, c, a, m))
+            print("New network delay:", compute_network_delay(G, N, c_scaled, a, m))
             reliability = estimate_reliability(G, N, c_scaled)
             print(f'Reliability: {reliability}\n')
 
@@ -188,10 +258,10 @@ def run_experiments():
 
         viable = check_if_viable(G_extended, a_extended, c_extended)
         if not viable:
-            print("dupadupadupadupa\n")
+            print("Wrong\n")
         else:
-            print("Original network delay:", compute_network_delay(G, N, c, a))
-            print("New network delay:", compute_network_delay(G_extended, N, c_extended, a_extended))
+            print("Original network delay:", compute_network_delay(G, N, c, a, m))
+            print("New network delay:", compute_network_delay(G_extended, N, c_extended, a_extended, m))
             reliability = estimate_reliability(G_extended, N, c_extended)
             print(f'Reliability: {reliability}\n')
 

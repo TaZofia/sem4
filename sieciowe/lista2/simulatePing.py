@@ -30,6 +30,9 @@ if __name__ == "__main__":
     ip1 = "192.168.115.43"  # Spoofed source - the device i pretend to be
     ip2 = "192.168.115.31"  # Spoofed destination - my victim
 
+    #ip1 = "192.168.10.75"
+    #ip2 = "192.168.10.108"
+
     for i in range(1, 5):  # Simulate 4 ping attempts
         simulate_ping(ip1, ip2, id=1234, seq=i)
         time.sleep(1)
