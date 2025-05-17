@@ -16,4 +16,10 @@ router.put("/:id", getUser, userController.updateUser);
 
 router.delete("/:id", getUser, userController.deleteUser);
 
+// login
+router.post("/login", userController.loginUser);
+
+// /users/me – already logged user
+router.get("/me", authenticateToken, userController.getLoggedInUser);
+
 module.exports = router;

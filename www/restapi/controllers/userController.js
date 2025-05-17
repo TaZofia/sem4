@@ -1,19 +1,25 @@
 const User = require("../models/user");
 
+const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = process.env.JWT_SECRET_KEY;
+
 exports.getAllUsers = async function (req, res) {
     try {
-        const users = await User.find()
+        const users = await User.find().select("-password")
         res.json(users)
     } catch (err) {
         res.status(500).json({message: err.message})
     }
-};
+}
 
 exports.createUser = async function (req, res) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         role: req.body.role,
     });
     try {
@@ -22,11 +28,11 @@ exports.createUser = async function (req, res) {
     } catch (err) {
         res.status(400).json({message: err.message})
     }
-};
+}
 
 exports.getUserById = async function (req, res) {
     res.json(req.user)
-};
+}
 
 exports.updateUser = async function (req, res) {
     // we assume that is already in res.user (was loaded by middleware)
@@ -39,7 +45,7 @@ exports.updateUser = async function (req, res) {
             res.user.email = req.body.email;
         }
         if (req.body.password != null) {
-            res.user.password = req.body.password;
+            res.user.password = await bcrypt.hash(req.body.password, 10);
         }
         if (req.body.role != null) {
             res.user.role = req.body.role;
@@ -49,7 +55,7 @@ exports.updateUser = async function (req, res) {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-};
+}
 
 exports.deleteUser = async function (req, res) {
     try {
@@ -58,4 +64,37 @@ exports.deleteUser = async function (req, res) {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
+
+exports.loginUser = async function (req, res) {
+    const { username, password } = req.body;
+    try {
+        const user = await User.findOne({ username });
+        if (!user) return res.status(401).json({ message: "Invalid credentials" });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.json({ token });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+exports.getLoggedInUser = async function (req, res) {
+    try {
+        const user = await User.findById(req.userId).select("-password"); // usuń hasło z odpowiedzi
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
