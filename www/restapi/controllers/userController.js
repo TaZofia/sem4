@@ -5,7 +5,18 @@ const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
+// req - it is request which sends client to server
+// res - server's response
+
 exports.getAllUsers = async function (req, res) {
+
+    let isAdmin;
+    isAdmin = req.userRole === 'admin';
+
+    if (!isAdmin) {
+        return res.status(403).json({ message: "Forbidden: Only admin can see all the users!" });
+    }
+
     try {
         const users = await User.find().select("-password")
         res.json(users)
@@ -15,18 +26,27 @@ exports.getAllUsers = async function (req, res) {
 }
 
 exports.createUser = async function (req, res) {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashedPassword,
-        role: req.body.role,
-    });
     try {
+        const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Username, email and password are required" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = new User({
+            username,
+            email,
+            password: hashedPassword,
+            role: 'user',  // we can create only users
+        });
+
         const newUser = await user.save();
-        res.status(201).json({newUser});
+
+        res.status(201).json({ newUser });
     } catch (err) {
-        res.status(400).json({message: err.message})
+        res.status(400).json({ message: err.message });
     }
 }
 
@@ -39,7 +59,15 @@ exports.updateUser = async function (req, res) {
     let isAdmin;
     isAdmin = req.userRole === 'admin';
 
-    // TO DO finish who can edit who
+    // when non admin user tries to update any other user - forbidden
+    if (!isAdmin && req.userId !== res.user._id.toString()) {
+        return res.status(403).json({ message: "Forbidden: You can only update your own account" });
+    }
+
+    // when admin tries to update other admin - forbidden
+    if (isAdmin && res.user.role === 'admin' && req.userId !== res.user._id.toString()) {
+        return res.status(403).json({ message: "Forbidden: Admins cannot edit other admins" });
+    }
 
     // we assume that is already in res.user (was loaded by middleware)
     try {
@@ -54,7 +82,12 @@ exports.updateUser = async function (req, res) {
             res.user.password = await bcrypt.hash(req.body.password, 10);
         }
         if (req.body.role != null) {
-            res.user.role = req.body.role;
+            if (isAdmin) {
+                res.user.role = req.body.role;
+            } else {
+                // user can't change its role !never!
+                return res.status(403).json({ message: "Forbidden: Only admins can change roles" });
+            }
         }
         const updatedUser = await res.user.save();
         res.json(updatedUser);
@@ -64,6 +97,20 @@ exports.updateUser = async function (req, res) {
 }
 
 exports.deleteUser = async function (req, res) {
+
+    let isAdmin;
+    isAdmin = req.userRole === 'admin';
+
+    // when non admin user tries to delete any other user - forbidden
+    if (!isAdmin && req.userId !== res.user._id.toString()) {
+        return res.status(403).json({ message: "Forbidden: You can only delete your own account" });
+    }
+
+    // when admin tries to delete other admin - forbidden
+    if (isAdmin && res.user.role === 'admin' && req.userId !== res.user._id.toString()) {
+        return res.status(403).json({ message: "Forbidden: Admins cannot delete other admins" });
+    }
+
     try {
         await res.user.remove();
         res.json({ message: "User deleted" });

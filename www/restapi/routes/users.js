@@ -6,22 +6,22 @@ const authenticateToken = require("../middleware/auth");
 
 // order of endpoints is important
 // get the list of users
-router.get("/", userController.getAllUsers);
+router.get("/", authenticateToken, userController.getAllUsers);
 
-// add user
+// add user - for everyone, auth not needed
 router.post("/", userController.createUser);
 
 // /users/me – already logged user
 router.get("/me", authenticateToken, userController.getLoggedInUser);
 
 // get user with id
-router.get("/:id", getUser, userController.getUserById);
+router.get("/:id", getUser, authenticateToken, userController.getUserById);
 
-router.put("/:id", getUser, userController.updateUser);
+router.put("/:id", getUser, authenticateToken, userController.updateUser);
 
-router.delete("/:id", getUser, userController.deleteUser);
+router.delete("/:id", getUser, authenticateToken, userController.deleteUser);
 
-// login
+// login - for everyone
 router.post("/login", userController.loginUser);
 
 module.exports = router;
