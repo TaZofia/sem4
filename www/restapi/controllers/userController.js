@@ -3,7 +3,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY;
+const SECRET_KEY = process.env.JWT_SECRET;
 
 exports.getAllUsers = async function (req, res) {
     try {
@@ -75,10 +75,11 @@ exports.loginUser = async function (req, res) {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
+        // we pass a user id and user role in token
         const token = jwt.sign(
             { id: user._id, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
+            SECRET_KEY,
+            { expiresIn: "2h" }
         );
 
         res.json({ token });
@@ -87,9 +88,10 @@ exports.loginUser = async function (req, res) {
     }
 }
 
+// get a data from user whose id was in the token
 exports.getLoggedInUser = async function (req, res) {
     try {
-        const user = await User.findById(req.userId).select("-password"); // usuń hasło z odpowiedzi
+        const user = await User.findById(req.userId).select("-password"); // delete password from response
         if (!user) return res.status(404).json({ message: "User not found" });
 
         res.json(user);
