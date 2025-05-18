@@ -17,6 +17,12 @@ const app = express();
     const userRouter = require("./routes/users");
     app.use("/users", userRouter);
 
+    const productsRouter = require("./routes/products");
+    app.use("/products", productsRouter);
+
+    const reviewsRouter = require("./routes/reviews");
+    app.use("/reviews", reviewsRouter);
+
     const PORT = process.env.PORT;
     app.listen(PORT, () => {
         console.log(`Server starts on port ${PORT}`);
