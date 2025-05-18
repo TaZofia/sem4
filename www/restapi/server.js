@@ -1,3 +1,6 @@
+// run mongo:
+// mongod --dbpath "K:\Program Files\MongoDB\Server\8.0\data"
+
 require("dotenv").config();
 
 const express = require("express");
