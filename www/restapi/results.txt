@@ -1,0 +1,53 @@
+Sprawozdanie z testowania RESTful API aplikacji do zarządzania produktami, użytkownikami i recenzjami.
+Narzędzie użyte do testowania to Postman.
+Celem testów była weryfikacja poprawności działania endpointów, autoryzacji, kontroli dostępu oraz walidacji danych wejściowych. 
+API zostało zaimplementowane z użyciem platformy Node.js, Express oraz bazy danych MongoDB.
+Autoryzacja przebiega za pomocą tokenów JWT.
+
+
+1. Logowanie użytkowników
+W pierwszej kolejności wykonano testy logowania dwóch typów użytkowników: zwykłego oraz administratora.
+
+POST /login jako user – żądanie zawierało dane autoryzacyjne użytkownika zwykłego. Oczekiwanym rezultatem było otrzymanie poprawnego tokena JWT. Test zakończył się sukcesem.
+
+POST /login jako admin – analogiczne żądanie, lecz dotyczące konta administratora. Również w tym przypadku serwer poprawnie zwrócił token JWT.
+
+
+
+2. Walidacja autoryzacji i kontroli dostępu
+Testy miały na celu sprawdzenie, czy użytkownik z odpowiednią rolą ma dostęp do konkretnych zasobów:
+
+GET /users/me - informacje o aktualnie zalogowanym użytkowniku
+
+GET /users jako user – użytkownik próbował pobrać listę wszystkich użytkowników. Żądanie zostało zablokowane – API poprawnie odmówiło dostępu (brak uprawnień).
+
+GET /users jako admin – administrator wykonał to samo żądanie i uzyskał prawidłową odpowiedź z listą użytkowników.
+
+PUT /users/:id – zmiana uprawnień – przetestowano możliwość modyfikacji roli użytkownika. Operacja była możliwa tylko po uprzednim uwierzytelnieniu jako administrator.
+
+DELETE /users/:id – próba usunięcia admina – użytkownik bez uprawnień próbował usunąć konto administratora. Żądanie zostało prawidłowo odrzucone.
+
+
+3. Zarządzanie produktami
+
+POST /products – dodanie nowego produktu – żądanie zostało wykonane przez użytkownika z rolą administratora. Dodano produkt z parametrami: nazwa, opis, cena, kategoria. Operacja zakończyła się sukcesem.
+
+GET /products – pobieranie wszystkich produktów – test potwierdził poprawne działanie endpointu bez parametrów filtrowania.
+
+GET /products?category=sport – filtrowanie po kategorii – użytkownik pobrał jedynie produkty z kategorii "sport". Zwrócone zostały dane zgodne z oczekiwaniami.
+
+GET /products?sort=price – sortowanie po cenie – API poprawnie posortowało dane według ceny.
+
+GET /products?page=2&limit=2 – paginacja – test zwrócił drugą stronę wyników z ograniczeniem do dwóch produktów. Dzięki temu potwierdzono, że mechanizm paginacji działa prawidłowo.
+
+4. Obsługa recenzji
+Recenzje stanowią zasób zależny zarówno od użytkownika, jak i od produktu. Testy sprawdzały m.in. powiązanie recenzji z użytkownikami i produkty oraz ochronę danych:
+
+GET /reviews – przegląd recenzji – użytkownik uzyskał dostęp do listy wszystkich recenzji.
+
+DELETE /reviews/:id – usunięcie recenzji przez innego użytkownika – przetestowano próbę usunięcia recenzji przez osobę niebędącą autorem. API zablokowało żądanie, potwierdzając prawidłowe działanie logiki autoryzacji.
+
+GET /products/:id/reviews – wyświetlanie recenzji produktu. Działanie prawidłowe dostępne również dla zwykłego użytkownika.
+
+Podsumowanie:
+Wszystkie wykonane doświadczenia potwierdzają poprawność działania API.

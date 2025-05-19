@@ -10,7 +10,7 @@ async function getProduct(req, res, next) {
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
-    res.product = product;
+    req.product = product;
     next();
 }
 

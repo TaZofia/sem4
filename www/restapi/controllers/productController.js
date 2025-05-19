@@ -1,19 +1,42 @@
 const Product = require("../models/product");
 
 exports.getAllProducts = async (req, res) => {
+    const { page = 1, limit = 10, category, minPrice, maxPrice, sort } = req.query;
+
+    const filter = {};
+    if (category) filter.category = category;
+    if (minPrice) filter.price = { ...filter.price, $gte: parseFloat(minPrice) };
+    if (maxPrice) filter.price = { ...filter.price, $lte: parseFloat(maxPrice) };
+
+    const sortOption = {};
+    if (sort) {
+        const sortField = sort.startsWith('-') ? sort.substring(1) : sort;
+        sortOption[sortField] = sort.startsWith('-') ? -1 : 1;
+    }
+
     try {
-        const products = await Product.find()
-        res.json(products)      // parse the output to json format and send it to client
+        const products = await Product.find(filter)
+            .sort(sortOption)
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit));
+
+        res.json(products);
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({ message: err.message });
     }
 };
+
 
 exports.getProductById = async (req, res) => {
     res.json(req.product)
 };
 
 exports.createProduct = async function (req, res) {
+
+    if (req.userRole !== "admin") {
+        return res.status(403).json({ message: "Only admin can create products." });
+    }
+
     const product = new Product({
         name: req.body.name,
         description: req.body.description,
@@ -26,30 +49,13 @@ exports.createProduct = async function (req, res) {
     } catch (err) {
         res.status(400).json({message: err.message})
     }
-
-};
-exports.updateProduct = async (req, res) => {
-    try {
-        if(req.body.name != null) {
-            res.product.name = req.body.name;
-        }
-        if(req.body.description != null) {
-            res.product.description = req.body.description;
-        }
-        if(req.body.price != null) {
-            res.product.price = req.body.price;
-        }
-        if(req.body.category == null) {
-            res.product.category = req.body.category;
-        }
-        const updatedProduct = await res.product.save();    // res.product is an object i database and we save it after changes
-        res.json(updatedProduct);
-    } catch (err) {
-        res.status(400).json({message: err.message})
-    }
 };
 
 exports.deleteProduct = async (req, res) => {
+    if (req.userRole !== "admin") {
+        return res.status(403).json({ message: "Only admin can delete products." });
+    }
+
     try {
         await res.product.remove();
         res.json({message: "Product deleted successfully."});
@@ -57,5 +63,4 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 }
-
 
