@@ -141,7 +141,9 @@ exports.loginUser = async function (req, res) {
         const token = jwt.sign(
             { id: user._id, role: user.role },
             SECRET_KEY,
-            { expiresIn: "2h" }
+            {
+                algorithm: "HS512",
+                expiresIn: "2h" }
         );
 
         res.json({ token });
