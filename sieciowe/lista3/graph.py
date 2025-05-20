@@ -80,6 +80,7 @@ def draw_graph(G):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
     plt.title("Network")
     plt.show()
+    plt.savefig("graph_pic.png")
 
 
 def calculate_a(G, N):
@@ -189,82 +190,152 @@ def run_experiments():
 
     draw_graph(G)
 
-    print("\n--- Eksperymenty dla różnych wartości N: ---\n")
+    num_repetitions = 10000
 
-    scales = [1, 2, 3, 4, 5]
-    mean_reliabilities = []
+    # Eksperyment 1: Różne wartości N
+    N_scales = [1, 2, 3, 4, 5]
+    delay_results_N = []
+    reliability_results_N = []
 
-    for scale in scales:
-        print(f'N x {scale}')
-        N_scaled = (N * scale).astype(int)
-        a_scaled = calculate_a(G, N_scaled)
-        viable = check_if_viable(G, a_scaled, c)
+    print("\n--- Eksperymenty dla różnych wartości N ---\n")
+    for scale in N_scales:
+        print("N_scale: ", scale)
+        total_delay = 0
+        total_reliability = 0
+        successful_runs = 0
 
-        if not viable:
-            print("Wrong\n")
-            mean_reliabilities.append(0.0)  # Dodajemy 0.0 jako placeholder
-        else:
-            # Obliczamy średnią niezawodność z 100000 prób
-            num_trials = 100_000
-            batch_size = 1000  # Dzielimy na mniejsze partie, żeby nie przeciążyć RAMu
-            batches = num_trials // batch_size
-            reliability_sum = 0.0
+        for _ in range(num_repetitions):
+            N_scaled = (N * scale).astype(int)
+            a_scaled = calculate_a(G, N_scaled)
+            if not check_if_viable(G, a_scaled, c):
+                continue
+            delay = compute_network_delay(G, N_scaled, c, a_scaled, m)
+            reliability = estimate_reliability(G, N_scaled, c)
+            total_delay += delay
+            total_reliability += reliability
+            successful_runs += 1
 
-            for _ in range(batches):
-                reliability_sum += estimate_reliability(G, N_scaled, c, num_samples=batch_size)
+        avg_delay = total_delay / successful_runs if successful_runs else None
+        avg_reliability = total_reliability / successful_runs if successful_runs else None
+        delay_results_N.append(avg_delay)
+        reliability_results_N.append(avg_reliability)
 
-            avg_reliability = reliability_sum / batches
-            mean_reliabilities.append(avg_reliability)
+    # Eksperyment 2: Różne wartości c
+    c_scales = [1, 5, 10, 15, 20, 25, 30]
+    delay_results_c = []
+    reliability_results_c = []
 
-            print("Original network delay:", compute_network_delay(G, N, c, a, m))
-            print("New network delay:", compute_network_delay(G, N_scaled, c, a_scaled, m))
-            print(f'Avg Reliability over {num_trials} samples: {avg_reliability}\n')
+    print("\n--- Eksperymenty dla różnych wartości c ---\n")
+    for scale in c_scales:
+        print("c_scale: ", scale)
+        total_delay = 0
+        total_reliability = 0
+        successful_runs = 0
+
+        for _ in range(num_repetitions):
+            c_scaled = {e: int(c[e] * scale) for e in G.edges}
+            if not check_if_viable(G, a, c_scaled):
+                continue
+            delay = compute_network_delay(G, N, c_scaled, a, m)
+            reliability = estimate_reliability(G, N, c_scaled)
+            total_delay += delay
+            total_reliability += reliability
+            successful_runs += 1
+
+        avg_delay = total_delay / successful_runs if successful_runs else None
+        avg_reliability = total_reliability / successful_runs if successful_runs else None
+        delay_results_c.append(avg_delay)
+        reliability_results_c.append(avg_reliability)
+
+    # Eksperyment 3: Różne topologie (dodawanie losowych krawędzi)
+    extra_edges_options = [1, 5, 10, 15, 20, 25, 30]
+    delay_results_topology = []
+    reliability_results_topology = []
+
+    print("\n--- Eksperymenty dla różnych topologii ---\n")
+    for extra_edges in extra_edges_options:
+        print("extra_edges: ", extra_edges)
+        total_delay = 0
+        total_reliability = 0
+        successful_runs = 0
+
+        for _ in range(num_repetitions):
+            new_edges = []
+            for _ in range(extra_edges):
+                u, v = ("v" + str(random.randint(1, 20))), ("v" + str(random.randint(1, 20)))
+                if u != v:
+                    new_edges.append((u, v))
+
+            G_extended = G.copy()
+            G_extended.add_edges_from(new_edges)
+            c_extended = {e: c.get(e, random.randint(2000, 2200) * m) for e in G_extended.edges}
+            a_extended = calculate_a(G_extended, N)
+
+            if not check_if_viable(G_extended, a_extended, c_extended):
+                continue
+            delay = compute_network_delay(G_extended, N, c_extended, a_extended, m)
+            reliability = estimate_reliability(G_extended, N, c_extended)
+            total_delay += delay
+            total_reliability += reliability
+            successful_runs += 1
+
+        avg_delay = total_delay / successful_runs if successful_runs else None
+        avg_reliability = total_reliability / successful_runs if successful_runs else None
+        delay_results_topology.append(avg_delay)
+        reliability_results_topology.append(avg_reliability)
+
+    # --- Wykresy ---
+
+    # Eksperyment 1: N
+    plt.figure(figsize=(8, 5))
+    plt.plot(N_scales, delay_results_N, marker='o', color='blue')
+    plt.xlabel("N scale")
+    plt.ylabel("Average Network Delay")
+    plt.title("Delay vs N scale")
+    plt.grid(True)
+    plt.savefig("N_network_delay.png")
 
     plt.figure(figsize=(8, 5))
-    plt.plot(scales, mean_reliabilities, marker='o', linestyle='-')
-    plt.xlabel("Współczynnik skali (N x scale)")
-    plt.ylabel("Średnia niezawodność")
-    plt.title("Średnia niezawodność sieci vs. skala natężenia ruchu")
+    plt.plot(N_scales, reliability_results_N, marker='o', color='green')
+    plt.xlabel("N scale")
+    plt.ylabel("Average Reliability")
+    plt.title("Reliability vs N scale")
     plt.grid(True)
-    plt.xticks(scales)
-    plt.ylim(0, 1)
-    plt.show()
+    plt.savefig("N_reliability.png")
 
-    print("\n--- Eksperymenty dla różnych wartości c: ---\n")
-    for scale in [1, 5, 10, 30]:
-        print(f'c x {scale}')
-        c_scaled = {e: int(c[e] * scale) for e in G.edges}
-        viable = check_if_viable(G, a, c_scaled)
-        if not viable:
-            print("Wrong\n")
-        else:
-            print("Original network delay:", compute_network_delay(G, N, c, a, m))
-            print("New network delay:", compute_network_delay(G, N, c_scaled, a, m))
-            reliability = estimate_reliability(G, N, c_scaled)
-            print(f'Reliability: {reliability}\n')
+    # Eksperyment 2: c
+    plt.figure(figsize=(8, 5))
+    plt.plot(c_scales, delay_results_c, marker='s', color='red')
+    plt.xlabel("c scale")
+    plt.ylabel("Average Network Delay")
+    plt.title("Delay vs c scale")
+    plt.grid(True)
+    plt.savefig("c_network_delay.png")
 
-    print("\n--- Eksperymenty dla różnych topologii: ---\n")
-    for extra_edges in [1, 5, 10, 30]:
-        print(f'extra edges: {extra_edges}')
-        new_edges = []
-        for _ in range(extra_edges):
-            u, v = ("v" + str(random.randint(1, 20))), ("v" + str(random.randint(1, 20)))
-            if u != v:
-                new_edges.append((u, v))
-        G_extended = G.copy()
-        G_extended.add_edges_from(new_edges)
-        c_extended = {e: c.get(e, randint(2000, 2200) * m) for e in G_extended.edges}
-        a_extended = calculate_a(G_extended, N)
+    plt.figure(figsize=(8, 5))
+    plt.plot(c_scales, reliability_results_c, marker='s', color='orange')
+    plt.xlabel("c scale")
+    plt.ylabel("Average Reliability")
+    plt.title("Reliability vs c scale")
+    plt.grid(True)
+    plt.savefig("c_reliability.png")
 
-        viable = check_if_viable(G_extended, a_extended, c_extended)
-        if not viable:
-            print("Wrong\n")
-        else:
-            print("Original network delay:", compute_network_delay(G, N, c, a, m))
-            print("New network delay:", compute_network_delay(G_extended, N, c_extended, a_extended, m))
-            reliability = estimate_reliability(G_extended, N, c_extended)
-            print(f'Reliability: {reliability}\n')
+    # Eksperyment 3: Topologia
+    plt.figure(figsize=(8, 5))
+    plt.plot(extra_edges_options, delay_results_topology, marker='^', color='purple')
+    plt.xlabel("Number of Extra Edges")
+    plt.ylabel("Average Network Delay")
+    plt.title("Delay vs Extra Edges")
+    plt.grid(True)
+    plt.savefig("topology_network_delay.png")
 
+    plt.figure(figsize=(8, 5))
+    plt.plot(extra_edges_options, reliability_results_topology, marker='^', color='brown')
+    plt.xlabel("Number of Extra Edges")
+    plt.ylabel("Average Reliability")
+    plt.title("Reliability vs Extra Edges")
+    plt.grid(True)
+    plt.savefig("topology_reliability.png")
 
 if __name__ == "__main__":
     run_experiments()

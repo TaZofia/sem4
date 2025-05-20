@@ -1,0 +1,50 @@
+Super pytanie!
+Pozwól, że ci dokładnie wytłumaczę jakich wyników się spodziewać przy tych eksperymentach.
+
+📊 Co powinnaś zobaczyć w wynikach?
+🔵 1. Eksperymenty dla różnych wartości N (zwiększanie natężenia ruchu)
+Opis: Wzmacniasz cały ruch w sieci (np. 2×, 3×, 5×).
+
+Co się stanie?
+
+Przepływy a(e) rosną.
+
+Jeśli a(e) podejdzie blisko c(e)/m, to opóźnienie T szybko skoczy do góry (bo w mianowniku masz małą różnicę).
+
+Niezawodność spadnie: więcej przypadków, gdzie T > T_max.
+
+Oczekiwany efekt:
+
+T rośnie (szybko!)
+
+Reliability maleje (nawet może spaść do 0)
+
+🔵 2. Eksperymenty dla różnych wartości c (zwiększanie przepustowości)
+Opis: Przepustowość c(e) zwiększasz np. 5×, 10×, 30×.
+
+Co się stanie?
+
+Większe c(e) → mniejszy udział a(e) w przepustowości → opóźnienie T maleje.
+
+Niezawodność rośnie: bo nawet jak są awarie, to sieć sobie łatwiej radzi.
+
+Oczekiwany efekt:
+
+T maleje (staje się małe)
+
+Reliability rośnie (może być bliskie 1)
+
+🔵 3. Eksperymenty dla różnych topologii (dodawanie krawędzi)
+Opis: Dodajesz nowe połączenia (1, 5, 10, 30 krawędzi).
+
+Co się stanie?
+
+Więcej ścieżek → krótsze ścieżki, mniejsze przeciążenia.
+
+Sieć staje się bardziej odporna na awarie (nawet jak jedna krawędź wypadnie, są alternatywy).
+
+Oczekiwany efekt:
+
+T maleje (bo ścieżki są krótsze, mniej zapchane)
+
+Reliability rośnie (bo sieć się trudniej rozłącza)
