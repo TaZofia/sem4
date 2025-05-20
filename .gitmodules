@@ -1,6 +1,0 @@
-[submodule "funkcyjne/funkcyjne/TicTacToe"]
-	path = funkcyjne/funkcyjne/TicTacToe
-	url = https://github.com/TaZofia/TicTacToe_haskell
-[submodule "funkcyjne/TicTacToe_haskell"]
-	path = funkcyjne/TicTacToe_haskell
-	url = https://github.com/TaZofia/TicTacToe_haskell
