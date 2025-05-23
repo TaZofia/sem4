@@ -81,10 +81,11 @@ class BinarySearchTree:
 
     def tree_height(self, x=None):
         if x is None:
-            x = self.root       # if we didn't precise where we start, we start counting height from root
-        if x is None:
             return 0
-        return 1 + max(self.tree_height(x.left), self.tree_height(x.right))
+        else:
+            left_height = self.tree_height(x.left)
+            right_height = self.tree_height(x.right)
+            return 1 + max(left_height, right_height)
 
     def print_BST(self):
         if self.root is not None:
@@ -188,10 +189,10 @@ if __name__ == "__main__":
     bst1 = BinarySearchTree()
 
     
-    print("---1 case: ascending_insert and random_delete for n =", n, "----")
+    print("----1 case: ascending_insert and random_delete for n =", n, "----")
     ascending_insert(bst1, n)
     random_delete(bst1, n)
 
-    print("---2 case: random_insert and random_delete for n =", n, "----")
+    print("----2 case: random_insert and random_delete for n =", n, "----")
     random_insert(bst1, n)
     random_delete(bst1, n)
