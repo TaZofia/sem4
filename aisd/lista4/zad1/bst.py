@@ -1,4 +1,5 @@
-
+import random
+import sys
 
 class Node:
     def __init__(self, key):
@@ -13,6 +14,14 @@ class BinarySearchTree:
         self.size = 0
         self.left_trace = []
         self.right_trace = []
+
+    def search(self, node, key):
+        if node is None or key == node.key:
+            return node
+        if key < node.key:
+            return self.search(node.left, key)
+        else:
+            return self.search(node.right, key)
 
     def insert_node(self, z):
         y = None
@@ -78,56 +87,111 @@ class BinarySearchTree:
         return 1 + max(self.tree_height(x.left), self.tree_height(x.right))
 
     def print_BST(self):
-        height = self.tree_height()
-        self.left_trace = [' '] * (height + 1)
-        self.right_trace = [' '] * (height + 1)
-        print()
-        self._print_BST(self.root, 0, '-')
-        print()
-
-    def _print_BST(self, node, depth, prefix):
-        if node is None:
-            return
-
-        if node.left:
-            self._print_BST(node.left, depth + 1, '/')
-
-        if prefix == '/':
-            self.left_trace[depth - 1] = '|'
-        if prefix == '\\':
-            self.right_trace[depth - 1] = ' '
-
-        if depth == 0:
-            print("-", end="")
+        if self.root is not None:
+            print_tree(self.root, val='key')
         else:
-            print(" ", end="")
+            print("(empty tree)")
 
-        for i in range(depth - 1):
-            if self.left_trace[i] == '|' or self.right_trace[i] == '|':
-                print("| ", end="")
-            else:
-                print("  ", end="")
+def print_tree(root, val="val", left="left", right="right"):
+    def display(root, val=val, left=left, right=right):
+        if getattr(root, right) is None and getattr(root, left) is None:
+            line = '%s' % getattr(root, val)
+            width = len(line)
+            height = 1
+            middle = width // 2
+            return [line], width, height, middle
 
-        if depth > 0:
-            print(f"{prefix}-", end="")
+        if getattr(root, right) is None:
+            lines, n, p, x = display(getattr(root, left))
+            s = '%s' % getattr(root, val)
+            u = len(s)
+            first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
+            second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
+            shifted_lines = [line + u * ' ' for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
 
-        print(f"[{node.key}]")
+        if getattr(root, left) is None:
+            lines, n, p, x = display(getattr(root, right))
+            s = '%s' % getattr(root, val)
+            u = len(s)
+            first_line = s + x * '_' + (n - x) * ' '
+            second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
+            shifted_lines = [u * ' ' + line for line in lines]
+            return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
 
-        self.left_trace[depth] = ' '
-        if node.right:
-            self.right_trace[depth] = '|'
-            self._print_BST(node.right, depth + 1, '\\')
+        left_lines, n, p, x = display(getattr(root, left))
+        right_lines, m, q, y = display(getattr(root, right))
+        s = '%s' % getattr(root, val)
+        u = len(s)
+        first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
+        second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
+        if p < q:
+            left_lines += [n * ' '] * (q - p)
+        elif q < p:
+            right_lines += [m * ' '] * (p - q)
+        zipped_lines = zip(left_lines, right_lines)
+        lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
+        return lines, n + m + u, max(p, q) + 2, n + u // 2
+
+    lines, *_ = display(root, val, left, right)
+    for line in lines:
+        print(line)
+
+def ascending_insert(tree, n):
+    for i in range(1, n + 1):
+        node_to_insert = Node(i)
+        tree.insert_node(node_to_insert)
+        print()
+        print("Insert: ", i)
+        tree.print_BST()
+        print("Height: ", tree.tree_height(tree.root))
+
+def random_insert(tree, n):
+    keys = list(range(1, n + 1))    # creating random permutation
+    random.shuffle(keys)
+    for key in keys:
+        node_to_insert = Node(key)
+        tree.insert_node(node_to_insert)
+        print()
+        print("Insert: ", key)
+        tree.print_BST()
+        print("Height: ", tree.tree_height(tree.root))
+
+def random_delete(tree, n):
+    keys = list(range(1, n + 1))
+    random.shuffle(keys)
+
+    for key in keys:
+        node_to_delete = tree.search(tree.root, key)
+        if node_to_delete is not None:
+            tree.delete_node(node_to_delete)
+            print()
+            print("Delete: ", key)
+            tree.print_BST()
+            print("Height: ", tree.tree_height(tree.root))
+
 
 
 if __name__ == "__main__":
-    bst = BinarySearchTree()
 
-    values_to_insert = [2, 4, 8, 7, 1]
+    if(len(sys.argv) != 2):
+        print("Wrong number of arguments")
+        sys.exit(1)
 
-    for num in values_to_insert:
-        node = Node(num)
-        print(f"INSERT: [{num}]\n")
-        bst.insert_node(node)
-        print("TREE:")
-        bst.print_BST()
-        print()
+    try:
+        n = int(sys.argv[1])
+    except ValueError:
+        print("Error: n has to be an integer")
+        sys.exit(1)
+
+
+    bst1 = BinarySearchTree()
+
+    
+    print("---1 case: ascending_insert and random_delete for n =", n, "----")
+    ascending_insert(bst1, n)
+    random_delete(bst1, n)
+
+    print("---2 case: random_insert and random_delete for n =", n, "----")
+    random_insert(bst1, n)
+    random_delete(bst1, n)
