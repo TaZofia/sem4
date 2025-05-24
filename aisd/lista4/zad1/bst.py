@@ -47,14 +47,19 @@ class BinarySearchTree:
             self.insert_heights_log.append(self.tree_height())
 
     def search(self, node, key):
-        self.current_comparisons += 1
-        if node is None or key == node.key:
-            return node
-        self.current_comparisons += 1
-        if key < node.key:
-            return self.search(node.left, key)
-        else:
-            return self.search(node.right, key)
+        current = node
+        while current is not None:
+            self.current_comparisons += 1
+            if key == current.key:
+                return current
+            self.current_comparisons += 1
+            if key < current.key:
+                current = current.left
+                self.current_pointer_ops += 1
+            else:
+                current = current.right
+                self.current_pointer_ops += 1
+        return None
 
     def insert_node(self, z):
         self.reset_counters()
@@ -96,6 +101,7 @@ class BinarySearchTree:
             u.parent.left = v
             self.current_pointer_ops += 1  # assign pointer
         else:
+            self.current_pointer_ops += 1  # if it's false for elif and comes to else we need to add it
             u.parent.right = v
             self.current_pointer_ops += 1
 
@@ -121,15 +127,16 @@ class BinarySearchTree:
         z = self.search(self.root, val_to_delete)
 
         if z.left is None:
-            self.current_pointer_ops += 1
             self.transplant(z, z.right)
+            self.current_pointer_ops += 1
         elif z.right is None:
             self.current_pointer_ops += 2
             self.transplant(z, z.left)
         else:
+            self.current_pointer_ops += 3
             y = self.tree_minimum(z.right)
-            self.current_pointer_ops += 1
 
+            self.current_pointer_ops += 1
             if y.parent != z:
                 self.transplant(y, y.right)
                 y.right = z.right
@@ -292,24 +299,26 @@ if __name__ == "__main__":
     print("Random delete max comparisons: ", max(bst.delete_comparisons_log))
     print("Random delete max pointer: ", max(bst.delete_pointer_ops_log))
     print("Random delete max height: ", max(bst.delete_heights_log))
-
     print()
+
+    bst2 = BinarySearchTree()
+
     print("----2 case: random_insert and random_delete for n =", n, "----")
-    random_insert(bst, n)
-    print("Random insert average cost comparisons: ", metrics_cost(bst.insert_comparisons_log))
-    print("Random insert average cost pointer: ", metrics_cost(bst.insert_pointer_ops_log))
-    print("Random insert average height: ", metrics_cost(bst.insert_heights_log))
+    random_insert(bst2, n)
+    print("Random insert average cost comparisons: ", metrics_cost(bst2.insert_comparisons_log))
+    print("Random insert average cost pointer: ", metrics_cost(bst2.insert_pointer_ops_log))
+    print("Random insert average height: ", metrics_cost(bst2.insert_heights_log))
 
-    print("Random insert max comparisons: ", max(bst.insert_comparisons_log))
-    print("Random insert max pointer: ", max(bst.insert_pointer_ops_log))
-    print("Random insert max height: ", max(bst.insert_heights_log))
+    print("Random insert max comparisons: ", max(bst2.insert_comparisons_log))
+    print("Random insert max pointer: ", max(bst2.insert_pointer_ops_log))
+    print("Random insert max height: ", max(bst2.insert_heights_log))
 
-    random_delete(bst, n)
-    print("Random delete average cost comparisons: ", metrics_cost(bst.delete_comparisons_log))
-    print("Random delete average cost pointer: ", metrics_cost(bst.delete_pointer_ops_log))
-    print("Random delete average height: ", metrics_cost(bst.delete_heights_log))
+    random_delete(bst2, n)
+    print("Random delete average cost comparisons: ", metrics_cost(bst2.delete_comparisons_log))
+    print("Random delete average cost pointer: ", metrics_cost(bst2.delete_pointer_ops_log))
+    print("Random delete average height: ", metrics_cost(bst2.delete_heights_log))
 
-    print("Random delete max comparisons: ", max(bst.delete_comparisons_log))
-    print("Random delete max pointer: ", max(bst.delete_pointer_ops_log))
-    print("Random delete max height: ", max(bst.delete_heights_log))
+    print("Random delete max comparisons: ", max(bst2.delete_comparisons_log))
+    print("Random delete max pointer: ", max(bst2.delete_pointer_ops_log))
+    print("Random delete max height: ", max(bst2.delete_heights_log))
 
