@@ -40,11 +40,11 @@ class BinarySearchTree:
         if op == "delete":
             self.delete_comparisons_log.append(self.current_comparisons)
             self.delete_pointer_ops_log.append(self.current_pointer_ops)
-            self.delete_heights_log.append(self.tree_height(self.root))
+            self.delete_heights_log.append(self.tree_height())
         elif op == "insert":
             self.insert_comparisons_log.append(self.current_comparisons)
             self.insert_pointer_ops_log.append(self.current_pointer_ops)
-            self.insert_heights_log.append(self.tree_height(self.root))
+            self.insert_heights_log.append(self.tree_height())
 
     def search(self, node, key):
         self.current_comparisons += 1
@@ -66,19 +66,23 @@ class BinarySearchTree:
             self.current_comparisons += 1
             if z.key < x.key:
                 x = x.left
+                self.current_pointer_ops += 1
             else:
                 x = x.right
+                self.current_pointer_ops += 1
 
         z.parent = y
         self.current_pointer_ops += 1
         if y is None:
             self.root = z          # tree was empty
+            self.current_pointer_ops += 1
         elif z.key < y.key:
             y.left = z
+            self.current_pointer_ops += 1
         else:
             y.right = z
+            self.current_pointer_ops += 1
 
-        self.current_pointer_ops += 1     # assign to left or right, also cost
         self.log_operation("insert")
 
         # replaces one subtree as a child of its parent with another subtree, needed for delete
@@ -143,14 +147,18 @@ class BinarySearchTree:
 
         self.log_operation("delete")
 
-
-    def tree_height(self, x=None):
-        if x is None:
+    def tree_height(self):
+        if not self.root:
             return 0
-        else:
-            left_height = self.tree_height(x.left)
-            right_height = self.tree_height(x.right)
-            return 1 + max(left_height, right_height)
+        max_height = 0
+        stack = [(self.root, 1)]
+        while stack:
+            node, depth = stack.pop()
+            if node:
+                max_height = max(max_height, depth)
+                stack.append((node.left, depth + 1))
+                stack.append((node.right, depth + 1))
+        return max_height
 
     def print_BST(self):
         if self.root is not None:
@@ -218,7 +226,7 @@ def ascending_insert(tree, n):
             print()
             print("INSERT: ", i)
             tree.print_BST()
-            print("Height: ", tree.tree_height(tree.root))
+            print("Height: ", tree.tree_height())
 
 def random_insert(tree, n):
     keys = list(range(1, n + 1))    # creating random permutation
@@ -230,7 +238,7 @@ def random_insert(tree, n):
             print()
             print("INSERT: ", key)
             tree.print_BST()
-            print("Height: ", tree.tree_height(tree.root))
+            print("Height: ", tree.tree_height())
 
 def random_delete(tree, n):
     keys = list(range(1, n + 1))
@@ -242,7 +250,7 @@ def random_delete(tree, n):
             print()
             print("DELETE: ", key)
             tree.print_BST()
-            print("Height: ", tree.tree_height(tree.root))
+            print("Height: ", tree.tree_height())
 
 def metrics_cost(log):
     if not log:
@@ -285,6 +293,7 @@ if __name__ == "__main__":
     print("Random delete max pointer: ", max(bst.delete_pointer_ops_log))
     print("Random delete max height: ", max(bst.delete_heights_log))
 
+    print()
     print("----2 case: random_insert and random_delete for n =", n, "----")
     random_insert(bst, n)
     print("Random insert average cost comparisons: ", metrics_cost(bst.insert_comparisons_log))
