@@ -3,7 +3,6 @@ import sys
 
 big_tree = False
 
-
 class Node:
     def __init__(self, key):
         self.key = key
@@ -23,18 +22,29 @@ class BinarySearchTree:
         self.current_pointer_ops = 0
 
         # stats collection
-        self.comparisons_log = []
-        self.pointer_ops_log = []
-        self.heights_log = []
+        self.insert_comparisons_log = []
+        self.insert_pointer_ops_log = []
+        self.insert_heights_log = []
+
+        self.delete_comparisons_log = []
+        self.delete_pointer_ops_log = []
+        self.delete_heights_log = []
+
+
 
     def reset_counters(self):
         self.current_comparisons = 0
         self.current_pointer_ops = 0
 
-    def log_operation(self):
-        self.comparisons_log.append(self.current_comparisons)
-        self.pointer_ops_log.append(self.current_pointer_ops)
-        self.heights_log.append(self.tree_height(self.root))
+    def log_operation(self, op):
+        if op == "delete":
+            self.delete_comparisons_log.append(self.current_comparisons)
+            self.delete_pointer_ops_log.append(self.current_pointer_ops)
+            self.delete_heights_log.append(self.tree_height(self.root))
+        elif op == "insert":
+            self.insert_comparisons_log.append(self.current_comparisons)
+            self.insert_pointer_ops_log.append(self.current_pointer_ops)
+            self.insert_heights_log.append(self.tree_height(self.root))
 
     def search(self, node, key):
         self.current_comparisons += 1
@@ -69,6 +79,7 @@ class BinarySearchTree:
             y.right = z
 
         self.current_pointer_ops += 1     # assign to left or right, also cost
+        self.log_operation("insert")
 
         # replaces one subtree as a child of its parent with another subtree, needed for delete
     def transplant(self, u, v):
@@ -91,15 +102,19 @@ class BinarySearchTree:
     def tree_minimum(self, x):
         while x.left is not None:
             x = x.left
+            self.current_pointer_ops += 1
         return x
 
     def tree_maximum(self, x):
         while x.right is not None:
             x = x.right
+            self.current_pointer_ops += 1
         return x
 
-    def delete_node(self, z):
+    def delete_node(self, val_to_delete):
         self.reset_counters()
+
+        z = self.search(self.root, val_to_delete)
 
         if z.left is None:
             self.current_pointer_ops += 1
@@ -126,6 +141,9 @@ class BinarySearchTree:
                 y.left.parent = y
                 self.current_pointer_ops += 1
 
+        self.log_operation("delete")
+
+
     def tree_height(self, x=None):
         if x is None:
             return 0
@@ -135,11 +153,10 @@ class BinarySearchTree:
             return 1 + max(left_height, right_height)
 
     def print_BST(self):
-        if not big_tree:
-            if self.root is not None:
-                print_tree(self.root, val='key')
-            else:
-                print("(empty tree)")
+        if self.root is not None:
+            print_tree(self.root, val='key')
+        else:
+            print("(empty tree)")
 
 def print_tree(root, val="val", left="left", right="right"):
     def display(root, val=val, left=left, right=right):
@@ -197,10 +214,11 @@ def ascending_insert(tree, n):
     for i in range(1, n + 1):
         node_to_insert = Node(i)
         tree.insert_node(node_to_insert)
-        print()
-        print("Insert: ", i)
-        tree.print_BST()
-        print("Height: ", tree.tree_height(tree.root))
+        if not big_tree:
+            print()
+            print("INSERT: ", i)
+            tree.print_BST()
+            print("Height: ", tree.tree_height(tree.root))
 
 def random_insert(tree, n):
     keys = list(range(1, n + 1))    # creating random permutation
@@ -208,25 +226,28 @@ def random_insert(tree, n):
     for key in keys:
         node_to_insert = Node(key)
         tree.insert_node(node_to_insert)
-        print()
-        print("Insert: ", key)
-        tree.print_BST()
-        print("Height: ", tree.tree_height(tree.root))
+        if not big_tree:
+            print()
+            print("INSERT: ", key)
+            tree.print_BST()
+            print("Height: ", tree.tree_height(tree.root))
 
 def random_delete(tree, n):
     keys = list(range(1, n + 1))
     random.shuffle(keys)
 
     for key in keys:
-        node_to_delete = tree.search(tree.root, key)
-        if node_to_delete is not None:
-            tree.delete_node(node_to_delete)
+        tree.delete_node(key)
+        if not big_tree:
             print()
-            print("Delete: ", key)
+            print("DELETE: ", key)
             tree.print_BST()
             print("Height: ", tree.tree_height(tree.root))
 
-
+def metrics_cost(log):
+    if not log:
+        return 0, 0
+    return sum(log)/len(log)
 
 if __name__ == "__main__":
 
@@ -243,12 +264,43 @@ if __name__ == "__main__":
     if n > 30:
         big_tree = True
 
-    bst1 = BinarySearchTree()
+    bst = BinarySearchTree()
 
     print("----1 case: ascending_insert and random_delete for n =", n, "----")
-    ascending_insert(bst1, n)
-    random_delete(bst1, n)
+    ascending_insert(bst, n)
+    print("Ascending insert average cost comparisons: ", metrics_cost(bst.insert_comparisons_log))
+    print("Ascending insert average cost pointer: ", metrics_cost(bst.insert_pointer_ops_log))
+    print("Ascending insert average height: ", metrics_cost(bst.insert_heights_log))
+
+    print("Ascending insert max comparisons: ", max(bst.insert_comparisons_log))
+    print("Ascending insert max pointer: ", max(bst.insert_pointer_ops_log))
+    print("Ascending insert max height: ", max(bst.insert_heights_log))
+
+    random_delete(bst, n)
+    print("Random delete average cost comparisons: ", metrics_cost(bst.delete_comparisons_log))
+    print("Random delete average cost pointer: ", metrics_cost(bst.delete_pointer_ops_log))
+    print("Random delete average height: ", metrics_cost(bst.delete_heights_log))
+
+    print("Random delete max comparisons: ", max(bst.delete_comparisons_log))
+    print("Random delete max pointer: ", max(bst.delete_pointer_ops_log))
+    print("Random delete max height: ", max(bst.delete_heights_log))
 
     print("----2 case: random_insert and random_delete for n =", n, "----")
-    random_insert(bst1, n)
-    random_delete(bst1, n)
+    random_insert(bst, n)
+    print("Random insert average cost comparisons: ", metrics_cost(bst.insert_comparisons_log))
+    print("Random insert average cost pointer: ", metrics_cost(bst.insert_pointer_ops_log))
+    print("Random insert average height: ", metrics_cost(bst.insert_heights_log))
+
+    print("Random insert max comparisons: ", max(bst.insert_comparisons_log))
+    print("Random insert max pointer: ", max(bst.insert_pointer_ops_log))
+    print("Random insert max height: ", max(bst.insert_heights_log))
+
+    random_delete(bst, n)
+    print("Random delete average cost comparisons: ", metrics_cost(bst.delete_comparisons_log))
+    print("Random delete average cost pointer: ", metrics_cost(bst.delete_pointer_ops_log))
+    print("Random delete average height: ", metrics_cost(bst.delete_heights_log))
+
+    print("Random delete max comparisons: ", max(bst.delete_comparisons_log))
+    print("Random delete max pointer: ", max(bst.delete_pointer_ops_log))
+    print("Random delete max height: ", max(bst.delete_heights_log))
+
