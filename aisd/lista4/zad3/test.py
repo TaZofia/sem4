@@ -1,0 +1,1 @@
+print("\033[31mTo jest czerwony tekst\033[0m")
