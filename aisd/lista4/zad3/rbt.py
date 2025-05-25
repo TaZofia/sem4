@@ -2,6 +2,10 @@
 RED = "\033[31m"
 RESET = "\033[0m"
 
+
+def visible_len(s):
+    return len(s.replace(RED, '').replace(RESET, ''))
+
 class Node:
     # Constructor to initialize node of RB Tree
     def __init__(self, value, color='red'):
@@ -230,29 +234,29 @@ class RedBlackTree:
             print(node.value, end=" ")
             self._inorder_traversal(node.right)
     def print_rbt_tree(self):
-        def print_tree(self):
-            if self.root is not None:
-                print_tree(self.root, val='key')
-            else:
-                print("(empty tree)")
+        if self.root is not None:
+            print_tree(self.root, val='value')
+        else:
+            print("(empty tree)")
 
 
-def print_tree(root, val="val", left="left", right="right"):
+def print_tree(root, val="value", left="left", right="right"):
     def display(root, val=val, left=left, right=right):
-        # no children
+        # no children - leafs
         if getattr(root, right) is None and getattr(root, left) is None:
-            line = '%s' % getattr(root, val)
-            width = len(line)
+            color = getattr(root, 'color', 'black')
+            s = f"{RED}{getattr(root, val)}{RESET}" if color == 'red' else f"{getattr(root, val)}"
+            width = visible_len(s)
             height = 1
             middle = width // 2
-            return [line], width, height, middle
+            return [s], width, height, middle
 
         # only left child
         if getattr(root, right) is None:
             lines, n, p, x = display(getattr(root, left))       # recurrent in left child
             color = getattr(root, 'color', 'black')
             s = f"{RED}{getattr(root, val)}{RESET}" if color == 'red' else f"{getattr(root, val)}"
-            u = len(s)
+            u = visible_len(s)
             first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
             second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
             shifted_lines = [line + u * ' ' for line in lines]
@@ -263,7 +267,7 @@ def print_tree(root, val="val", left="left", right="right"):
             lines, n, p, x = display(getattr(root, right))      # recurrent in right child
             color = getattr(root, 'color', 'black')
             s = f"{RED}{getattr(root, val)}{RESET}" if color == 'red' else f"{getattr(root, val)}"
-            u = len(s)                                          # length of value
+            u = visible_len(s)                                          # length of value
             first_line = s + x * '_' + (n - x) * ' '
             second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
             shifted_lines = [u * ' ' + line for line in lines]
@@ -273,7 +277,7 @@ def print_tree(root, val="val", left="left", right="right"):
         right_lines, m, q, y = display(getattr(root, right))
         color = getattr(root, 'color', 'black')
         s = f"{RED}{getattr(root, val)}{RESET}" if color == 'red' else f"{getattr(root, val)}"
-        u = len(s)
+        u = visible_len(s)
         first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
         second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
         # fill left and right tree
@@ -292,6 +296,12 @@ def print_tree(root, val="val", left="left", right="right"):
     for line in lines:
         print(line)
 
+def print_colors(node):
+    if node is None:
+        return
+    print(f"Node {node.value}, color: {node.color}")
+    print_colors(node.left)
+    print_colors(node.right)
 
 
 if __name__ == "__main__":
@@ -300,6 +310,7 @@ if __name__ == "__main__":
     values = [41, 38, 31, 12, 19, 8]
     for value in values:
         tree.insert(value)
+        print(value)
 
     tree.print_rbt_tree()
 
