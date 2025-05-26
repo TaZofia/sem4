@@ -1,10 +1,10 @@
+import sys
+import random
 
 RED = "\033[31m"
 RESET = "\033[0m"
 
-
-def visible_len(s):
-    return len(s.replace(RED, '').replace(RESET, ''))
+big_tree = False
 
 class Node:
     # Constructor to initialize node of RB Tree
@@ -86,7 +86,6 @@ class RedBlackTree:
         return self.NIL
 
     def tree_height(self):
-        print("in")
         if not self.root:
             return 0
         max_height = 0
@@ -110,7 +109,7 @@ class RedBlackTree:
     def insert_fix(self, z):
         while z.parent.color == 'red':
             self.current_pointer_ops += 1
-            self.current_pointer_ops += 3
+            self.current_pointer_ops += 4
             if z.parent == z.parent.parent.left:
                 y = z.parent.parent.right
                 self.current_pointer_ops += 3
@@ -156,6 +155,8 @@ class RedBlackTree:
 
     # function to insert a node similar to BST insertion
     def insert(self, val_to_insert):
+        self.reset_counters()
+
         # add new node
         z = Node(val_to_insert)
 
@@ -173,6 +174,7 @@ class RedBlackTree:
                 self.current_pointer_ops += 1
         z.parent = y
         self.current_pointer_ops += 1
+
         if y == self.NIL:
             self.root = z
             self.current_pointer_ops += 1
@@ -191,6 +193,8 @@ class RedBlackTree:
         self.current_pointer_ops += 2
         z.color = 'red'
         self.insert_fix(z)
+
+        self.log_operation("insert")
 
     # function for left rotation of RB Tree
     def rotate_left(self, x):
@@ -258,6 +262,8 @@ class RedBlackTree:
         self.current_pointer_ops += 2
 
     def delete(self, value):
+        self.reset_counters()
+
         z = self.search(self.root, value)
 
         y = z
@@ -293,6 +299,9 @@ class RedBlackTree:
 
         if y_original_color == 'black':
             self.delete_fix(x)
+
+        self.log_operation("delete")
+
 
     def delete_fix(self, x):
         while x != self.root and x.color == 'black':
@@ -359,12 +368,15 @@ class RedBlackTree:
                     self.current_pointer_ops += 5
         x.color = 'black'
 
-    def print_rbt_tree(self):
+    def print_rb_tree(self):
         if self.root != self.NIL:
             print_tree(self.root, val='value', NIL=self.NIL)
         else:
             print("(empty tree)")
 
+
+def visible_len(s):
+    return len(s.replace(RED, '').replace(RESET, ''))
 
 def print_tree(root, val="value", left="left", right="right", NIL=None):
     def display(root, val=val, left=left, right=right):
@@ -422,15 +434,99 @@ def print_tree(root, val="value", left="left", right="right", NIL=None):
     for line in lines:
         print(line)
 
+def ascending_insert(tree, n):
+    for i in range(1, n + 1):
+        tree.insert(i)
+        if not big_tree:
+            print()
+            print("INSERT: ", i)
+            tree.print_rb_tree()
+            print("Height: ", tree.tree_height())
 
+def random_insert(tree, n):
+    keys = list(range(1, n + 1))    # creating random permutation
+    random.shuffle(keys)
+    for key in keys:
+        tree.insert(key)
+        if not big_tree:
+            print()
+            print("INSERT: ", key)
+            tree.print_rb_tree()
+            print("Height: ", tree.tree_height())
+
+def random_delete(tree, n):
+    keys = list(range(1, n + 1))
+    random.shuffle(keys)
+
+    for key in keys:
+        tree.delete(key)
+        if not big_tree:
+            print()
+            print("DELETE: ", key)
+            tree.print_rb_tree()
+            print("Height: ", tree.tree_height())
+
+def metrics_cost(log):
+    if not log:
+        return 0, 0
+    return sum(log)/len(log)
 
 if __name__ == "__main__":
-    tree = RedBlackTree()
 
-    for i in range(100000):
-        tree.insert(i)
+    if len(sys.argv) != 2:
+        print("Wrong number of arguments")
+        sys.exit(1)
 
-    print("tree height: ", tree.tree_height())
+    try:
+        n = int(sys.argv[1])
+    except ValueError:
+        print("Error: n has to be an integer")
+        sys.exit(1)
 
-    print("done")
+    if n > 30:
+        big_tree = True
+
+
+    tree1 = RedBlackTree()
+
+    print("----1 case: ascending_insert and random_delete for n =", n, "----")
+    ascending_insert(tree1, n)
+    print("Ascending insert average cost comparisons: ", metrics_cost(tree1.insert_comparisons_log))
+    print("Ascending insert average cost pointer: ", metrics_cost(tree1.insert_pointer_ops_log))
+    print("Ascending insert average height: ", metrics_cost(tree1.insert_heights_log))
+
+    print("Ascending insert max comparisons: ", max(tree1.insert_comparisons_log))
+    print("Ascending insert max pointer: ", max(tree1.insert_pointer_ops_log))
+    print("Ascending insert max height: ", max(tree1.insert_heights_log))
+
+    random_delete(tree1, n)
+    print("Random delete average cost comparisons: ", metrics_cost(tree1.delete_comparisons_log))
+    print("Random delete average cost pointer: ", metrics_cost(tree1.delete_pointer_ops_log))
+    print("Random delete average height: ", metrics_cost(tree1.delete_heights_log))
+
+    print("Random delete max comparisons: ", max(tree1.delete_comparisons_log))
+    print("Random delete max pointer: ", max(tree1.delete_pointer_ops_log))
+    print("Random delete max height: ", max(tree1.delete_heights_log))
+    print()
+
+    tree2 = RedBlackTree()
+
+    print("----2 case: random_insert and random_delete for n =", n, "----")
+    random_insert(tree2, n)
+    print("Random insert average cost comparisons: ", metrics_cost(tree2.insert_comparisons_log))
+    print("Random insert average cost pointer: ", metrics_cost(tree2.insert_pointer_ops_log))
+    print("Random insert average height: ", metrics_cost(tree2.insert_heights_log))
+
+    print("Random insert max comparisons: ", max(tree2.insert_comparisons_log))
+    print("Random insert max pointer: ", max(tree2.insert_pointer_ops_log))
+    print("Random insert max height: ", max(tree2.insert_heights_log))
+
+    random_delete(tree2, n)
+    print("Random delete average cost comparisons: ", metrics_cost(tree2.delete_comparisons_log))
+    print("Random delete average cost pointer: ", metrics_cost(tree2.delete_pointer_ops_log))
+    print("Random delete average height: ", metrics_cost(tree2.delete_heights_log))
+
+    print("Random delete max comparisons: ", max(tree2.delete_comparisons_log))
+    print("Random delete max pointer: ", max(tree2.delete_pointer_ops_log))
+    print("Random delete max height: ", max(tree2.delete_heights_log))
 

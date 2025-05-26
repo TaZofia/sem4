@@ -13,9 +13,6 @@ class Node:
 class BinarySearchTree:
     def __init__(self):
         self.root = None
-        self.size = 0
-        self.left_trace = []
-        self.right_trace = []
 
         # counters for current operation
         self.current_comparisons = 0
