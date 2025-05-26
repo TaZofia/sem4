@@ -113,7 +113,7 @@ class RedBlackTree:
                 else:
                     if z == z.parent.right:
                         z = z.parent
-                        self.rotate_right(z)
+                        self.rotate_left(z)
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.rotate_right(z.parent.parent)
@@ -207,6 +207,8 @@ class RedBlackTree:
 
     def delete(self, value):
         z = self.search(self.root, value)
+        if z is None:       # no exist
+            return
         y = z
         y_original_color = y.color
         if z.left is None:
@@ -390,6 +392,6 @@ if __name__ == "__main__":
         print(value)
 
     tree.print_rbt_tree()
-    tree.delete(12)
+    tree.delete(19)
     tree.print_rbt_tree()
 
