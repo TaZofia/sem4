@@ -73,12 +73,16 @@ class RedBlackTree:
 
     def search(self, node, val_to_search):
         while node != self.NIL:
+            self.current_comparisons += 1
             if val_to_search == node.value:
                 return node
+            self.current_comparisons += 1
             if val_to_search < node.value:
                 node = node.left
+                self.current_pointer_ops += 1
             else:
                 node = node.right
+                self.current_pointer_ops += 1
         return self.NIL
 
     def tree_height(self):
@@ -93,44 +97,60 @@ class RedBlackTree:
                 stack.append((node.left, depth + 1))
                 stack.append((node.right, depth + 1))
         return max_height
+
     def tree_minimum(self, x):
         while x.left != self.NIL:
+            self.current_pointer_ops += 1       # while
             x = x.left
-            self.current_pointer_ops += 1
+            self.current_pointer_ops += 1       # line before
         return x
 
     # Function to fix the Red Black Tree properties after insertion
     def insert_fix(self, z):
         while z.parent.color == 'red':
+            self.current_pointer_ops += 1
+            self.current_pointer_ops += 3
             if z.parent == z.parent.parent.left:
                 y = z.parent.parent.right
+                self.current_pointer_ops += 3
+
                 if y.color == 'red':
                     z.parent.color = 'black'
                     y.color = 'black'
                     z.parent.parent.color = 'red'
                     z = z.parent.parent
+                    self.current_pointer_ops += 5
                 else:
+                    self.current_pointer_ops += 2
                     if z == z.parent.right:
                         z = z.parent
+                        self.current_pointer_ops += 1
                         self.rotate_left(z)
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.rotate_right(z.parent.parent)
+                    self.current_pointer_ops += 5
             else:
                 y = z.parent.parent.left
+                self.current_pointer_ops += 3
                 if y.color == 'red':
                     z.parent.color = 'black'
                     y.color = 'black'
                     z.parent.parent.color = 'red'
                     z = z.parent.parent
+                    self.current_pointer_ops += 5
                 else:
+                    self.current_pointer_ops += 2
                     if z == z.parent.left:
                         z = z.parent
+                        self.current_pointer_ops += 1
                         self.rotate_right(z)
                     z.parent.color = 'black'
                     z.parent.parent.color = 'red'
                     self.rotate_left(z.parent.parent)
+                    self.current_pointer_ops += 5
         self.root.color = 'black'
+        self.current_pointer_ops += 1
 
 
     # function to insert a node similar to BST insertion
@@ -140,22 +160,34 @@ class RedBlackTree:
 
         y = self.NIL
         x = self.root
+        self.current_pointer_ops += 1
         while x != self.NIL:
             y = x
+            self.current_comparisons += 1
             if z.value < x.value:
                 x = x.left
+                self.current_pointer_ops += 1
             else:
                 x = x.right
+                self.current_pointer_ops += 1
         z.parent = y
+        self.current_pointer_ops += 1
         if y == self.NIL:
             self.root = z
+            self.current_pointer_ops += 1
             z.color = 'black'
         elif z.value < y.value:
             y.left = z
+            self.current_pointer_ops += 1
+            self.current_comparisons += 1
         else:
             y.right = z
+            self.current_pointer_ops += 1
+            self.current_comparisons += 1
+
         z.left = self.NIL
         z.right = self.NIL
+        self.current_pointer_ops += 2
         z.color = 'red'
         self.insert_fix(z)
 
@@ -163,129 +195,170 @@ class RedBlackTree:
     def rotate_left(self, x):
         y = x.right         # set y
         x.right = y.left    # turn y's left subtree into x's right subtree
+        self.current_pointer_ops += 4
         if y.left != self.NIL:
             y.left.parent = x
+            self.current_pointer_ops += 2
         y.parent = x.parent
+        self.current_pointer_ops += 3
         if x.parent == self.NIL:
             self.root = y
+            self.current_pointer_ops += 1
         elif x == x.parent.left:
             x.parent.left = y
+            self.current_pointer_ops += 4       # condition plus operation inside elif
         else:
             x.parent.right = y
+            self.current_pointer_ops += 4
 
         y.left = x      # put x on y's left
         x.parent = y
+        self.current_pointer_ops += 2
 
 
     # function for right rotation of RB Tree
     def rotate_right(self, x):
         y = x.left
         x.left = y.right
+        self.current_pointer_ops += 4
         if y.right != self.NIL:
             y.right.parent = x
+            self.current_pointer_ops += 2
         y.parent = x.parent
+        self.current_pointer_ops += 3
         if x.parent == self.NIL:
             self.root = y
+            self.current_pointer_ops += 1
         elif x == x.parent.right:
             x.parent.right = y
+            self.current_pointer_ops += 4
         else:
             x.parent.left = y
+            self.current_pointer_ops += 4
 
         y.right = x
         x.parent = y
+        self.current_pointer_ops += 2
 
 
     def rb_transplant(self, u, v):
+        self.current_pointer_ops += 1
         if u.parent == self.NIL:
             self.root = v
+            self.current_pointer_ops += 1
         elif u == u.parent.left:
             u.parent.left = v
+            self.current_pointer_ops += 4
         else:
             u.parent.right = v
+            self.current_pointer_ops += 4
 
         v.parent = u.parent
+        self.current_pointer_ops += 2
 
     def delete(self, value):
         z = self.search(self.root, value)
 
         y = z
         y_original_color = y.color
+        self.current_pointer_ops += 1
         if z.left == self.NIL:
             x = z.right
             self.rb_transplant(z, z.right)
+            self.current_pointer_ops += 2
         elif z.right == self.NIL:
             x = z.left
             self.rb_transplant(z, z.left)
+            self.current_pointer_ops += 3
         else:
             y = self.tree_minimum(z.right)
             y_original_color = y.color
             x = y.right
+            self.current_pointer_ops += 4
             if y.parent == z:
                 x.parent = y
+                self.current_pointer_ops += 1
             else:
                 self.rb_transplant(y, y.right)
                 y.right = z.right
                 y.right.parent = y
+                self.current_pointer_ops += 5
 
             self.rb_transplant(z, y)
             y.left = z.left
             y.left.parent = y
             y.color = z.color
+            self.current_pointer_ops += 4
 
         if y_original_color == 'black':
             self.delete_fix(x)
 
     def delete_fix(self, x):
         while x != self.root and x.color == 'black':
+            self.current_pointer_ops += 3
             if x == x.parent.left:
                 w = x.parent.right
+                self.current_pointer_ops += 2
                 if w.color == 'red':
                     w.color = 'black'
                     x.parent.color = 'red'
                     self.rotate_left(x.parent)
                     w = x.parent.right
+                    self.current_pointer_ops += 4
 
+                self.current_pointer_ops += 2
                 if w.left.color == 'black' and w.right.color == 'black':
                     w.color = 'red'
                     x = x.parent
+                    self.current_pointer_ops += 1
                 else:
+                    self.current_pointer_ops += 1
                     if w.right.color == 'black':
                         w.left.color = 'black'
                         w.color = 'red'
                         self.rotate_right(w)
                         w = x.parent.right
+                        self.current_pointer_ops += 3
 
                     w.color = x.parent.color
                     x.parent.color = 'black'
                     w.right.color = 'black'
                     self.rotate_left(x.parent)
                     x = self.root
+                    self.current_pointer_ops += 5
             else:
                 w = x.parent.left
+                self.current_pointer_ops += 2
                 if w.color == 'red':
                     w.color = 'black'
                     x.parent.color = 'red'
                     self.rotate_right(x.parent)
                     w = x.parent.left
+                    self.current_pointer_ops += 4
 
+                self.current_pointer_ops += 2
                 if w.right.color == 'black' and w.left.color == 'black':
                     w.color = 'red'
                     x = x.parent
+                    self.current_pointer_ops += 1
                 else:
+                    self.current_pointer_ops += 1
                     if w.left.color == 'black':
                         w.right.color = 'black'
                         w.color = 'red'
                         self.rotate_left(w)
                         w = x.parent.left
+                        self.current_pointer_ops += 3
 
                     w.color = x.parent.color
                     x.parent.color = 'black'
                     w.left.color = 'black'
                     self.rotate_right(x.parent)
                     x = self.root
+                    self.current_pointer_ops += 5
         x.color = 'black'
 
-
+    '''
     # function to replace an old node with a new node
     def _replace_node(self, old_node, new_node):
         if old_node.parent == self.NIL:
@@ -303,6 +376,7 @@ class RedBlackTree:
         while node.left != self.NIL:
             node = node.left
         return node
+    
 
     # function to perform inorder traversal
     def _inorder_traversal(self, node):
@@ -315,7 +389,7 @@ class RedBlackTree:
             print_tree(self.root, val='value', NIL=self.NIL)
         else:
             print("(empty tree)")
-
+    '''
 
 def print_tree(root, val="value", left="left", right="right", NIL=None):
     def display(root, val=val, left=left, right=right):
@@ -378,10 +452,10 @@ def print_tree(root, val="value", left="left", right="right", NIL=None):
 if __name__ == "__main__":
     tree = RedBlackTree()
 
-    values = [41, 38, 31, 12, 19, 8]
-    for value in values:
-        tree.insert(value)
-        print(value)
+    for i in range(100000):
+        tree.insert(i)
 
-    tree.print_rbt_tree()
+    print("tree height: ", tree.tree_height())
+
+    print("done")
 

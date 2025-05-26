@@ -65,6 +65,7 @@ class BinarySearchTree:
         self.reset_counters()
         y = None
         x = self.root
+        self.current_pointer_ops += 1
 
         while x is not None:
             y = x
@@ -84,9 +85,11 @@ class BinarySearchTree:
         elif z.key < y.key:
             y.left = z
             self.current_pointer_ops += 1
+            self.current_comparisons += 1
         else:
             y.right = z
             self.current_pointer_ops += 1
+            self.current_comparisons += 1
 
         self.log_operation("insert")
 
@@ -97,28 +100,26 @@ class BinarySearchTree:
             self.root = v
             self.current_pointer_ops += 1  # assign root
         elif u == u.parent.left:
-            self.current_pointer_ops += 1  # pointer comp
             u.parent.left = v
-            self.current_pointer_ops += 1  # assign pointer
+            self.current_pointer_ops += 4  # condition plus previous line
         else:
-            self.current_pointer_ops += 1  # if it's false for elif and comes to else we need to add it
             u.parent.right = v
-            self.current_pointer_ops += 1
+            self.current_pointer_ops += 4  # we need to count condition also
 
         if v is not None:
             v.parent = u.parent
-            self.current_pointer_ops += 1
+            self.current_pointer_ops += 2
 
     def tree_minimum(self, x):
         while x.left is not None:
             x = x.left
-            self.current_pointer_ops += 1
+            self.current_pointer_ops += 2
         return x
 
     def tree_maximum(self, x):
         while x.right is not None:
             x = x.right
-            self.current_pointer_ops += 1
+            self.current_pointer_ops += 2
         return x
 
     def delete_node(self, val_to_delete):
@@ -126,31 +127,32 @@ class BinarySearchTree:
 
         z = self.search(self.root, val_to_delete)
 
+        self.current_pointer_ops += 1
         if z.left is None:
             self.transplant(z, z.right)
             self.current_pointer_ops += 1
         elif z.right is None:
-            self.current_pointer_ops += 2
             self.transplant(z, z.left)
+            self.current_pointer_ops += 2
         else:
-            self.current_pointer_ops += 3
             y = self.tree_minimum(z.right)
+            self.current_pointer_ops += 2
 
             self.current_pointer_ops += 1
             if y.parent != z:
                 self.transplant(y, y.right)
                 y.right = z.right
-                self.current_pointer_ops += 2
+                self.current_pointer_ops += 4
                 if y.right is not None:
                     y.right.parent = y
-                    self.current_pointer_ops += 1
+                    self.current_pointer_ops += 2
 
             self.transplant(z, y)
             y.left = z.left
-            self.current_pointer_ops += 2
+            self.current_pointer_ops += 3
             if y.left is not None:
                 y.left.parent = y
-                self.current_pointer_ops += 1
+                self.current_pointer_ops += 2
 
         self.log_operation("delete")
 
