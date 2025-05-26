@@ -359,33 +359,6 @@ class RedBlackTree:
                     self.current_pointer_ops += 5
         x.color = 'black'
 
-    '''
-    # function to replace an old node with a new node
-    def _replace_node(self, old_node, new_node):
-        if old_node.parent == self.NIL:
-            self.root = new_node
-        else:
-            if old_node == old_node.parent.left:
-                old_node.parent.left = new_node
-            else:
-                old_node.parent.right = new_node
-        if new_node != self.NIL:
-            new_node.parent = old_node.parent
-
-    # function to find node with minimum value in a subtree
-    def _find_min(self, node):
-        while node.left != self.NIL:
-            node = node.left
-        return node
-    
-
-    # function to perform inorder traversal
-    def _inorder_traversal(self, node):
-        if node != self.NIL:
-            self._inorder_traversal(node.left)
-            print(node.value, end=" ")
-            self._inorder_traversal(node.right)
-    '''
     def print_rbt_tree(self):
         if self.root != self.NIL:
             print_tree(self.root, val='value', NIL=self.NIL)
