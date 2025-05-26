@@ -86,13 +86,14 @@ class RedBlackTree:
         return self.NIL
 
     def tree_height(self):
+        print("in")
         if not self.root:
             return 0
         max_height = 0
         stack = [(self.root, 1)]
         while stack:
             node, depth = stack.pop()
-            if node:
+            if node != self.NIL:
                 max_height = max(max_height, depth)
                 stack.append((node.left, depth + 1))
                 stack.append((node.right, depth + 1))
@@ -384,12 +385,13 @@ class RedBlackTree:
             self._inorder_traversal(node.left)
             print(node.value, end=" ")
             self._inorder_traversal(node.right)
+    '''
     def print_rbt_tree(self):
         if self.root != self.NIL:
             print_tree(self.root, val='value', NIL=self.NIL)
         else:
             print("(empty tree)")
-    '''
+
 
 def print_tree(root, val="value", left="left", right="right", NIL=None):
     def display(root, val=val, left=left, right=right):
