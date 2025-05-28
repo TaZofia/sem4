@@ -1,5 +1,6 @@
 import random
 import sys
+import time
 
 big_tree = False
 
@@ -280,6 +281,8 @@ if __name__ == "__main__":
 
     bst = BinarySearchTree()
 
+    start = time.time()
+
     print("----1 case: ascending_insert and random_delete for n =", n, "----")
     ascending_insert(bst, n)
     print("Ascending insert average cost comparisons: ", metrics_cost(bst.insert_comparisons_log))
@@ -320,4 +323,7 @@ if __name__ == "__main__":
     print("Random delete max comparisons: ", max(bst2.delete_comparisons_log))
     print("Random delete max pointer: ", max(bst2.delete_pointer_ops_log))
     print("Random delete max height: ", max(bst2.delete_heights_log))
+    end = time.time()
+
+    print("Time elapsed: ", end - start)
 

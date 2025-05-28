@@ -1,5 +1,6 @@
 import sys
 import random
+import time
 
 RED = "\033[31m"
 RESET = "\033[0m"
@@ -489,6 +490,8 @@ if __name__ == "__main__":
 
     tree1 = RedBlackTree()
 
+    start = time.time()
+
     print("----1 case: ascending_insert and random_delete for n =", n, "----")
     ascending_insert(tree1, n)
     print("Ascending insert average cost comparisons: ", metrics_cost(tree1.insert_comparisons_log))
@@ -530,3 +533,5 @@ if __name__ == "__main__":
     print("Random delete max pointer: ", max(tree2.delete_pointer_ops_log))
     print("Random delete max height: ", max(tree2.delete_heights_log))
 
+    end = time.time()
+    print("Time elapsed: ", str(end - start))
