@@ -84,33 +84,7 @@ class BinarySearchTree {
   }
 
   int tree_height() {
-    /*
-    if (root == Node::getNIL()) {
-      return 0;
-    }
 
-    int max_height = 0;
-    vector<pair<Node*, int>> stack;
-    stack.push_back({root, 1});
-
-    while (!stack.empty()) {
-      pair<Node*, int> top = stack.back();
-      stack.pop_back();
-
-      Node* node = top.first;
-      int depth = top.second;
-
-      if (node != Node::getNIL()) {
-        if (depth > max_height) {
-          max_height = depth;
-        }
-        stack.push_back({node->left, depth + 1});
-        stack.push_back({node->right, depth + 1});
-      }
-    }
-    return max_height;
-
-     */
     return root->height;
   }
 
@@ -512,3 +486,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
