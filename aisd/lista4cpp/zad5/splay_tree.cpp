@@ -156,6 +156,8 @@ class SplayTree {
                     update_height(node->left);
                     current_pointer_ops += 2;
                 }
+            } else {
+                current_comparisons++;
             }
 
             current_pointer_ops++;
@@ -187,6 +189,8 @@ class SplayTree {
                     update_height(node->right);
                     current_pointer_ops += 2;
                 }
+            } else {
+                current_comparisons++;
             }
             current_pointer_ops++;
             return (node->right == Node::getNIL()) ? node : rotate_left(node);
