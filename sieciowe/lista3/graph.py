@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 m = 1000
 T_max = 0.002  # max value, T - it is the average delay in network
-p = 0.75
+
 
 
 def get_graph():
@@ -153,7 +153,7 @@ def compute_network_delay(G, N, c, a, m):
     return T
 
 
-def estimate_reliability(G, N, c, num_samples=500):
+def estimate_reliability(G, N, c, p, num_samples=10000):
     count = 0  # Licznik przypadków, w których sieć spełnia warunek opóźnienia
     for _ in range(num_samples):
         G_temp = G.copy()  # Tworzymy kopię oryginalnej sieci, aby ją modyfikować
@@ -187,10 +187,10 @@ def run_experiments():
     N = get_N()
     a = calculate_a(G, N)
     c = calculate_c(G)
-
+    p = 0.75
     draw_graph(G)
 
-    num_repetitions = 10000
+    num_repetitions = 1
 
     # Eksperyment 1: Różne wartości N
     N_scales = [1, 2, 3, 4, 5]
@@ -210,7 +210,7 @@ def run_experiments():
             if not check_if_viable(G, a_scaled, c):
                 continue
             delay = compute_network_delay(G, N_scaled, c, a_scaled, m)
-            reliability = estimate_reliability(G, N_scaled, c)
+            reliability = estimate_reliability(G, N_scaled, c, p)
             total_delay += delay
             total_reliability += reliability
             successful_runs += 1
@@ -233,11 +233,12 @@ def run_experiments():
         successful_runs = 0
 
         for _ in range(num_repetitions):
+
             c_scaled = {e: int(c[e] * scale) for e in G.edges}
             if not check_if_viable(G, a, c_scaled):
                 continue
             delay = compute_network_delay(G, N, c_scaled, a, m)
-            reliability = estimate_reliability(G, N, c_scaled)
+            reliability = estimate_reliability(G, N, c_scaled, p)
             total_delay += delay
             total_reliability += reliability
             successful_runs += 1
@@ -274,7 +275,7 @@ def run_experiments():
             if not check_if_viable(G_extended, a_extended, c_extended):
                 continue
             delay = compute_network_delay(G_extended, N, c_extended, a_extended, m)
-            reliability = estimate_reliability(G_extended, N, c_extended)
+            reliability = estimate_reliability(G_extended, N, c_extended, p)
             total_delay += delay
             total_reliability += reliability
             successful_runs += 1
@@ -293,7 +294,7 @@ def run_experiments():
     plt.ylabel("Average Network Delay")
     plt.title("Delay vs N scale")
     plt.grid(True)
-    plt.savefig("N_network_delay.png")
+    plt.savefig("N_network_delay2.png")
 
     plt.figure(figsize=(8, 5))
     plt.plot(N_scales, reliability_results_N, marker='o', color='green')
@@ -301,7 +302,7 @@ def run_experiments():
     plt.ylabel("Average Reliability")
     plt.title("Reliability vs N scale")
     plt.grid(True)
-    plt.savefig("N_reliability.png")
+    plt.savefig("N_reliability2.png")
 
     # Eksperyment 2: c
     plt.figure(figsize=(8, 5))
@@ -310,7 +311,7 @@ def run_experiments():
     plt.ylabel("Average Network Delay")
     plt.title("Delay vs c scale")
     plt.grid(True)
-    plt.savefig("c_network_delay.png")
+    plt.savefig("c_network_delay2.png")
 
     plt.figure(figsize=(8, 5))
     plt.plot(c_scales, reliability_results_c, marker='s', color='orange')
@@ -318,7 +319,7 @@ def run_experiments():
     plt.ylabel("Average Reliability")
     plt.title("Reliability vs c scale")
     plt.grid(True)
-    plt.savefig("c_reliability.png")
+    plt.savefig("c_reliability2.png")
 
     # Eksperyment 3: Topologia
     plt.figure(figsize=(8, 5))
@@ -327,7 +328,7 @@ def run_experiments():
     plt.ylabel("Average Network Delay")
     plt.title("Delay vs Extra Edges")
     plt.grid(True)
-    plt.savefig("topology_network_delay.png")
+    plt.savefig("topology_network_delay2.png")
 
     plt.figure(figsize=(8, 5))
     plt.plot(extra_edges_options, reliability_results_topology, marker='^', color='brown')
@@ -335,7 +336,7 @@ def run_experiments():
     plt.ylabel("Average Reliability")
     plt.title("Reliability vs Extra Edges")
     plt.grid(True)
-    plt.savefig("topology_reliability.png")
+    plt.savefig("topology_reliability2.png")
 
 if __name__ == "__main__":
     run_experiments()
