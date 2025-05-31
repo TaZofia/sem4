@@ -1,4 +1,62 @@
+/* Container */
 .home-container {
-    width: 100%;
-    background: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Title */
+.title {
+    font-size: 3rem;
+    margin-bottom: 0.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Subtitle */
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.button-group {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* Button base style */
+.btn {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.btn-signin {
+    background-color: #f6a821;
+    color: #fff;
+}
+
+.btn-signin:hover {
+    background-color: #d48e1a;
+    border: 2px solid #fff;
+}
+
+.btn-signup {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.btn-signup:hover {
+    background-color: #fff;
+    color: #764ba2;
 }

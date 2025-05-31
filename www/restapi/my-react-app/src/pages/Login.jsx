@@ -45,21 +45,21 @@ function Login() {
     return (
         <div className="login-container">
             <form onSubmit={handleSubmit} className="login-form">
-                <input className="form-elem"
+                <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                     required
                 />
-                <input className="form-elem"
+                <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
                 />
-                <button className="form-elem" type="submit">
+                <button type="submit">
                     {'Sign in'}
                 </button>
 
