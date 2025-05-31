@@ -1,0 +1,55 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: transparent;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 400px;
+    padding: 2rem;
+}
+.form-elem {
+    border-radius: 5px;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+}
+input {
+    background-color: transparent;
+    color: white;
+}
+button {
+    width: fit-content;
+    align-self: center;
+    cursor: pointer;
+    color: white;
+    background-color: #4c6691;
+}
+button:hover {
+    background-color: #759ee1;
+}
+.error-popup {
+    position: absolute;
+    top: 2rem;
+    background-color: #ffdddd;
+    border: 1px solid #cc0000;
+    color: #990000;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 999;
+}
+.error-popup button {
+    background: none;
+    border: none;
+    color: #990000;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
