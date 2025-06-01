@@ -6,6 +6,7 @@ import Login from './pages/Login.jsx';
 import AdminPanel from './pages/AdminPanel.jsx';
 import UserPanel from './pages/UserPanel.jsx';
 import Home from './pages/Home.jsx';
+import Signup from './pages/Signup.jsx';
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/admin" element={<AdminPanel/>}/>
                 <Route path="/user" element={<UserPanel/>}/>
             </Routes>

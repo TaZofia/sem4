@@ -6,6 +6,7 @@ export default function Navigation() {
         <nav >
             <Link to="/">Home</Link>
             <Link to="/login">Login</Link>
+            <Link to="/signup">Sign Up</Link>
             <Link to="/admin">Admin Panel</Link>
             <Link to="/user">User Panel</Link>
         </nav>
