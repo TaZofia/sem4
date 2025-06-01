@@ -5,6 +5,10 @@ import {useNavigate} from "react-router-dom";
 function UserPanel () {
 
     const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
 
     return (
         <div className="container">
@@ -12,7 +16,7 @@ function UserPanel () {
                 <button className="btn btn-transparent" onClick={() => navigate('/user/me')}>
                     My profile
                 </button>
-                <button className="btn btn-yellow">
+                <button className="btn btn-yellow" onClick={handleLogout}>
                     Log out
                 </button>
             </div>

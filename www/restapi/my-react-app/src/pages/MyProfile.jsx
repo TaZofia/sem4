@@ -9,6 +9,11 @@ function MyProfile() {
 
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
     const getMyProfile = async () => {
         try {
             const response = await fetch("/users/me", {
@@ -40,7 +45,7 @@ function MyProfile() {
                 <button className="btn btn-transparent" onClick={() => navigate('/user/')}>
                     Back
                 </button>
-                <button className="btn btn-yellow">
+                <button className="btn btn-yellow" onClick={handleLogout}>
                     Log out
                 </button>
             </div>
