@@ -1,0 +1,11 @@
+.container {
+    height: 100%;
+}
+.btn-group {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+

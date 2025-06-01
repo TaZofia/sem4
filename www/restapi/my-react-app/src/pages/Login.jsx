@@ -1,6 +1,7 @@
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import './Login.css'
+import "./Buttons.css"
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -59,7 +60,7 @@ function Login() {
                     onChange={e => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">
+                <button className="btn btn-yellow" type="submit">
                     {'Sign in'}
                 </button>
 

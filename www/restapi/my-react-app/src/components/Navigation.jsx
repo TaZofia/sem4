@@ -9,6 +9,7 @@ export default function Navigation() {
             <Link to="/signup">Sign Up</Link>
             <Link to="/admin">Admin Panel</Link>
             <Link to="/user">User Panel</Link>
+            <Link to="/user/me">My Profile</Link>
         </nav>
     );
 }

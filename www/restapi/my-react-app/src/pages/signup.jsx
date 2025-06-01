@@ -1,6 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import "./Login.css"        // i want to sign up has the same style as log in
+import "./Buttons.css"
 
 function Signup() {
     const [username, setUsername] = React.useState("");
@@ -58,7 +59,7 @@ function Signup() {
                     onChange={e => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">
+                <button className="btn btn-yellow" type="submit">
                     {'Sign up'}
                 </button>
 

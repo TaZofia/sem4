@@ -8,6 +8,8 @@
 form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 1.5rem;
     width: 400px;
     padding: 2rem;
@@ -23,22 +25,6 @@ input {
 input::placeholder {
     color: #fff;
     opacity: 1;
-}
-button {
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border: 2px solid transparent;
-    border-radius: 30px;
-    width: fit-content;
-    align-self: center;
-    cursor: pointer;
-    background-color: #f6a821;
-    color: #fff;
-}
-button:hover {
-    background-color: #d48e1a;
-    border: 2px solid #fff;
 }
 .error-popup {
     position: absolute;
