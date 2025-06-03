@@ -2,7 +2,6 @@ import networkx as nx
 import random
 import time
 import matplotlib.pyplot as plt
-import numpy as np
 from heapq import heappop, heappush
 
 def generate_graph(n):
@@ -15,49 +14,55 @@ def generate_graph(n):
 
 def prim_mst(graph):
     n = len(graph.nodes)
-    visited = [False] * n
-    min_heap = [(0, 0, -1)]  # (weight, node, parent)
+    visited = [False] * n    # track of visited
+    min_heap = [(0, 0, -1)]  # (weight, node, parent) - PQ
     total_weight = 0
     mst_edges = []
 
     while min_heap:
-        weight, u, parent = heappop(min_heap)
+        weight, u, parent = heappop(min_heap)       # get edge with the smallest weight
         if visited[u]:
             continue
-        visited[u] = True
+        visited[u] = True       # mark as a part of mst
         total_weight += weight
         if parent != -1:
             mst_edges.append((parent, u, weight))
         for v in graph.neighbors(u):
             if not visited[v]:
+                # Push all edges from current node to unvisited neighbors
                 heappush(min_heap, (graph[u][v]['weight'], v, u))
     return total_weight, mst_edges
 
 def kruskal_mst(graph):
     parent = {}
+
+    # Find operation with path compression
     def find(x):
         if parent[x] != x:
             parent[x] = find(parent[x])
         return parent[x]
 
+    # Union operation that merges disjoint sets
     def union(x, y):
         rootX, rootY = find(x), find(y)
         if rootX != rootY:
             parent[rootY] = rootX
-            return True
-        return False
+            return True     # The edge connects two disjoint trees
+        return False        # The edge would create a cycle
 
     for node in graph.nodes:
         parent[node] = node
 
+    # Sort all edges by increasing weight
     edges = sorted(graph.edges(data=True), key=lambda x: x[2]['weight'])
     total_weight = 0
     mst_edges = []
 
+    # Go through each edge and add it if it connects disjoint trees
     for u, v, data in edges:
         if union(u, v):
             total_weight += data['weight']
-            mst_edges.append((u, v, data['weight']))
+            mst_edges.append((u, v, data['weight']))        # add to mst
 
     return total_weight, mst_edges
 
@@ -102,7 +107,7 @@ def plot_results(sizes, prim_times, kruskal_times):
     plt.savefig('./mst2.png')
 
 # Parametry eksperymentu
-n_min, n_max, step, rep = 10, 200, 10, 20
+n_min, n_max, step, rep = 10, 200, 10, 50
 
 # Uruchomienie eksperymentu
 sizes, prim_times, kruskal_times = run_experiment(n_min, n_max, step, rep)
