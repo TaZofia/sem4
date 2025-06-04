@@ -1,15 +1,13 @@
 .template {
-    background-color: #fff;
+    background-color: transparent;
     width: 50vw;
     max-width: 600px;
     border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     padding: 2.0rem;
-    text-align: left;
 }
 
 .template h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 0;
     margin-bottom: 1rem;
     color: #764ba2;
@@ -17,14 +15,33 @@
     text-shadow: 1px 1px 2px rgba(102, 126, 234, 0.2);
 }
 
+.top-bar-my-profile {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 2rem;
+}
 .profile-info {
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.8;
     color: #333;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border-left: 4px solid #f6a821;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
 }
 
 .profile-info strong {
-    color: #f6a821;
+    color: #333;
     display: inline-block;
     width: 100px;
 }
@@ -36,52 +53,6 @@
     border-radius: 8px;
     margin-top: 1rem;
     text-align: center;
-}
-.reviews-section {
-    margin-top: 2rem;
-}
-
-.reviews-section h4 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    color: #764ba2;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(102, 126, 234, 0.2);
-}
-
-.reviews-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 1rem;
-}
-
-.review-card {
-    background-color: #f9f9f9;
-    border-left: 4px solid #f6a821;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    color: #333;
-    position: relative;
-}
-
-
-.review-card p {
-    margin: 0.5rem 0;
-}
-
-.review-card strong {
-    color: #333;
-}
-
-.review-date {
-    font-size: 0.85rem;
-    color: #888;
-    margin-top: 0.5rem;
-    text-align: right;
 }
 .delete-btn {
     position: absolute;

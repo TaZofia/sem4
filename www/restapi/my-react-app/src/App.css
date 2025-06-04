@@ -1,8 +1,6 @@
 .App {
-  text-align: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;

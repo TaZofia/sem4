@@ -87,25 +87,26 @@ function MyProfile() {
 
     return (
         <div className="template">
-            <div className="btn-group">
-                <button className="btn btn-transparent" onClick={() => navigate('/user/')}>
-                    Back
-                </button>
-                <button className="btn btn-yellow" onClick={handleLogout}>
-                    Log out
-                </button>
+            <div className="top-bar-my-profile">
+                <div className="btn-group">
+                    <button className="btn btn-transparent" onClick={() => navigate('/user/')}>
+                        Back
+                    </button>
+                    <button className="btn btn-yellow" onClick={handleLogout}>
+                        Log out
+                    </button>
+                </div>
             </div>
-            <h3>My Profile</h3>
 
             {user ? (
                 <>
                 <div className="profile-info">
+                    <h3>My Profile</h3>
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>
                 </div>
 
                 <div className="reviews-section">
-                    <h4>My Reviews</h4>
                     {reviews.length > 0 ? (
                         <ul className="reviews-list">
                             {reviews.map((review, index) => (

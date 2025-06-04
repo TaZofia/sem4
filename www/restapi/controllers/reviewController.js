@@ -5,7 +5,7 @@ exports.getAllReviews = async function (req, res) {
     try {
         const reviews = await Review.find()
             .populate("author", "username")
-            .populate("product", "name");
+            .populate("product", "name price");
 
         res.json(reviews);
     } catch (err) {
