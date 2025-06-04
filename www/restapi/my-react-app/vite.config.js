@@ -8,6 +8,8 @@ export default defineConfig({
     proxy: {
       '/users': 'http://localhost:5000',
       '/api': 'http://localhost:5000',
+      '/reviews': 'http://localhost:5000',
+      '/products': 'http://localhost:5000',
     }
   }
 })
