@@ -14,6 +14,8 @@ router.post("/", userController.createUser);
 // /users/me – already logged user
 router.get("/me", authenticateToken, userController.getLoggedInUser);
 
+router.get("/me/reviews", authenticateToken, userController.getMyReviews)
+
 // get user with id
 router.get("/:id", getUser, authenticateToken, userController.getUserById);
 

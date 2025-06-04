@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Review = require("../models/review");
 
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
@@ -53,6 +54,19 @@ exports.createUser = async function (req, res) {
 exports.getUserById = async function (req, res) {
     res.json(req.user)
 }
+
+exports.getMyReviews = async function (req, res, next) {
+    try {
+        const userId = req.userId;
+        const reviews = await Review.find({ author: userId }).populate("product", "name").sort({ createdAt: -1 }); // new first
+        res.json(reviews);
+    } catch (error) {
+        console.error("Error fetching user reviews:", error);
+        res.status(500).json({ message: "Failed to fetch reviews." });
+    }
+}
+
+
 
 exports.updateUser = async function (req, res) {
 
