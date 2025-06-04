@@ -77,7 +77,7 @@ exports.deleteReview = async function (req, res) {
     }
 
     try {
-        await req.review.remove();
+        await Review.findByIdAndDelete(req.review._id);  // Mongoose method
         res.json({ message: "Review deleted" });
     } catch (err) {
         res.status(500).json({ message: err.message });
