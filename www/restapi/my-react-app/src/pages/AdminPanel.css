@@ -1,0 +1,79 @@
+.admin-container {
+    padding: 6rem 2rem 2rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.admin-top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;
+}
+
+.admin-container section {
+    margin-bottom: 2rem;
+}
+
+.admin-container h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f2f2f2;
+    padding-bottom: 0.5rem;
+}
+
+.admin-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-container li {
+    background-color: #fafafa;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-container button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.admin-container button:hover {
+    background-color: #ddd;
+}
+
+.add-product-form {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.add-product-form input {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.add-product-form button {
+    background-color: #ffd54f;
+    font-weight: bold;
+}
