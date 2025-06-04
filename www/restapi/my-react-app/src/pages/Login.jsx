@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import './Login.css'
 import "./Buttons.css"
@@ -9,6 +9,13 @@ function Login() {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

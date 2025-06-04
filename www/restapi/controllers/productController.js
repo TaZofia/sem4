@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Review = require("../models/review");
 
 exports.getAllProducts = async (req, res) => {
     const { page = 1, limit = 2, category, minPrice, maxPrice, sort } = req.query;
@@ -45,7 +46,7 @@ exports.createProduct = async function (req, res) {
     })
     try {
         const newProduct = await product.save();
-        res.status(201).json({newProduct});
+        res.status(201).json(newProduct);
     } catch (err) {
         res.status(400).json({message: err.message})
     }
@@ -57,7 +58,7 @@ exports.deleteProduct = async (req, res) => {
     }
 
     try {
-        await res.product.remove();
+        await Product.findByIdAndDelete(req.product._id);
         res.json({message: "Product deleted successfully."});
     } catch (err) {
         res.status(500).json({message: err.message})

@@ -12,6 +12,12 @@ function UserPanel () {
 
     const navigate = useNavigate();
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        return navigate("/login");
+    }
+
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/login");
@@ -19,7 +25,11 @@ function UserPanel () {
 
     const getReviews = async () => {
         try {
-            const response = await fetch("/reviews", {});
+            const response = await fetch("/reviews", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             if (response.ok) {
                 const reviews = await response.json();

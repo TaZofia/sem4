@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import "./Login.css"        // i want to sign up has the same style as log in
 import "./Buttons.css"
@@ -10,6 +10,13 @@ function Signup() {
     const [error, setError] = React.useState("");
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     const handleRegistration = async (event) => {
         event.preventDefault();

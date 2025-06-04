@@ -1,10 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Home.css";
 import "./Buttons.css"
 
 function Home() {
     const navigate = useNavigate();
+
+    // overflow hidden only for this page
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     return (
         <div className="home-container">
