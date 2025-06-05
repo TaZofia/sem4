@@ -1,21 +1,26 @@
-import "./UserPanel.css"
-import "./Buttons.css"
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import "./UserPanel.css";
+import "./Buttons.css";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-
-function UserPanel () {
+function UserPanel() {
     const [reviews, setReviews] = useState([]);
     const [sortedReviews, setSortedReviews] = useState([]);
     const [sortBy, setSortBy] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const navigate = useNavigate();
+    const [newReview, setNewReview] = useState({
+        product: "",
+        text: "",
+        rating: ""
+    });
 
+    const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
     if (!token) {
-        return navigate("/login");
+        navigate("/login");
+        return null;
     }
 
     const handleLogout = () => {
@@ -25,34 +30,30 @@ function UserPanel () {
 
     const getReviews = async () => {
         try {
-            const response = await fetch("/reviews", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await fetch("/reviews"); // No auth
+            const data = await response.json();
 
             if (response.ok) {
-                const reviews = await response.json();
-                setReviews(reviews);
-                setSortedReviews(reviews); // Init
+                setReviews(data);
+                setSortedReviews(data);
             } else {
+                console.error("Bad response:", data);
                 setReviews([]);
                 setSortedReviews([]);
             }
-        } catch {
-            console.error("Error fetching reviews.");
+        } catch (err) {
+            console.error("Error fetching reviews:", err);
         }
     };
 
     const sortReviews = (criteria, reviewsToSort) => {
         const sorted = [...reviewsToSort];
-
         switch (criteria) {
             case "price-asc":
-                sorted.sort((a, b) => a.product.price - b.product.price);
+                sorted.sort((a, b) => (a.product?.price ?? 0) - (b.product?.price ?? 0));
                 break;
             case "price-desc":
-                sorted.sort((a, b) => b.product.price - a.product.price);
+                sorted.sort((a, b) => (b.product?.price ?? 0) - (a.product?.price ?? 0));
                 break;
             case "rating":
                 sorted.sort((a, b) => b.rating - a.rating);
@@ -70,18 +71,15 @@ function UserPanel () {
         getReviews();
     }, []);
 
-
     useEffect(() => {
         const filtered = reviews.filter((review) =>
-            review.product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            review.product?.name?.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setSortedReviews(sortReviews(sortBy, filtered));
     }, [sortBy, reviews, searchQuery]);
 
     return (
-        <>
         <div className="container">
-
             <div className="top-bar">
                 <div className="empty"></div>
                 <div className="sort-controls">
@@ -117,8 +115,8 @@ function UserPanel () {
                     <ul className="reviews-list">
                         {sortedReviews.map((review, index) => (
                             <li key={index} className="review-card">
-                                <p><strong>Product:</strong> {review.product.name}</p>
-                                <p><strong>Price:</strong> {review.product.price} PLN</p>
+                                <p><strong>Product:</strong> {review.product?.name || "Unknown"}</p>
+                                <p><strong>Price:</strong> {review.product?.price ?? "?"} PLN</p>
                                 <p><strong>Rating:</strong> {review.rating}/5</p>
                                 <p><strong>Text:</strong> {review.text}</p>
                                 <p className="review-date">
@@ -132,8 +130,7 @@ function UserPanel () {
                 )}
             </div>
         </div>
-        </>
-
     );
 }
+
 export default UserPanel;

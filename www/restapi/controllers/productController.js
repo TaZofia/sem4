@@ -59,6 +59,7 @@ exports.deleteProduct = async (req, res) => {
 
     try {
         await Product.findByIdAndDelete(req.product._id);
+        await Review.deleteMany({ product: req.product._id });
         res.json({message: "Product deleted successfully."});
     } catch (err) {
         res.status(500).json({message: err.message})

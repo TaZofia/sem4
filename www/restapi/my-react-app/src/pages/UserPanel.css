@@ -1,6 +1,7 @@
 .container {
     height: 100%;
     padding-top: 6rem;
+    width: 40vw;
 }
 
 .top-bar {
