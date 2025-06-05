@@ -9,12 +9,6 @@ function UserPanel() {
     const [sortBy, setSortBy] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const [newReview, setNewReview] = useState({
-        product: "",
-        text: "",
-        rating: ""
-    });
-
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 

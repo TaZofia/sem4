@@ -80,8 +80,7 @@
     width: 100%;
     justify-content: flex-start;
 }
-
-.add-product-form input {
+.admin-input-add-product {
     flex: 1 1 200px;
     padding: 0.5rem;
     border-radius: 8px;
@@ -92,4 +91,34 @@
 .add-product-form button {
     font-size: 0.8rem;
     align-self: flex-end;
+}
+.admin-container ul {
+    padding: 0;
+    list-style: none;
+}
+
+.admin-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.review-title {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.review-text {
+    color: #333;
 }

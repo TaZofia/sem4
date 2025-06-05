@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const Review = require("../models/review");
 
 exports.getAllProducts = async (req, res) => {
-    const { page = 1, limit = 2, category, minPrice, maxPrice, sort } = req.query;
+    const { page = 1, limit = 100, category, minPrice, maxPrice, sort } = req.query;
 
     const filter = {};
     if (category) filter.category = category;

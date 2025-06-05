@@ -8,7 +8,12 @@ function MyProfile() {
     const [user, setUser] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [error, setError] = useState('');
-
+    const [products, setProducts] = useState([]);
+    const [newReview, setNewReview] = useState({
+        product: "",
+        text: "",
+        rating: ""
+    });
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -36,6 +41,59 @@ function MyProfile() {
         } catch (err) {
             console.error("Delete error:", err);
             alert("Server error while deleting the review.");
+        }
+    };
+
+    const handleAddReview = async () => {
+        if (!newReview.product || !newReview.text || !newReview.rating) {
+            alert("All fields are required");
+            return;
+        }
+
+        try {
+            const response = await fetch("/reviews", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({
+                    product: newReview.product,
+                    text: newReview.text,
+                    rating: newReview.rating,
+                }),
+            });
+
+            if (response.ok) {
+                const created = await response.json();
+                setReviews(prev => [created, ...prev]);
+                setNewReview({ product: "", text: "", rating: "" });
+            } else {
+                const error = await response.json();
+                alert("Error adding review: " + error.message);
+            }
+        } catch (err) {
+            console.error("Add review error:", err);
+            alert("Server error");
+        }
+    };
+
+    const getProducts = async () => {
+        try {
+            const response = await fetch("/products", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setProducts(data);
+            } else {
+                console.error("Failed to fetch products");
+            }
+        } catch (err) {
+            console.error("Error fetching products:", err);
         }
     };
 
@@ -83,6 +141,7 @@ function MyProfile() {
     useEffect(() => {
         getMyProfile();
         getUserReviews();
+        getProducts();
     }, []);
 
     return (
@@ -104,6 +163,46 @@ function MyProfile() {
                     <h3>My Profile</h3>
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>
+                </div>
+
+                <div className="add-review-form">
+                    <h4>Add Review</h4>
+
+                    <div className="row-inputs">
+                        <select
+                            className="input-field"
+                            value={newReview.product}
+                            onChange={(e) => setNewReview({ ...newReview, product: e.target.value })}
+                        >
+                            <option value="">Select a product</option>
+                            {products.map(product => (
+                                <option key={product._id} value={product._id}>
+                                    {product.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <input
+                            className="input-field"
+                            type="number"
+                            placeholder="Rating (1–5)"
+                            min="1"
+                            max="5"
+                            value={newReview.rating}
+                            onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
+                        />
+                    </div>
+
+                    <textarea
+                        className="text-area"
+                        placeholder="Write your review here..."
+                        value={newReview.text}
+                        onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
+                    />
+
+                    <button className="btn btn-yellow add-btn" onClick={handleAddReview}>
+                        Add Review
+                    </button>
                 </div>
 
                 <div className="reviews-section">

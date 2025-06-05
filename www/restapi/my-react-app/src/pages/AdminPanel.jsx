@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 
-
 function AdminPanel() {
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
@@ -182,25 +181,25 @@ function AdminPanel() {
                             ))}
                         </ul>
                         <div className="add-product-form">
-                            <input
+                            <input className="admin-input-add-product"
                                 type="text"
                                 placeholder="Product name"
                                 value={newProduct.name}
                                 onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                             />
-                            <input
+                            <input className="admin-input-add-product"
                                 type="text"
                                 placeholder="Category"
                                 value={newProduct.category}
                                 onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
                             />
-                            <input
+                            <input className="admin-input-add-product"
                                 type="text"
                                 placeholder="Description"
                                 value={newProduct.description}
                                 onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
                             />
-                            <input
+                            <input className="admin-input-add-product"
                                 type="number"
                                 placeholder="Price"
                                 value={newProduct.price}
@@ -218,11 +217,17 @@ function AdminPanel() {
                 </h3>
                 {showReviews && (
                     <ul>
-                        {reviews.map(review => (
+                        {reviews.map((review) => (
                             <li key={review._id}>
-                                <strong>{review.product.name}</strong> - {review.rating}/5<br />
-                                {review.text}
-                                <button className="button-in-li" onClick={() => deleteReview(review._id)}>Delete</button>
+                                <div className="review-content">
+                                    <div className="review-title">
+                                        {review.product.name} {review.rating}/5
+                                    </div>
+                                    <div className="review-text">{review.text}</div>
+                                </div>
+                                <button className="button-in-li" onClick={() => deleteReview(review._id)}>
+                                    Delete
+                                </button>
                             </li>
                         ))}
                     </ul>

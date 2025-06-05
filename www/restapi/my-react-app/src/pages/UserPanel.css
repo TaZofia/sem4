@@ -118,3 +118,27 @@
     margin-top: 0.5rem;
     text-align: right;
 }
+.add-review-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: flex-start;
+    border: 3px solid #ccc;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.add-review-form input {
+    flex: 1 1 200px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.add-review-form button {
+    font-size: 0.8rem;
+    align-self: flex-end;
+}

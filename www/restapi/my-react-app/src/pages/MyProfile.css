@@ -69,3 +69,49 @@
     color: #f54242;
     transform: scale(1.5);
 }
+
+.add-review-form {
+    background-color: transparent;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 98%;
+}
+
+.row-inputs {
+    display: flex;
+    gap: 0.75rem;
+}
+.add-review-form input {
+    flex: 1;
+}
+
+.input-field {
+    flex: 1;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    background-color: #fff4f4;
+    color: #333;
+    min-width: 150px;
+    max-width: 100%;
+}
+
+.text-area {
+    padding: 0.75rem 1rem;
+    min-height: 100px;
+    resize: vertical;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.add-btn {
+    align-self: flex-end;
+    padding: 0.6rem 1.2rem;
+}
